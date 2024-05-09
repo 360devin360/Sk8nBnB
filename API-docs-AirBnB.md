@@ -1,8 +1,8 @@
-# `<name of application here>`
+# Sk8nBnB
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+![Getting Started](images/database.png)
 
 ## API Documentation
 
