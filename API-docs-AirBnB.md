@@ -50,7 +50,7 @@ Returns the information about the current user that is logged in.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/users/currentUser
+  * URL: /api/users/:userId
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -288,7 +288,7 @@ Returns all the spots owned (created) by the current user.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/spots/:username
+  * URL: /api/spots/:ownerId
   * Body: none
 
 * Successful Response
@@ -467,7 +467,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: POST
-  * URL: /api/spots/:id/images
+  * URL: /api/spotImages/:spotId
   * Headers:
     * Content-Type: application/json
   * Body:
