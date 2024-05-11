@@ -50,7 +50,7 @@ Returns the information about the current user that is logged in.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/users/:username
+  * URL: /api/users/currentUser
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -824,7 +824,7 @@ Create and return a new image for a review specified by id.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: POST
-  * URL: /api/images/:spotId
+  * URL: /api/reviews/:id/images
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -880,8 +880,8 @@ Update and return an existing review.
 * Require Authentication: true
 * Require proper authorization: Review must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: PUT/PATCH
+  * URL: /api/reviews/:id
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -946,8 +946,8 @@ Delete an existing review.
 * Require Authentication: true
 * Require proper authorization: Review must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: DELETE
+  * URL: /api/reviews/:id
   * Body: none
 
 * Successful Response
@@ -982,8 +982,8 @@ Return all the bookings that the current user has made.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /api/bookings/:username
   * Body: none
 
 * Successful Response
@@ -1027,8 +1027,8 @@ Return all the bookings for a spot specified by id.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /api/bookings/:spotId
   * Body: none
 
 * Successful Response: If you ARE NOT the owner of the spot.
