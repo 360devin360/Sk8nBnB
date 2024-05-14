@@ -2,9 +2,7 @@
 const router = require('express').Router();
 
 // test routes
-router.get('/test',(req,res)=>{
-    res.json({"message":"hello"})
-})
+
 router.post('/test',(req,res)=>{
     res.json({requestBody: req.body})
 })

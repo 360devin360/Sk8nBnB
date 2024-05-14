@@ -26,9 +26,22 @@ if(!isProduction){
 // use helmet to help set headers for better security
 app.use(
     helmet.crossOriginResourcePolicy({
-        policy:"cross-origin"
-    })
+        policy:"cross-origin",
+    }),
+    
 );
+
+//---------------------------------------------------------------------
+// trying to get microsoft edge to run this app.
+// error says violation: connect-src was not explicitly set, so default src is used
+// try to set the connectSrc to self below not working from co-pilot
+app.use(helmet.contentSecurityPolicy({
+    directives:{
+        connectSrc:["'self'"]
+    }
+}));
+// --------------------------------------------------
+
 // set the _csrf token and create a req.csrfToken method
 app.use(
     csurf({
