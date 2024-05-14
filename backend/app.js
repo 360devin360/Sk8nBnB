@@ -6,11 +6,11 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-// import router routes
-const routes = require('./routes');
 // create a variable to be true if environment is in production or not by checking the env config file
 const {environment} = require('./config');
 const isProduction = environment === 'production';
+// import router routes
+const routes = require('./routes');
 // initialize the app
 const app = express();
 // connect morgan for logging info about requests and responses
@@ -34,7 +34,7 @@ app.use(
     csurf({
         cookie:{
             secure: isProduction,
-            samesite: isProduction && 'Lax',
+            samesite: isProduction && "Lax",
             httpOnly: true
         }
     })
