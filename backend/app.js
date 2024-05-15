@@ -13,12 +13,24 @@ const routes = require('./routes');
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
+
+// set default-src to self (used for Edge browser)---------------------------
+app.use(
+    helmet.contentSecurityPolicy({
+            defaultSrc:["'self'"],
+            "connect-src":["'self'"]  
+    })
+);
+//---------------------------------------------------------------------------
+
 if(!isProduction)app.use(cors())
+
 app.use(
     helmet.crossOriginResourcePolicy({
         policy:"cross-origin"
     })
 );
+
 app.use(
     csurf({
         cookie:{
