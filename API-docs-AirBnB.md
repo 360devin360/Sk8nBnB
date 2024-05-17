@@ -50,7 +50,7 @@ Returns the information about the current user that is logged in.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/users/:id
+  * URL: /api/users/currentUser
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -288,7 +288,7 @@ Returns all the spots owned (created) by the current user.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/spots/:ownerId
+  * URL: /api/spots/currentUser
   * Body: none
 
 * Successful Response
@@ -328,7 +328,7 @@ Returns the details of a spot specified by its id.
 * Require Authentication: false
 * Request
   * Method: GET
-  * URL: /api/spots/:id
+  * URL: /api/spots/:spotId
   * Body: none
 
 * Successful Response
@@ -467,7 +467,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: POST
-  * URL: /api/spots/:id/images
+  * URL: /api/spots/:spotId/images
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -513,7 +513,7 @@ Updates and returns an existing spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: PUT/PATCH
-  * URL: /api/spots/:id
+  * URL: /api/spots/:spotId
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -599,7 +599,7 @@ Deletes an existing spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: DELETE
-  * URL: /api/spots/:id
+  * URL: /api/spots/:spotId
   * Body: none
 
 * Successful Response
@@ -635,7 +635,7 @@ Returns all the reviews written by the current user.
 * Require Authentication: true
 * Request
   * Method: 
-  * URL: /api/users/:id/reviews
+  * URL: /api/reviews/currentUser
   * Body: none
 
 * Successful Response
@@ -691,7 +691,7 @@ Returns all the reviews that belong to a spot specified by id.
 * Require Authentication: false
 * Request
   * Method: GET
-  * URL: /api/spots/:id/reviews
+  * URL: /api/spots/:spotId/reviews
   * Body: none
 
 * Successful Response
@@ -746,7 +746,7 @@ Create and return a new review for a spot specified by id.
 * Require Authentication: true
 * Request
   * Method: POST
-  * URL: /api/spots/:id/reviews
+  * URL: /api/spots/:spotId/reviews
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -824,7 +824,7 @@ Create and return a new image for a review specified by id.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: POST
-  * URL: /api/reviews/:id/images
+  * URL: /api/reviews/:reviewId/images
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -881,7 +881,7 @@ Update and return an existing review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: PUT/PATCH
-  * URL: /api/reviews/:id
+  * URL: /api/spots/:spotId/reviews/:reviewId
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -947,7 +947,7 @@ Delete an existing review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: DELETE
-  * URL: /api/reviews/:id
+  * URL: /api/reviews/:reviewId
   * Body: none
 
 * Successful Response
