@@ -41,23 +41,43 @@ router.post('/', async (req,res,next)=>{
             email: user.email,
             username: user.username,
         };
-        
-        
-        
-        
         // use setTokenCookie
         await setTokenCookie(res, safeUser);
         
         // return user
         return res.json({
             user:safeUser
-        })
+        });
+    //catch and forward errors
     }catch(error){
         next({
-            'message':"log in error location backend/routes/api/session.js"
-        })
-    }
-})
+            'message':"log in error location POST backend/routes/api/session.js"
+        });
+    };
+});
+
+// log out
+router.delete('/',(_req,res,next)=>{
+    // try catch
+    try{
+        // use clearCookie to clear cookie token
+        // let cookie = document.cookie.split(';')
+        console.log(res.cookie.token)
+        res.clearCookie('token');
+        // console.log(document.cookie)
+        // return message
+        return res.json({
+            "message":'success'
+        });
+    // forward errors
+    }catch(Error){
+        next({
+            "message":"log out route failure DELETE backend/routes/api/session.js"
+        });
+    };
+});
+
+
 
 //export router
 module.exports = router;
