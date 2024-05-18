@@ -77,7 +77,32 @@ router.delete('/',(_req,res,next)=>{
     };
 });
 
-
+// get session user
+router.get('/', (req,res,next)=>{
+    // try catch
+    try{
+        // deconstruct req for user info
+        const {user} = req;
+        // if there is a user create a safeUser object to send in response
+        if(user){
+            const safeUser = {
+                id: user.id,
+                email: user.email,
+                username: user.username
+            };
+            // return json object safeUser
+            return res.json({
+                user: safeUser
+            });
+        // if no req.user (current user)    
+        }else{
+            return res.json({user: null})
+        }
+    }catch(error){
+        console.log('cannot get session user info. Error at GET route/api/session')
+        next(error)
+    }
+})
 
 //export router
 module.exports = router;
