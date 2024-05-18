@@ -35,11 +35,7 @@ router.post('/', async (req,res,next)=>{
         });
     // forward any errors not already sent
     }catch(error){
-        error.statusCode = 500
-        next({
-            "message":`${error.message} in POST backend/routes/api/users.js`,
-            status : error.statusCode
-        })
+        next(error)
     };
 });
 
