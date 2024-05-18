@@ -60,7 +60,9 @@ router.post('/', validateLogin, async (req,res,next)=>{
         };
         // use setTokenCookie
         await setTokenCookie(res, safeUser);
-        
+        // add firstName and lastName to user
+        safeUser.firstName = user.firstName
+        safeUser.lastName = user.lastName
         // return user
         return res.json({
             user:safeUser
@@ -105,7 +107,9 @@ router.get('/', (req,res,next)=>{
             const safeUser = {
                 id: user.id,
                 email: user.email,
-                username: user.username
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName
             };
             // return json object safeUser
             return res.json({
