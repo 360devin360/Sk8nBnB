@@ -45,6 +45,8 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue:Sequelize.literal("CURRENT_TIMESTAMP")
       }
+    },{
+      schema:options.schema
     });
   },
   async down(queryInterface, Sequelize) {
