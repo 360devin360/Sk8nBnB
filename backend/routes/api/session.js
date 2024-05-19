@@ -80,10 +80,7 @@ router.delete('/',(_req,res,next)=>{
     // try catch
     try{
         // use clearCookie to clear cookie token
-        // let cookie = document.cookie.split(';')
-        console.log(res.cookie.token)
         res.clearCookie('token');
-        // console.log(document.cookie)
         // return message
         return res.json({
             "message":'success'
@@ -120,7 +117,6 @@ router.get('/', (req,res,next)=>{
             return res.json({user: null})
         }
     }catch(error){
-        console.log('cannot get session user info. Error at GET route/api/session')
         next(error)
     }
 })

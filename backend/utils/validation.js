@@ -26,8 +26,6 @@ const handleValidationErrors = (req,res,next)=>{
         }
         next();
     }catch(error){
-        console.log('error in backend/utils/validation.js')
-        console.log(error)
         next(error)
     }
 }
