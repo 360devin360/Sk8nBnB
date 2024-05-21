@@ -12,9 +12,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Spot.hasMany(models.User,{
+      Spot.belongsTo(models.User,{
         foreignKey:'ownerId'
       });
+      Spot.belongsToMany(models.User,{
+        through:models.Review,
+        foreignKey:'spotId',
+        otherKey:'userId'
+      })
     }
   }
   Spot.init({
@@ -32,18 +37,17 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull:false,
       validate:{
-        isAlpha:true,
+        is: /^[A-Za-z0-9 '.,!?><@#$%^&*-]+$/,
         len:[1,49],
         notNull:true,
         notEmpty:true
       }
     },
     address: {
-      type:DataTypes.STRING,
+      type:DataTypes.TEXT,
       allowNull:false,
       validate:{
-        isAlphanumeric:true,
-        isUnique:true,
+        is:/^[A-Za-z0-9 .]+$/,
         notEmpty:true
       }
     },
@@ -51,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull:false,
       validate:{
-        isAlpha:true,
+        is:/^[A-Za-z0-9 ]+$/,
         notNull:true,
         notEmpty:true
       }
@@ -60,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull:false,
       validate:{
-        isAlpha:true,
+        is:/^[A-Za-z0-9 ]+$/,
         notEmpty:true,
         notNull:true
       }
@@ -71,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
       validate:{
         notNull:true,
         notEmpty:true,
-        isAlpha:true
+        is:/^[A-Za-z0-9 ]+$/
       }
     },
     lat: {

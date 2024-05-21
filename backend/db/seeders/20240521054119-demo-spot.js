@@ -1,5 +1,4 @@
 'use strict';
-const { BULKDELETE } = require('sequelize/lib/query-types');
 /** @type {import('sequelize-cli').Migration} */
 // import Spot model and bycryptjs
 const {Spot} = require('../models');
@@ -25,7 +24,7 @@ module.exports = {
     {
       ownerId:1,
       name:"demography's spot",
-      address:'123 new lane',
+      address:'123 new spot',
       city:"the City",
       state:"Idaho",
       country:'USA',
@@ -44,7 +43,7 @@ module.exports = {
       lat:46.9634,
       lng:72.2521,
       description:'The beautiful Palace Place',
-      price:999999999.99
+      price:99999999.99
     },
     {
       ownerId:3,
@@ -54,7 +53,7 @@ module.exports = {
       state:"Darkside",
       country:'Earth',
       lat:89,
-      lng:180,
+      lng:179,
       description:'The first place on the moon to stay',
       price:0.01
     },
@@ -65,8 +64,8 @@ module.exports = {
       city:"The Brain",
       state:"Your Head",
       country:'Body of Yourself',
-      lat:-90,
-      lng:-180,
+      lat:-89,
+      lng:-179,
       description:'Where all your dreams come true.',
       price:1.99
     },
@@ -82,7 +81,7 @@ module.exports = {
       description:'If you can find it you can stay',
       price:99.99
     },
-   ])
+   ],{validate:true})
   },
 
   async down (queryInterface, Sequelize) {
@@ -95,7 +94,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options,{
-      name:{[Op.in]:["devin's spot"]}
+      name:{[Op.in]:["demography's spot","Fake Palace","Best Place Ever","Dreamland","This Last Location"]}
     },{});
   }
 };
