@@ -21,17 +21,17 @@ module.exports = {
    await ReviewImages.bulkCreate([
     {
       reviewId:1,
-      url:"../../images/demographySpot.jpg"
+      url:"https://thumbs.dreamstime.com/b/hotel-bed-room-21064950.jpg"
     },
     {
       reviewId:2,
-      url:'../../images/spot2.jpg'
+      url:'https://www.dreamstime.com/royalty-free-stock-image-hotel-room-image27254386'
     },
     {
       reviewId:3,
-      url:'../../images/spot3.jpg'
+      url:'https://www.dreamstime.com/editorial-image-hotel-room-beautiful-orange-sofa-included-image43642330'
     }
-   ])
+   ],{validate:true})
   },
 
   async down (queryInterface, Sequelize) {
