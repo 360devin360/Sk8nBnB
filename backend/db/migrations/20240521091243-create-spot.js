@@ -75,7 +75,7 @@ module.exports = {
           fields:['address','city','state']
         }
       }
-    });
+    },options);
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Spots"

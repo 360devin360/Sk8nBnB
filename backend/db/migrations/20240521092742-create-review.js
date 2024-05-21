@@ -56,7 +56,7 @@ module.exports = {
           fields:['spotId','userId']
         }
       }
-    });
+    },options);
   },
   async down(queryInterface, Sequelize) {
     options.tableName = 'Reviews';
