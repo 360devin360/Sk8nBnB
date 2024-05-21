@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 
 let options = {}
-if(ProcessingInstruction.env.NODE_ENV==='production'){
+if(process.env.NODE_ENV==='production'){
   options.schema = process.env.SCHEMA
 };
 
@@ -45,7 +45,6 @@ module.exports = {
       },
       lat: {
         type: Sequelize.FLOAT,
-        allowNull:false
       },
       lng: {
         type: Sequelize.FLOAT,
@@ -55,16 +54,18 @@ module.exports = {
         allowNull:false
       },
       price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(12,2),
         allowNull:false
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue:new Date()
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue:new Date()
       }
     });
   },
