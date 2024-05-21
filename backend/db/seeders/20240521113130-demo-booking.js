@@ -22,7 +22,7 @@ module.exports = {
     {
       userId:1,
       spotId:1,
-      startDate:new Date(),
+      startDate:'2024-5-25',
       endDate:'2024-5-28'
     },
     {
@@ -34,8 +34,8 @@ module.exports = {
     {
       userId:3,
       spotId:4,
-      startDate:'2024-5-17',
-      endDate:'2024-5-27'
+      startDate:'2024-5-27',
+      endDate:'2024-5-28'
     },
     {
       userId:2,
@@ -49,7 +49,7 @@ module.exports = {
       startDate:'2024-8-04',
       endDate:'2024-09-11'
     }
-   ])
+   ],{validate:true})
   },
 
   async down (queryInterface, Sequelize) {

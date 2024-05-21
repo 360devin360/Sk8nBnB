@@ -1,5 +1,6 @@
 'use strict';
 const{Model} = require('sequelize');
+const { Sequelize } = require('.');
 
 module.exports = (sequelize, Datatype) => {
     // async function dateCheck(value){
@@ -30,15 +31,23 @@ module.exports = (sequelize, Datatype) => {
             type:Datatype.DATE,
             allowNull:false,
             validate:{
-                isAfter:new Date(),
-                isBefore:this.endDate
+                isAfter:new Date().toISOString().split('T')[0],
+                isBefore(value){
+                    if(value>=this.endDate){
+                        throw new Error('endDate cannot be on or before startDate')
+                    }
+                }
             }
         },
         endDate:{
             type:Datatype.DATE,
             allowNull:false,
             validate:{
-                isAfter:this.startDate
+                isAfter(value){
+                    if(value<=this.startDate){
+                        throw new Error('endDate cannot be on or before startdate')
+                    }
+                }
             }
         },
     },{
