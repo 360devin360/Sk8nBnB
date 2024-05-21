@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      SpotImage.hasMany(models.Spot,{
+        foreignKey:'spotId'
+      })
     }
   }
   SpotImage.init({
@@ -33,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.BOOLEAN,
       validate:{
         isBool(value){
-          if(typeof value!==boolean)throw new Error('must be true or false')
+          if(typeof value !== 'boolean')throw new Error('must be true or false')
         }
       }
     },

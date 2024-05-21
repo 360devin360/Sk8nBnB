@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Review.belongsTo(models.ReviewImage,{
+        foreignKey:'reviewId'
+      })
     }
   }
   // spotId userId combo needs to be unique

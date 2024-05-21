@@ -1,6 +1,6 @@
 'use strict';
 
-const {ReviewImages} = require('../models');
+const {ReviewImage} = require('../models');
 
 /** @type {import('sequelize-cli').Migration} */
 let options = {}
@@ -18,7 +18,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await ReviewImages.bulkCreate([
+   await ReviewImage.bulkCreate([
     {
       reviewId:1,
       url:"https://thumbs.dreamstime.com/b/hotel-bed-room-21064950.jpg"
@@ -41,7 +41,12 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    const Op = Sequelize.Op
     options.tableName = 'ReviewImages'
-    return 
+    return queryInterface.bulkDelete(options,{
+      reviewId:{
+        [Op.in]:[1,2,3]
+      }
+    })
   }
 };
