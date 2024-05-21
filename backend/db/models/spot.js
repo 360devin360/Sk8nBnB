@@ -1,9 +1,8 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const {Model} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
+  
   class Spot extends Model {
     /**
      * Helper method for defining associations.
@@ -17,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
       });
       Spot.belongsToMany(models.User,{
         through:models.Review,
+        foreignKey:'spotId',
+        otherKey:'userId'
+      })
+      Spot.belongsToMany(models.User,{
+        through:models.Booking,
         foreignKey:'spotId',
         otherKey:'userId'
       })
