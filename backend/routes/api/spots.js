@@ -28,7 +28,6 @@ router.get('/current', requireAuth, async(req,res,next)=>{
             }]
         })
         res.json({spots})
-
     }catch(error){
         next(error)
     }
