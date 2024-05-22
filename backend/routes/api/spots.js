@@ -3,8 +3,8 @@ const {Spot} = require('../../db/models');
 const {Sequelize} = require('sequelize');
 const {Review} = require('../../db/models');
 const {SpotImage} = require('../../db/models');
-const review = require('../../db/models/review');
 const {requireAuth} = require('../../utils/auth')
+const {User} = require('../../db/models')
 
 router.get('/current', requireAuth, async(req,res,next)=>{
     try{
@@ -16,7 +16,7 @@ router.get('/current', requireAuth, async(req,res,next)=>{
                 ],
             },
             where:{
-                id:req.user.id
+                ownerId:req.user.id
             },
             group:['Spot.id'],
             include:[{
@@ -32,6 +32,53 @@ router.get('/current', requireAuth, async(req,res,next)=>{
         next(error)
     }
 });
+
+router.get('/:spotId',async (req,res,next)=>{
+    try{
+        const spots = await Spot.findAll({
+            attributes: {
+                include:[
+                    [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
+                ],
+            },
+            where:{
+                id:req.params.spotId
+            },
+            group:['Spot.id'],
+            include:[{
+                model:Review,
+                attributes:[]
+            },{
+                model:SpotImage,
+                attributes:[
+                    'id',
+                    'url',
+                    'preview'
+                ],
+            },{
+                model:User,
+                as:'Owner',
+                attributes:[
+                    'id',
+                    'firstName',
+                    'lastName'
+                ]
+            }]
+        })
+        if(!spots.length){
+            let err = new Error("Spot couldn't be found")
+            err.status = 404
+            err.title = 'Resource not found'
+            err.errors = {
+                "query":"Query returned an empty array (no resources like that)"
+            }
+            throw err
+        }
+        res.json({spots})
+    }catch(error){
+        next(error)
+    }
+})
 
 router.get('/', async (req,res,next)=>{
     try{
@@ -56,6 +103,5 @@ router.get('/', async (req,res,next)=>{
         next(error)
     }
 })
-
 
 module.exports = router
