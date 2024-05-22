@@ -80,7 +80,7 @@ router.post('/', validateSignup, async (req,res,next)=>{
             err.errors = {"email":"User with that username already exists"}
         }
         console.log(error.errors[0].path)
-        err.status = 400
+        err.status = 500
         next(err);
 
     };
