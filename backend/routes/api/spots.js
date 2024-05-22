@@ -64,6 +64,15 @@ router.get('/:spotId',async (req,res,next)=>{
                 ]
             }]
         })
+        if(!spots.length){
+            let err = new Error("Spot couldn't be found")
+            err.status = 404
+            err.title = 'Resource not found'
+            err.errors = {
+                "query":"Query returned an empty array (no resources like that)"
+            }
+            throw err
+        }
         res.json({spots})
     }catch(error){
         next(error)
@@ -93,6 +102,5 @@ router.get('/', async (req,res,next)=>{
         next(error)
     }
 })
-
 
 module.exports = router
