@@ -4,12 +4,10 @@ const {validationResult} = require('express-validator');
 // create a middleware for formatting errors from express-validator middleware
 // (to customize, see express-validator's documentation)
 const handleValidationErrors = (req,res,next)=>{
-    // try catch 
-    // try{
+
         // save results from validationResult(req) to validationErros
         const validationErrors = validationResult(req);
-        // if validationErrors is empty do...
-        console.log(validationErrors)
+        // if validationErrors is not empty do...
         if(!validationErrors.isEmpty()){
             let err = {}
             err.title = "ValidationError";
@@ -22,9 +20,6 @@ const handleValidationErrors = (req,res,next)=>{
             next(err);
         }
         next();
-    // }catch(error){
-    //     next(error)
-    // }
 }
 
 // export middleware

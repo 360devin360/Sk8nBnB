@@ -58,7 +58,8 @@ app.use((_req, _res, next) => {
 
    
 app.use((err, _req, res, _next) => {
-    // 
+    // console.log(err)
+    
     res.status(err.status || 500);
     if(err.title==='ValidationError'){
       return res.json({

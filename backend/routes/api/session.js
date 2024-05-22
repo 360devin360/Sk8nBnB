@@ -70,7 +70,7 @@ router.post('/', validateLogin , async (req,res,next)=>{
     //catch and forward errors
     }catch(error){
         next({
-            'message':"log in error location POST backend/routes/api/session.js"
+            'message':"Internal Server Error"
         });
     };
 });
