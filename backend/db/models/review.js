@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       Review.hasMany(models.ReviewImage,{
         foreignKey:'reviewId'
       })
+      Review.belongsTo(models.Spot,{
+        foreignKey:'spotId',
+        // as:'avgRating'
+      })
     }
   }
   // spotId userId combo needs to be unique
@@ -20,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.INTEGER,
       allowNull:false,
       references:{
-        model:'Spots'
+        model:'Spots',
+        // as:'avgRating'
       }
     },
     userId: {

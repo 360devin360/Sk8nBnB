@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       Spot.hasMany(models.Review,{
         foreignKey:'spotId',
+        // as:"avgRating"
       })
       Spot.hasMany(models.Booking,{
         foreignKey:'spotId',
