@@ -7,6 +7,7 @@ const handleValidationErrors = (req,res,next)=>{
 
         // save results from validationResult(req) to validationErros
         const validationErrors = validationResult(req);
+        console.log(validationErrors)
         // if validationErrors is not empty do...
         if(!validationErrors.isEmpty()){
             let err = {}
