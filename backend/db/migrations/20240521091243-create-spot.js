@@ -21,10 +21,6 @@ module.exports = {
           model:'Users'
         }
       },
-      name: {
-        type: Sequelize.STRING(50),
-        allowNull:false
-      },
       address: {
         type: Sequelize.STRING,
         allowNull:false,
@@ -49,6 +45,10 @@ module.exports = {
       },
       lng: {
         type: Sequelize.FLOAT
+      },
+      name: {
+        type: Sequelize.STRING(50),
+        allowNull:false
       },
       description: {
         type: Sequelize.STRING(150),
