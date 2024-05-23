@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Spot,{
-        foreignKey:'ownerId'
+        foreignKey:'ownerId',
+        onDelete:'set null'
       })
       // define association here
       User.hasMany(models.Review,{

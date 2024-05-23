@@ -89,6 +89,7 @@ app.use((err, _req, res, _next) => {
         "message":err.message
       })
     }
+    console.log(err)
     res.json({
         title: err.title || 'Server Error',
         message: err.message,

@@ -19,7 +19,8 @@ module.exports = {
         allowNull:false,
         references:{
           model:'Users'
-        }
+        },
+        onDelete:"set null"
       },
       address: {
         type: Sequelize.STRING,

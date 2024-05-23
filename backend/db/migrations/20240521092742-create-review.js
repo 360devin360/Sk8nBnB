@@ -21,7 +21,8 @@ module.exports = {
         unique:'unique_tag',
         references:{
           model:'Spots'
-        }
+        },
+        onDelete:"cascade"
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -29,7 +30,8 @@ module.exports = {
         unique:'unique_key',
         references:{
           model:'Users'
-        }
+        },
+        onDelete:'cascade'
       },
       stars: {
         type:Sequelize.INTEGER(1),
