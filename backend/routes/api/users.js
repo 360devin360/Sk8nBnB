@@ -13,19 +13,23 @@ const router = express.Router();
 const validateSignup = [
     check('email')
         .exists({checkFalsy:true})
+        .withMessage('Invalid Email')
         .isEmail()
         .withMessage('Invalid Email'),
     check('username')
         .exists({checkFalsy:true})
+        .withMessage('Username is required')
         .isLength({min:1})
         .withMessage('Username is required'),
     check('firstName')
         .exists({checkFalsy:true})
+        .withMessage('First Name is required')
         .not()
         .isEmail()
-        .withMessage('firstName is required'),
+        .withMessage('First Name is required'),
     check('lastName')
         .exists({checkFalsy:true})
+        .withMessage('Last Name is required')
         .isLength({min:1})
         .withMessage('Last Name is required'),
     handleValidationErrors
@@ -82,7 +86,6 @@ router.post('/', validateSignup, async (req,res,next)=>{
         console.log(error.errors[0].path)
         err.status = 500
         next(err);
-
     };
 });
 

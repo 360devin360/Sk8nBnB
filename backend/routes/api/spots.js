@@ -5,8 +5,45 @@ const {Review} = require('../../db/models');
 const {SpotImage} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth')
 const {User} = require('../../db/models')
+const {handleValidationErrors} = require('../../utils/validation');
+const {check} = require('express-validator')
 
-router.get('/current', requireAuth, async(req,res,next)=>{
+const validateSpotInfo = [
+    check('address')
+        .exists({checkFalsy:true})
+        .withMessage('Street address is required'),
+    check('city')
+        .exists({checkFalsy:true})
+        .withMessage('City is required'),
+    check('state')
+        .exists({checkFalsy:true})
+        .withMessage('State is required'),
+    check('country')
+        .exists({checkFalsy:true})
+        .withMessage('Country is required'),
+    check('lat')
+        .optional({nullable:true})
+        .isFloat()
+        .withMessage('Latitude is not valid'),
+    check('lng')
+        .optional({nullable:true})
+        .isFloat()
+        .withMessage('Longitude is not valid'),
+    check('name')
+        .exists({values:'falsy'})
+        .isLength({max:50})
+        .withMessage('Name must be less than 50 characters'),
+    check('description')
+        .exists({value:'falsy'})
+        .withMessage('Description is required'),
+    check('price')
+        .exists({options:'falsy'})
+        .withMessage('Price per day is required'),
+    handleValidationErrors
+]
+
+router
+.get('/current', requireAuth, async(req,res,next)=>{
     try{
         const spots = await Spot.findAll({
             attributes: {
@@ -15,9 +52,7 @@ router.get('/current', requireAuth, async(req,res,next)=>{
                     [Sequelize.fn('',Sequelize.col('SpotImages.url')),'previewImage']
                 ],
             },
-            where:{
-                ownerId:req.user.id
-            },
+            where:{ownerId:req.user.id},
             group:['Spot.id'],
             include:[{
                 model:Review,
@@ -31,9 +66,9 @@ router.get('/current', requireAuth, async(req,res,next)=>{
     }catch(error){
         next(error)
     }
-});
+})
 
-router.get('/:spotId',async (req,res,next)=>{
+.get('/:spotId',async (req,res,next)=>{
     try{
         const spots = await Spot.findAll({
             attributes: {
@@ -80,7 +115,7 @@ router.get('/:spotId',async (req,res,next)=>{
     }
 })
 
-router.get('/', async (req,res,next)=>{
+.get('/', async (req,res,next)=>{
     try{
     const spots = await Spot.findAll({
         attributes: {
@@ -103,5 +138,29 @@ router.get('/', async (req,res,next)=>{
         next(error)
     }
 })
+
+.post('/', requireAuth, validateSpotInfo, async (req,res,next)=>{
+    try{
+        req.body.ownerId = req.user.id
+        let created = await Spot.create({
+            ownerId:req.user.id,
+            ...req.body
+        })
+        const spot = await Spot.findByPk(created.id)
+        res.status(201).json(spot)
+    }catch(error){
+        console.log(error)
+        let err = {}
+        err.title = 'ValidationError';
+        err.message = "Bad Request";
+        err.errors = {};
+        error.errors.forEach(object=>{
+            err.errors[object.path] = object.message
+        })
+        err.status = 400
+        next(err)
+    }
+})
+
 
 module.exports = router
