@@ -232,7 +232,7 @@ router
             throw err
         }
         // update record
-        const editedSpot = await Spot.update(req.body,{
+        await Spot.update(req.body,{
             where:{
                 id:req.params.spotId
             }
