@@ -149,7 +149,16 @@ router
         const spot = await Spot.findByPk(created.id)
         res.status(201).json(spot)
     }catch(error){
-        next(error)
+        console.log(error)
+        let err = {}
+        err.title = 'ValidationError';
+        err.message = "Bad Request";
+        err.errors = {};
+        error.errors.forEach(object=>{
+            err.errors[object.path] = object.message
+        })
+        err.status = 400
+        next(err)
     }
 })
 

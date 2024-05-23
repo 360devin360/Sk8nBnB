@@ -13,10 +13,12 @@ const router = express.Router();
 const validateSignup = [
     check('email')
         .exists({checkFalsy:true})
+        .withMessage('Invalid Email')
         .isEmail()
         .withMessage('Invalid Email'),
     check('username')
         .exists({checkFalsy:true})
+        .withMessage('Username is required')
         .isLength({min:1})
         .withMessage('Username is required'),
     check('firstName')
@@ -27,6 +29,7 @@ const validateSignup = [
         .withMessage('First Name is required'),
     check('lastName')
         .exists({checkFalsy:true})
+        .withMessage('Last Name is required')
         .isLength({min:1})
         .withMessage('Last Name is required'),
     handleValidationErrors
