@@ -23,7 +23,7 @@ const validateSignup = [
         .exists({checkFalsy:true})
         .not()
         .isEmail()
-        .withMessage('firstName is required'),
+        .withMessage('FirstName is required'),
     check('lastName')
         .exists({checkFalsy:true})
         .isLength({min:1})
@@ -82,7 +82,6 @@ router.post('/', validateSignup, async (req,res,next)=>{
         console.log(error.errors[0].path)
         err.status = 500
         next(err);
-
     };
 });
 
