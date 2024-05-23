@@ -21,9 +21,10 @@ const validateSignup = [
         .withMessage('Username is required'),
     check('firstName')
         .exists({checkFalsy:true})
+        .withMessage('First Name is required')
         .not()
         .isEmail()
-        .withMessage('FirstName is required'),
+        .withMessage('First Name is required'),
     check('lastName')
         .exists({checkFalsy:true})
         .isLength({min:1})
