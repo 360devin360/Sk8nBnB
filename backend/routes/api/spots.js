@@ -43,7 +43,7 @@ const validateSpotInfo = [
 ]
 
 router
-// get spots for current user
+// get spots for current user---------------------------------------------------------------------------------------------
 .get('/current', requireAuth, async(req,res,next)=>{
     try{
         const spots = await Spot.findAll({
@@ -68,50 +68,7 @@ router
         next(error)
     }
 })
-// add an image to spots
-.post('/:spotId/images', requireAuth, async (req,res,next)=>{
-    try{
-        // find spot based on spot id
-        const spot = await Spot.findByPk(req.params.spotId)
-        if(!spot){
-            let err = {}
-            err.title = "Resource not found",
-            err.message = "Spot couldn't be found",
-            err.errors = {
-                "message":"Resource not found",
-                "error":"There are no Spots with that spotId"
-            }
-            throw err
-        }
-        //check if current users id matches the spot id
-        if(spot.id !== req.user.id){
-            let err = {}
-            err.title = 'Unauthorized User'
-            err.message = 'Forbidden'
-            err.errors = {
-                "message":"Unauthorized User requesting access",
-                "error": "User requested to add an image to a spot they do not own"
-            }
-            throw err
-        }
-        const CreatedImage = await SpotImage.create({
-            spotId: spot.id,
-            ...req.body
-        })
-        const image = await SpotImage.findByPk(CreatedImage.id,{
-            attributes:[
-                'id',
-                'url',
-                'preview'
-            ]
-        })
-        res.json(image)
-    }catch(error){
-        console.log(error)
-        next(error)
-    }
-})
-// get all spots related to spotId
+// get all spots related to spotId---------------------------------------------------------------------------------------
 .get('/:spotId',async (req,res,next)=>{
     try{
         const spots = await Spot.findAll({
@@ -158,31 +115,75 @@ router
         next(error)
     }
 })
-// get all spots
+// get all spots----------------------------------------------------------------------------------------------
 .get('/', async (req,res,next)=>{
     try{
-    const spots = await Spot.findAll({
-        attributes: {
-            include:[
-                [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
-                [Sequelize.fn('',Sequelize.col('SpotImages.url')),'previewImage']
-            ],
-        },
-        group:['Spot.id'],
-        include:[{
-            model:Review,
-            attributes:[]
-        },{
-            model:SpotImage,
-            attributes:[],
-        }]
-    })
-    res.json({spots})
+        const spots = await Spot.findAll({
+            attributes: {
+                include:[
+                    [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
+                    [Sequelize.fn('',Sequelize.col('SpotImages.url')),'previewImage']
+                ],
+            },
+            group:['Spot.id'],
+            include:[{
+                model:Review,
+                attributes:[]
+            },{
+                model:SpotImage,
+                attributes:[],
+            }]
+        })
+        res.json({spots})
     }catch(error){
         next(error)
     }
 })
-
+// add an image to spots-------------------------------------------------------------------------------------------------
+.post('/:spotId/images', requireAuth, async (req,res,next)=>{
+    try{
+        // find spot based on spot id
+        const spot = await Spot.findByPk(req.params.spotId)
+        if(!spot){
+            let err = {}
+            err.title = "Resource not found",
+            err.message = "Spot couldn't be found",
+            err.status = 404
+            err.errors = {
+                "message":"Resource not found",
+                "error":"There are no Spots with that spotId"
+            }
+            throw err
+        }
+        //check if current users id matches the spot id
+        if(spot.id !== req.user.id){
+            let err = {}
+            err.title = 'Unauthorized User'
+            err.message = 'Forbidden'
+            err.errors = {
+                "message":"Unauthorized User requesting access",
+                "error": "User requested to add an image to a spot they do not own"
+            }
+            throw err
+        }
+        const CreatedImage = await SpotImage.create({
+            spotId: spot.id,
+            ...req.body
+        })
+        const image = await SpotImage.findByPk(CreatedImage.id,{
+            attributes:[
+                'id',
+                'url',
+                'preview'
+            ]
+        })
+        res.json(image)
+    }catch(error){
+        console.log(error)
+        next(error)
+    }
+})
+// create a spot---------------------------------------------------------------------------------------------
 .post('/', requireAuth, validateSpotInfo, async (req,res,next)=>{
     try{
         req.body.ownerId = req.user.id
@@ -205,6 +206,42 @@ router
         next(err)
     }
 })
-
+// edit a spot---------------------------------------------------------------------------------------------
+.put('/:spotId', requireAuth, validateSpotInfo, async (req,res,next)=>{
+    try{
+        // get spot
+        const spotToEdit = await Spot.findByPk(req.params.spotId)
+        // if spot doesnt exists through error
+        if(!spotToEdit){
+            let err = {}
+            err.title = "Resource not found"
+            err.message = "Spot couldn't be found"
+            err.status = 404
+            throw err
+        }
+        // check authorization
+        if(spotToEdit.id!==req.user.id){
+            let err = {}
+            err.title = 'Unauthorized User'
+            err.message = 'Forbidden'
+            err.status = 403
+            err.errors = {
+                "message":"Unauthorized User requesting access",
+                "error": "User requested to add an image to a spot they do not own"
+            }
+            throw err
+        }
+        // update record
+        const editedSpot = await Spot.update(req.body,{
+            where:{
+                id:req.params.spotId
+            }
+        })
+        const spot = await Spot.findByPk(req.params.spotId)
+        res.json(spot)
+    }catch(error){
+        next(error)
+    }
+})
 
 module.exports = router
