@@ -253,6 +253,7 @@ router
             let err = {}
             err.title = "Resource not found";
             err.message = "Spot couldn't be found"
+            err.status = 404
             throw err
         }
         // check user authorization
