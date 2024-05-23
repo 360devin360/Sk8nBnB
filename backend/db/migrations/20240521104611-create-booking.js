@@ -20,7 +20,8 @@ module.exports = {
         allowNull:false,
         references:{
           model:'Users'
-        }
+        },
+        onDelete:'cascade'
       },
       spotId: {
         type: Sequelize.INTEGER,
@@ -28,6 +29,7 @@ module.exports = {
         references:{
           model:'Spots'
         },
+        onDelete:'cascade'
       },
       startDate: {
         type: Sequelize.DATE,

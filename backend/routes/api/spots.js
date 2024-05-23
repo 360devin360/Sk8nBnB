@@ -243,5 +243,38 @@ router
         next(error)
     }
 })
-
+// delete a spot --------------------------------------------------------------------------------------------------------------------------
+.delete('/:spotId', requireAuth, async (req,res,next)=>{
+    try{
+        //get spot by id
+        const spotToDelete = await Spot.findByPk(req.params.spotId)
+        // check if spot exists
+        if(!spotToDelete){
+            let err = {}
+            err.title = "Resource not found";
+            err.message = "Spot couldn't be found"
+            throw err
+        }
+        // check user authorization
+        if(spotToDelete.id!==req.user.id){
+            let err = {}
+            err.title = "Unauthorized User"
+            err.message = "Forbidden"
+            err.status = 403
+            throw err
+        }
+        // delete the spot
+        await Spot.destroy({
+            where:{
+                id:req.params.spotId
+            }
+        })
+        // respond
+        return res.json({
+            "message":"Successfully deleted"
+        })
+    }catch(error){
+        next(error)
+    }
+})
 module.exports = router
