@@ -15,20 +15,19 @@ const router = express.Router();
 
 // check for credential and password
 const validateLogin = [
-    check('credential')
-        .exists({checkFalsy: true})
-        .notEmpty()
-        .withMessage('Please provide a valid email or username.'),
-    check('password')
-        .exists({checkFalsy:true})
-        .withMessage('Please provide a password'),
-    handleValidationErrors
+        check('credential')
+            .exists({checkFalsy: true})
+            .withMessage('Email or username is required'),
+        check('password')
+            .exists({checkFalsy:true})
+            .withMessage('Password is required'),
+        handleValidationErrors
 ];
 
 // route handlers----------------------------------------
 
 // Log in
-router.post('/', validateLogin, async (req,res,next)=>{
+router.post('/', validateLogin , async (req,res,next)=>{
     //try catch
     try{
         // deconstruct req.body
@@ -46,23 +45,24 @@ router.post('/', validateLogin, async (req,res,next)=>{
         // or if the password is incorrect
         // throw error
         if(!user || !bcrypt.compareSync(password, user.hashedPassword.toString())){
-            const err = new Error('Login failed');
+            const err = new Error('Invalid credentials');
             err.status = 401;
             err.title = 'Login failed';
             err.errors = {credential: 'The provided credentials were invalid'}
-            return next(err); 
+            return next(err);
         };
         // create safeUser object
         const safeUser = {
             id: user.id,
+            firstName:user.firstName,
+            lastName:user.lastName,
             email: user.email,
             username: user.username,
         };
         // use setTokenCookie
         await setTokenCookie(res, safeUser);
         // add firstName and lastName to user
-        safeUser.firstName = user.firstName
-        safeUser.lastName = user.lastName
+
         // return user
         return res.json({
             user:safeUser
@@ -70,7 +70,7 @@ router.post('/', validateLogin, async (req,res,next)=>{
     //catch and forward errors
     }catch(error){
         next({
-            'message':"log in error location POST backend/routes/api/session.js"
+            'message':"Internal Server Error"
         });
     };
 });
@@ -103,10 +103,10 @@ router.get('/', (req,res,next)=>{
         if(user){
             const safeUser = {
                 id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 email: user.email,
                 username: user.username,
-                firstName: user.firstName,
-                lastName: user.lastName
             };
             // return json object safeUser
             return res.json({

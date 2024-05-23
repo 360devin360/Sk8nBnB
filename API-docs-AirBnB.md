@@ -512,7 +512,7 @@ Updates and returns an existing spot.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: PUT/PATCH
+  * Method: PUT
   * URL: /api/spots/:spotId
   * Headers:
     * Content-Type: application/json
