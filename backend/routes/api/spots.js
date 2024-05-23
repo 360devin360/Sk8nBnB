@@ -6,7 +6,8 @@ const {SpotImage} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth')
 const {User} = require('../../db/models')
 
-router.get('/current', requireAuth, async(req,res,next)=>{
+router
+.get('/current', requireAuth, async(req,res,next)=>{
     try{
         const spots = await Spot.findAll({
             attributes: {
@@ -15,9 +16,7 @@ router.get('/current', requireAuth, async(req,res,next)=>{
                     [Sequelize.fn('',Sequelize.col('SpotImages.url')),'previewImage']
                 ],
             },
-            where:{
-                ownerId:req.user.id
-            },
+            where:{ownerId:req.user.id},
             group:['Spot.id'],
             include:[{
                 model:Review,
@@ -31,9 +30,9 @@ router.get('/current', requireAuth, async(req,res,next)=>{
     }catch(error){
         next(error)
     }
-});
+})
 
-router.get('/:spotId',async (req,res,next)=>{
+.get('/:spotId',async (req,res,next)=>{
     try{
         const spots = await Spot.findAll({
             attributes: {
@@ -80,7 +79,7 @@ router.get('/:spotId',async (req,res,next)=>{
     }
 })
 
-router.get('/', async (req,res,next)=>{
+.get('/', async (req,res,next)=>{
     try{
     const spots = await Spot.findAll({
         attributes: {
@@ -103,5 +102,19 @@ router.get('/', async (req,res,next)=>{
         next(error)
     }
 })
+
+.post('/', requireAuth, async (req,res,next)=>{
+    try{
+        req.body.ownerId = req.user.id
+        const spot = await Spot.create({
+            ownerId:req.user.id,
+            ...req.body
+        })
+        res.json(spot)
+    }catch(error){
+        next(error)
+    }
+})
+
 
 module.exports = router
