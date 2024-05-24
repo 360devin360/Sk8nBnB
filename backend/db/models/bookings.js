@@ -11,6 +11,7 @@ module.exports = (sequelize, Datatype) => {
         static associate(models){
             Booking.belongsTo(models.Spot,{
                 foreignKey:"spotId",
+                onDelete:'cascade'
             })
         };
     }
@@ -21,6 +22,7 @@ module.exports = (sequelize, Datatype) => {
             references:{
                 model:'Users'
             },
+            onDelete:'cascade'
         },
         spotId:{
             type:Datatype.INTEGER,
@@ -28,6 +30,7 @@ module.exports = (sequelize, Datatype) => {
             references:{
                 model:'Spots'
             },
+            onDelete:'cascade'
         },
         startDate:{
             type:Datatype.DATE,
