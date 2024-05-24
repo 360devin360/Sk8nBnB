@@ -70,13 +70,15 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue:new Date()
       }
-    },options);
+    },{
+      schema:process.env.SCHEMA
+    });
 
-    await queryInterface.addIndex(options,[
-        "address",
-        "city",
-        "state"
-      ]);
+    // await queryInterface.addIndex(options,[
+    //     "address",
+    //     "city",
+    //     "state"
+    //   ]);
   },
 
   async down(queryInterface, _Sequelize) {
