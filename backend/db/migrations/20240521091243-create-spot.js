@@ -72,14 +72,14 @@ module.exports = {
       }
     },options);
 
-    // await queryInterface.addIndex(options,[
-    //     "address",
-    //     "city",
-    //     "state"
-    //   ])
+    await queryInterface.addIndex(options.tableName||'Spots',[
+        "address",
+        "city",
+        "state"
+      ])
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, _Sequelize) {
     options.tableName = "Spots"
     await queryInterface.dropTable(options);
   }
