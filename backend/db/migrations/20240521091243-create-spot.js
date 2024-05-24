@@ -1,7 +1,7 @@
 'use strict';
 
 let options = {};
-
+options.tableName = 'Spots'
 if(process.env.NODE_ENV === 'production'){
   options.schema = process.env.SCHEMA
 };
@@ -72,11 +72,11 @@ module.exports = {
       }
     },options);
 
-    // await queryInterface.addIndex(options.tableName='Spots',[
-    //     "address",
-    //     "city",
-    //     "state"
-    //   ])
+    await queryInterface.addIndex(options.tableName,[
+        "address",
+        "city",
+        "state"
+      ]);
   },
 
   async down(queryInterface, _Sequelize) {
