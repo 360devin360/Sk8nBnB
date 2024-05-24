@@ -72,11 +72,11 @@ module.exports = {
       }
     },options);
 
-    await queryInterface.addIndex(options,[
-        "address",
-        "city",
-        "state"
-      ])
+    // await queryInterface.addIndex(options,[
+    //     "address",
+    //     "city",
+    //     "state"
+    //   ])
   },
 
   async down(queryInterface, Sequelize) {
