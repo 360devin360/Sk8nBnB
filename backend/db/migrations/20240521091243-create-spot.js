@@ -1,7 +1,7 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 
-let options = {}
+let options = {};
+
 if(process.env.NODE_ENV === 'production'){
   options.schema = process.env.SCHEMA
 };
@@ -70,15 +70,14 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue:new Date()
       }
-    },{
-      options:options,
-      uniqueKeys:{
-        unique_tag:{
-          customeIndex:true,
-          fields:['address','city','state']
-        }
-      }
-    });
+    // },{
+    //   uniqueKeys:{
+    //     unique_tag:{
+    //       customeIndex:true,
+    //       fields:['address','city','state']
+    //     }
+    //   }
+    },options);
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Spots"

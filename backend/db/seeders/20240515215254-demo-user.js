@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up (_queryInterface, _Sequelize) {
     /**
      * Add seed commands here.
      *
