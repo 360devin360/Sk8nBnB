@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {Spot} = require('../../db/models');
-const {Sequelize, Deferrable} = require('sequelize');
+const {Sequelize} = require('sequelize');
 const {Review} = require('../../db/models');
 const {SpotImage} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth')
