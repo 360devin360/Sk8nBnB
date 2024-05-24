@@ -40,11 +40,8 @@ router.delete('/:imageId', requireAuth, async (req,res,next)=>{
             throw err
         }
 
-        // await imageToDelete.destroy()
-        const imageToDelete2 = await SpotImage.findByPk(req.params.imageId)
-
         return res.json({
-            imageToDelete
+            "message":"Successfully deleted"
         })
     }catch(error){
         next(error)
