@@ -72,7 +72,6 @@ module.exports = {
       }
     },options);
 
-
       await queryInterface.addIndex(options.tableName,[
           "address",
           "city",
