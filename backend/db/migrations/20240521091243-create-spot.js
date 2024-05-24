@@ -71,9 +71,7 @@ module.exports = {
         defaultValue:new Date()
       }
     },{
-      options:{
-        tableName:'Spots'
-      },
+      options:tableName,
       uniqueKeys:{
         unique_tag:{
           customeIndex:true,
