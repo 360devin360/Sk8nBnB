@@ -70,13 +70,13 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue:new Date()
       }
-    // },{
-    //   uniqueKeys:{
-    //     unique_tag:{
-    //       customeIndex:true,
-    //       fields:['address','city','state']
-    //     }
-    //   }
+    },{
+      uniqueKeys:{
+        unique_tag:{
+          customeIndex:true,
+          fields:['address','city','state']
+        }
+      }
     },options);
   },
   async down(queryInterface, Sequelize) {
