@@ -1,10 +1,10 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 
-let options = {}
+let options = {};
+
 if(process.env.NODE_ENV === 'production'){
   options.schema = process.env.SCHEMA
-}
+};
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -18,10 +18,10 @@ module.exports = {
       ownerId: {
         type: Sequelize.INTEGER,
         allowNull:false,
-        references:{
-          model:'User'
-        },
-        onDelete:"set null"
+        // references:{
+        //   model:'Users'
+        // },
+        // onDelete:"set null"
       },
       address: {
         type: Sequelize.STRING,
@@ -70,14 +70,14 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue:new Date()
       }
-    },{
-      uniqueKeys:{
-        unique_tag:{
-          customeIndex:true,
-          fields:['address','city','state']
-        }
-      }
-    }, options);
+    // },{
+    //   uniqueKeys:{
+    //     unique_tag:{
+    //       customeIndex:true,
+    //       fields:['address','city','state']
+    //     }
+    //   }
+    },options);
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Spots"

@@ -9,14 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Review.hasMany(models.ReviewImage,{
-        foreignKey:'reviewId',
-        onDelete:'cascade'
-      })
-      Review.belongsTo(models.Spot,{
-        foreignKey:'spotId',
-        onDelete:'cascade'
-      })
+      // Review.hasMany(models.ReviewImage,{
+      //   foreignKey:'reviewId',
+      //   onDelete:'cascade'
+      // })
+      // Review.belongsTo(models.Spot,{
+      //   foreignKey:'spotId',
+      //   onDelete:'cascade'
+      // })
     }
   }
   // spotId userId combo needs to be unique
@@ -24,18 +24,18 @@ module.exports = (sequelize, DataTypes) => {
     spotId: {
       type:DataTypes.INTEGER,
       allowNull:false,
-      references:{
-        model:'Spots',
-      },
-      onDelete:'cascade'
+      // references:{
+      //   model:'Spots',
+      // },
+      // onDelete:'cascade'
     },
     userId: {
       type:DataTypes.INTEGER,
       allowNull:false,
-      references:{
-        model:"Users"
-      },
-      onDelete:'cascade'
+      // references:{
+      //   model:"Users"
+      // },
+      // onDelete:'cascade'
     },
     stars: {
       type:DataTypes.INTEGER,
