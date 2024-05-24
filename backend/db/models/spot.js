@@ -34,10 +34,10 @@ module.exports = (sequelize, DataTypes) => {
     ownerId: {
       type:DataTypes.INTEGER,
       allowNull:false,
-      // references:{
-      //   model:'User'
-      // },
-      // onDelete:'set null',
+      references:{
+        model:'User'
+      },
+      onDelete:'set null',
       validate:{
         notNull:true
       }

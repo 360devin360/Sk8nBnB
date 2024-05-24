@@ -3,34 +3,30 @@ const{Model} = require('sequelize');
 const { Sequelize } = require('.');
 
 module.exports = (sequelize, Datatype) => {
-    // async function dateCheck(value){
-    //     const booking = await Booking.findAll()
-    //     throw new Error
-    // }
     class Booking extends Model{
         static associate(models){
-            // Booking.belongsTo(models.Spot,{
-            //     foreignKey:"spotId",
-            //     onDelete:'cascade'
-            // })
+            Booking.belongsTo(models.Spot,{
+                foreignKey:"spotId",
+                onDelete:'cascade'
+            })
         };
     }
     Booking.init({
         userId:{
             type:Datatype.INTEGER,
             allowNull:false,
-            // references:{
-            //     model:'Users'
-            // },
-            // onDelete:'cascade'
+            references:{
+                model:'Users'
+            },
+            onDelete:'cascade'
         },
         spotId:{
             type:Datatype.INTEGER,
             allowNull:false,
-            // references:{
-            //     model:'Spots'
-            // },
-            // onDelete:'cascade'
+            references:{
+                model:'Spots'
+            },
+            onDelete:'cascade'
         },
         startDate:{
             type:Datatype.DATE,
