@@ -26,17 +26,17 @@ module.exports = {
       address: {
         type: Sequelize.STRING,
         allowNull:false,
-        // unique:"unique_tag"
+        unique:"unique_tag"
       },
       city: {
         type: Sequelize.STRING,
         allowNull:false,
-        // unique:'unique_tag'
+        unique:'unique_tag'
       },
       state: {
         type: Sequelize.STRING,
         allowNull:false,
-        // unique:'unique_tag'
+        unique:'unique_tag'
       },
       country: {
         type: Sequelize.STRING,
@@ -71,7 +71,13 @@ module.exports = {
         defaultValue:new Date()
       }
     },{
-      schema:process.env.SCHEMA
+      schema:process.env.SCHEMA,
+      uniqueKeys:{
+        unique_tag:{
+          customIndex:true,
+          fields:['address','city','state']
+        }
+      }
     });
 
     // await queryInterface.addIndex(options,[
