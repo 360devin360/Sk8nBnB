@@ -72,7 +72,7 @@ module.exports = {
       }
     },options);
 
-    await queryInterface.addIndex(options.tableName,[
+    await queryInterface.addIndex(options,[
         "address",
         "city",
         "state"
