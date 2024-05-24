@@ -6,10 +6,17 @@ const bcrypt = require('bcryptjs');
 
 // define schema name
 let options = {};
+<<<<<<< HEAD
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
+=======
+if(process.env.NODE_ENV === 'production'){
+  options.schema = process.env.SCHEMA
+};
+options.tableName = 'Users';
+>>>>>>> main
 module.exports = {
   async up (_queryInterface, _Sequelize) {
     /**
@@ -21,7 +28,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await User.bulkCreate([
+   await User.bulkCreate(options,[
     {
       email: 'demo@user.io',
       username: 'Demo-lition',
