@@ -4,7 +4,7 @@
 let options = {}
 if(process.env.NODE_ENV === 'production'){
   options.schema = process.env.SCHEMA
-}
+};
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -18,10 +18,10 @@ module.exports = {
       ownerId: {
         type: Sequelize.INTEGER,
         allowNull:false,
-        references:{
-          model:'User'
-        },
-        onDelete:"set null"
+        // references:{
+        //   model:'Users'
+        // },
+        // onDelete:"set null"
       },
       address: {
         type: Sequelize.STRING,

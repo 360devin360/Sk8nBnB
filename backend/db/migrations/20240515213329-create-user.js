@@ -16,34 +16,34 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       username: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.VARCHAR(30),
         allowNull:false,
         unique:true
       },
       email: {
-        type: Sequelize.STRING(256),
+        type: Sequelize.VARCHAR(256),
         allowNull:false,
         unique:true
       },
       firstName:{
-        type: Sequelize.STRING(30),
+        type: Sequelize.VARCHAR(30),
       },
       lastName:{
-        type:Sequelize.STRING(30)
+        type:Sequelize.VARCHAR(30)
       },
       hashedPassword: {
-        type: Sequelize.STRING.BINARY,
+        type: Sequelize.VARCHAR.BINARY,
         allowNull:false
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue:Sequelize.literal("CURRENT_TIMESTAMP")
+        defaultValue:new Date()
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue:Sequelize.literal("CURRENT_TIMESTAMP")
+        defaultValue:new Date()
       }
     },options);
   },
