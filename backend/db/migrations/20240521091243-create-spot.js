@@ -71,13 +71,14 @@ module.exports = {
         defaultValue:new Date()
       }
     },{
+      options,
       uniqueKeys:{
         unique_tag:{
           customeIndex:true,
           fields:['address','city','state']
         }
       }
-    },options);
+    });
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Spots"
