@@ -20,17 +20,17 @@ module.exports = {
    await SpotImage.bulkCreate([
     {
       spotId:1,
-      url:'https://www.dreamstime.com/stock-photo-hotel-bed-room-image21064950',
+      url:'https://thumbs.dreamstime.com/z/hotel-bed-room-21064950.jpg?ct=jpeg',
       preview:true
     },
     {
       spotId:2,
-      url:'https://www.dreamstime.com/royalty-free-stock-image-hotel-room-image27254386',
+      url:'https://thumbs.dreamstime.com/z/hotel-room-27254386.jpg?ct=jpeg',
       preview:true
     },
     {
       spotId:3,
-      url:'https://www.dreamstime.com/editorial-image-hotel-room-beautiful-orange-sofa-included-image43642330',
+      url:'https://thumbs.dreamstime.com/z/hotel-room-beautiful-orange-sofa-included-43642330.jpg?ct=jpeg',
       preview:true
     }
    ],{validate:true})
