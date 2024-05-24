@@ -34,7 +34,7 @@ module.exports = {
         // onDelete:'cascade'
       },
       stars: {
-        type:Sequelize.INTEGER(1),
+        type:Sequelize.NUMERIC(1),
         allowNull:false,
       },
       review: {
@@ -51,13 +51,13 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue:new Date()
       }
-    },{
-      uniqueKeys:{
-        unique_tag:{
-          customIndex:true,
-          fields:['spotId','userId']
-        }
-      }
+    // },{
+    //   uniqueKeys:{
+    //     unique_tag:{
+    //       customIndex:true,
+    //       fields:['spotId','userId']
+    //     }
+    //   }
     },options);
   },
   async down(queryInterface, Sequelize) {
