@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       //   onDelete:'cascade'
       // })
     }
-  }
+  };
+  
   User.init({
     username: {
       type:DataTypes.STRING,

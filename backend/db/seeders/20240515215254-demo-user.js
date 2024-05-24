@@ -1,5 +1,4 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 
 // imnport User model and bycryptjs
 const {User} = require('../models');
@@ -7,12 +6,11 @@ const bcrypt = require('bcryptjs');
 
 // define schema name
 let options = {};
-if(process.env.NODE_ENV === 'production'){
-  options.schema = process.env.SCHEMA
-};
-options.tableName = 'Users';
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up (_queryInterface, _Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -22,7 +20,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await User.bulkCreate(options,[
+   await User.bulkCreate([
     {
       email: 'demo@user.io',
       username: 'Demo-lition',
