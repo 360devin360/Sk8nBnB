@@ -6,10 +6,16 @@ const bcrypt = require('bcryptjs');
 
 // define schema name
 let options = {};
+<<<<<<< HEAD
+if(process.env.NODE_ENV === 'production'){
+  options.schema = process.env.SCHEMA
+};
+=======
 
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
+>>>>>>> a799391ea5e6844fc4ad2b60ff6f26f985c20a23
 module.exports = {
   async up (_queryInterface, _Sequelize) {
     /**
