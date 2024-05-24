@@ -122,7 +122,7 @@ router
             attributes: {
                 include:[
                     [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
-                    [Sequelize.fn('',Sequelize.col('SpotImages.url')),'previewImage']
+                    [Sequelize.col('SpotImages.url'),'previewImage']
                 ],
             },
             group:['Spot.id'],
