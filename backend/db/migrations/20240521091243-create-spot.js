@@ -1,5 +1,6 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
+
 let options = {}
 if(process.env.NODE_ENV === 'production'){
   options.schema = process.env.SCHEMA
@@ -18,7 +19,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull:false,
         references:{
-          model:'Users'
+          model:'User'
         },
         onDelete:"set null"
       },
@@ -76,10 +77,10 @@ module.exports = {
           fields:['address','city','state']
         }
       }
-    },options);
+    }, options);
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Spots"
-    return queryInterface.dropTable(options);
+    await queryInterface.dropTable(options);
   }
 };
