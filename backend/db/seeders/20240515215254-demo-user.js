@@ -10,7 +10,6 @@ let options = {};
 if(process.env.NODE_ENV === 'production'){
   options.schema = process.env.SCHEMA
 };
-options.tableName = 'Users';
 module.exports = {
   async up (queryInterface, Sequelize) {
     /**
@@ -22,7 +21,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await User.bulkCreate(options,[
+   await User.bulkCreate([
     {
       email: 'demo@user.io',
       username: 'Demo-lition',
