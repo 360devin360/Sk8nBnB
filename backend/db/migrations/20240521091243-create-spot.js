@@ -18,10 +18,10 @@ module.exports = {
       ownerId: {
         type: Sequelize.INTEGER,
         allowNull:false,
-        references:{
-          model:'User'
-        },
-        onDelete:"set null"
+        // references:{
+        //   model:'Users'
+        // },
+        // onDelete:"set null"
       },
       address: {
         type: Sequelize.STRING,
