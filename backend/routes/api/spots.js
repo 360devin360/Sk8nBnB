@@ -125,7 +125,7 @@ router
                     [Sequelize.fn('',Sequelize.col('SpotImages.url')),'previewImage']
                 ],
             },
-            group:['Spot.id'],
+            group:['SpotImages.spotId'],
             include:[{
                 model:Review,
                 attributes:[]
