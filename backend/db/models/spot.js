@@ -18,12 +18,15 @@ module.exports = (sequelize, DataTypes) => {
       });
       Spot.hasMany(models.Review,{
         foreignKey:'spotId',
+        onDelete:'cascade'
       })
       Spot.hasMany(models.Booking,{
         foreignKey:'spotId',
+        onDelete:'cascade'
       })
       Spot.hasMany(models.SpotImage,{
         foreignKey:'spotId',
+        onDelete:'cascade'
       })
     }
   }
@@ -32,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.INTEGER,
       allowNull:false,
       references:{
-        model:'Users'
+        model:'User'
       },
       onDelete:'set null',
       validate:{
