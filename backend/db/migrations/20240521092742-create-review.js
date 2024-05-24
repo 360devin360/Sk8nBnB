@@ -19,19 +19,19 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull:false,
         unique:'unique_tag',
-        // references:{
-        //   model:'Spots'
-        // },
-        // onDelete:"cascade"
+        references:{
+          model:'Spots'
+        },
+        onDelete:"cascade"
       },
       userId: {
         type: Sequelize.INTEGER,
         allowNull:false,
         unique:'unique_key',
-        // references:{
-        //   model:'Users'
-        // },
-        // onDelete:'cascade'
+        references:{
+          model:'Users'
+        },
+        onDelete:'cascade'
       },
       stars: {
         type:Sequelize.NUMERIC(1),
@@ -51,14 +51,15 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue:new Date()
       }
-    // },{
-    //   uniqueKeys:{
-    //     unique_tag:{
-    //       customIndex:true,
-    //       fields:['spotId','userId']
-    //     }
-    //   }
-    },options);
+    },{
+      schema:options.schema,
+      uniqueKeys:{
+        unique_tag:{
+          customIndex:true,
+          fields:['spotId','userId']
+        }
+      }
+    });
   },
   async down(queryInterface, Sequelize) {
     options.tableName = 'Reviews';
