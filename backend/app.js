@@ -5,15 +5,15 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const {environment} = require('./config');
+const { environment } = require('./config');
 const isProduction = environment === 'production';
 const app = express();
-const routes = require('./routes');
-const {ValidationError} = require('sequelize');
-
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
+const routes = require('./routes');
+const {ValidationError} = require('sequelize');
+
 
 // set default-src to self (used for Edge browser)---------------------------
 // app.use(
@@ -29,22 +29,28 @@ app.get('/',(req,res,next)=>{
 })
 //------------------------------------------------------------------------------
 
-if(!isProduction)app.use(cors())
+// Security Middleware
+if (!isProduction) {
+  // enable cors only in development
+  app.use(cors());
+}
 
+// helmet helps set a variety of headers to better secure your app
 app.use(
-    helmet.crossOriginResourcePolicy({
-        policy:"cross-origin"
-    })
+  helmet.crossOriginResourcePolicy({
+    policy: "cross-origin"
+  })
 );
 
+// Set the _csrf token and create req.csrfToken method
 app.use(
-    csurf({
-        cookie:{
-            secure:isProduction,
-            sameSite:isProduction && "Lax",
-            httpOnly:true
-        }
-    })
+  csurf({
+    cookie: {
+      secure: isProduction,
+      sameSite: isProduction && "Lax",
+      httpOnly: true
+    }
+  })
 );
 app.use(routes)
 
