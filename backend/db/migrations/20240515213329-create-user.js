@@ -16,23 +16,23 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       username: {
-        type: Sequelize.VARCHAR(30),
+        type: Sequelize.STRING(30),
         allowNull:false,
         unique:true
       },
       email: {
-        type: Sequelize.VARCHAR(256),
+        type: Sequelize.STRING(256),
         allowNull:false,
         unique:true
       },
       firstName:{
-        type: Sequelize.VARCHAR(30),
+        type: Sequelize.STRING(30),
       },
       lastName:{
-        type:Sequelize.VARCHAR(30)
+        type:Sequelize.STRING(30)
       },
       hashedPassword: {
-        type: Sequelize.VARCHAR.BINARY,
+        type: Sequelize.STRING.BINARY,
         allowNull:false
       },
       createdAt: {
