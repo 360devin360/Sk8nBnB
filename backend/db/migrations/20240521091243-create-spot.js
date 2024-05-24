@@ -72,19 +72,11 @@ module.exports = {
       }
     },options);
 
-    if(process.env.NODE_ENV==='production'){
-      await queryInterface.addIndex(options.tableName,[
-          "address",
-          "city",
-          "state"
-        ])
-    }else{
-      await queryInterface.addIndex('Spots',[
-          "address",
-          "city",
-          "state"
-        ])
-    }
+    await queryInterface.addIndex(options.tableName,[
+        "address",
+        "city",
+        "state"
+      ])
   },
 
   async down(queryInterface, _Sequelize) {
