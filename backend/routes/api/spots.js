@@ -116,7 +116,7 @@ router
     }
 })
 // get all spots----------------------------------------------------------------------------------------------
-.get('/', async (req,res,next)=>{
+.get('/', async (_req,res,next)=>{
     try{
         const spots = await Spot.findAll({
             attributes: {
@@ -125,7 +125,7 @@ router
                     [Sequelize.col('SpotImages.url'),'previewImage']
                 ],
             },
-            group:['Spot.id'],
+            group:[['Spot.id'],['SpotImages.url']],
             include:[{
                 model:Review,
                 attributes:[]
