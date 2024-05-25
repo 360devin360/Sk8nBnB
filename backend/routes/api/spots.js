@@ -277,7 +277,7 @@ router
         res.json({
             Spots,
             page:+page,
-            size:size
+            size:+size
         })
     }catch(error){
         next(error)
