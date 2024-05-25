@@ -42,6 +42,36 @@ const validateSpotInfo = [
     handleValidationErrors
 ]
 
+const decimalCheck = [
+    check('page')
+        .isInt(true)
+        .withMessage('page must be an integer'),
+    check('size')
+        .isInt(true)
+        .withMessage('size must be an integer'),
+    check('minLat')
+        .isDecimal(true)
+        .withMessage('Minimum latitude is invalid'),
+    check('maxLat')
+        .isDecimal(true)
+        .withMessage('Maximum latitude is invalid'),
+    check('minLng')
+        .isDecimal(true)
+        .withMessage('Min Longitude is invalid'),
+    check('maxLng')
+        .isDecimal(true)
+        .withMessage('Max longitude is invalid'),
+    check('minPrice')
+        .isDecimal(true)
+        .custom(value => value > 0)
+        .withMessage('Min price must be greater than 0'),
+    check('maxPrice')
+        .isDecimal(true)
+        .custom(value => value > 0)
+        .withMessage('Maximum price must be greater than or equal to 0'),
+    handleValidationErrors
+]
+
 router
 // get spots for current user---------------------------------------------------------------------------------------------
 .get('/current', requireAuth, async(req,res,next)=>{
@@ -116,9 +146,58 @@ router
     }
 })
 // get all spots----------------------------------------------------------------------------------------------
-.get('/', async (_req,res,next)=>{
+.get('/', async (req,res,next)=>{
     try{
+        let {page,size,minLat,maxLat,minLng,maxLng,minPrice,maxPrice} = req.query
+
+        switch(true){
+            case (size && !isNaN(size) && size >= 1 && size <= 20):
+                break;
+            default:
+                size = 20
+        }
+        switch(true){
+            case (page && !isNaN(page) && page <= 10 && page >= 1):
+                break;
+            default:
+                page = 1
+        }
+        
+        // create query object
+        // let query = {
+        //     attributes: {
+        //         include:[
+        //             [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
+        //             [Sequelize.col('SpotImages.url'),'previewImage']
+        //         ],
+        //     },
+        //     group:[['Spot.id'],['SpotImages.url']],
+        //     include:[{
+        //         model:Review,
+        //         attributes:[]
+        //     },{
+        //         model:SpotImage,
+        //         attributes:[],
+        //     }],
+        //     where:{},
+        //     limit:size,
+        //     offset:+size * (+page - 1)
+        // }
+
+        // if minLat create add min to latitude in search
+        // if(req.query.minLat){
+        //     query.where.lat = +minLat
+        // }
+
+        // const spots = await Spot.findAll(query)
         const spots = await Spot.findAll({
+            include:[{
+                model:Review,
+                attributes:[]
+            },{
+                model:SpotImage,
+                attributes:[],
+            }],
             attributes: {
                 include:[
                     [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
@@ -126,13 +205,8 @@ router
                 ],
             },
             group:[['Spot.id'],['SpotImages.url']],
-            include:[{
-                model:Review,
-                attributes:[]
-            },{
-                model:SpotImage,
-                attributes:[],
-            }]
+            // limit:size
+            // offset:+size * (+page - 1)
         })
         res.json({spots})
     }catch(error){
