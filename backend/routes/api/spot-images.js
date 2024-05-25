@@ -14,7 +14,7 @@ router.delete('/:imageId', requireAuth, async (req,res,next)=>{
                     [Sequelize.fn('',Sequelize.col('Spot.ownerId')),'ownerId']
                 ]
             },
-            group:[['Spot.ownerId'],['SpotImages.id']],
+            // group:[['Spot.ownerId']],
             include:[{
                 model:Spot,
                 attributes:[]
