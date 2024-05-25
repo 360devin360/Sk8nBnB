@@ -14,7 +14,7 @@ router.delete('/:imageId', requireAuth, async (req,res,next)=>{
                     [Sequelize.fn('',Sequelize.col('Spot.ownerId')),'ownerId']
                 ]
             },
-            group:['Spot.ownerId'],
+            group:[['Spot.ownerId'],['SpotImages.id']],
             include:[{
                 model:Spot,
                 attributes:[]
@@ -39,7 +39,7 @@ router.delete('/:imageId', requireAuth, async (req,res,next)=>{
             err.message = "Forbidden"
             throw err
         }
-
+        
         return res.json({
             "message":"Successfully deleted"
         })

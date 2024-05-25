@@ -7,6 +7,7 @@ const {requireAuth} = require('../../utils/auth')
 const {User} = require('../../db/models')
 const {handleValidationErrors} = require('../../utils/validation');
 const {check} = require('express-validator')
+const {Op} = require('sequelize')
 
 const validateSpotInfo = [
     check('address')
@@ -39,6 +40,40 @@ const validateSpotInfo = [
     check('price')
         .exists({options:'falsy'})
         .withMessage('Price per day is required'),
+    handleValidationErrors
+]
+
+const decimalCheck = [
+    check('page')
+        .isInt({min:1})
+        .withMessage('page must be greater than or equal to 1'),
+    check('size')
+        .isInt({min:1})
+        .withMessage('size must be greater than or equal to 1'),
+    check('minLat')
+        .optional({nullable:true})
+        .isDecimal()
+        .withMessage('Minimum latitude is invalid'),
+    check('maxLat')
+        .optional({nullable:true})
+        .isDecimal()
+        .withMessage('Maximum latitude is invalid'),
+    check('minLng')
+        .optional({nullable:true})
+        .isDecimal()
+        .withMessage('Min Longitude is invalid'),
+    check('maxLng')
+        .optional({nullable:true})
+        .isDecimal()
+        .withMessage('Max longitude is invalid'),
+    check('minPrice')
+        .optional({nullable:true})
+        .isFloat({min:0.01})
+        .withMessage('Min price must be greater than 0'),
+    check('maxPrice')
+        .optional({nullable:true})
+        .isFloat({min:0.01})
+        .withMessage('Maximum price must be greater than or equal to 0'),
     handleValidationErrors
 ]
 
@@ -80,7 +115,7 @@ router
             where:{
                 id:req.params.spotId
             },
-            group:['Spot.id'],
+            group:[['Spot.id'],['SpotImages.id']],
             include:[{
                 model:Review,
                 attributes:[]
@@ -116,25 +151,134 @@ router
     }
 })
 // get all spots----------------------------------------------------------------------------------------------
-.get('/', async (_req,res,next)=>{
+.get('/', decimalCheck, async (req,res,next)=>{
     try{
+        // deconstruct query
+        let {page,size,minLat,maxLat,minLng,maxLng,minPrice,maxPrice} = req.query
+
+        switch(true){
+            case (size && !isNaN(size) && size >= 1 && size <= 20):
+                break;
+            default:
+                size = 20
+        }
+        switch(true){
+            case (page && !isNaN(page) && page <= 10 && page >= 1):
+                break;
+            default:
+                page = 1
+        }
+        // create query
+        let query = {
+            where:{
+
+            }
+        }
+        // if min and max latitudes exists add them to query
+        if(minLat){
+            query.where.lat = {
+                [Op.gte]:minLat
+            }
+        }
+        if(maxLat){
+            query.where.lat = {
+                [Op.lte]:maxLat
+            }
+        }
+        if(minLng){
+            query.where.lng = {
+                [Op.gte]:minLng
+            }
+        }
+        if(maxLng){
+            query.where.lng = {
+                [Op.lte]:maxLng
+            }
+        }
+        if(minPrice){
+            query.where.price = {
+                [Op.gte]:minPrice
+            }
+        }
+        if(maxPrice){
+            query.where.price = {
+                [Op.lte]:maxPrice
+            }
+        }
+        let Spots = []
+        // find all spots
         const spots = await Spot.findAll({
-            attributes: {
-                include:[
-                    [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
-                    [Sequelize.col('SpotImages.url'),'previewImage']
-                ],
-            },
-            group:[['Spot.id'],['SpotImages.url']],
-            include:[{
-                model:Review,
-                attributes:[]
-            },{
-                model:SpotImage,
-                attributes:[],
-            }]
+            ...query,
+            limit:size,
+            offset:size * (page - 1)
         })
-        res.json({spots})
+        // iterate over spots
+        spots.forEach(spot => {
+            // deconstruct each spot
+            let values = spot.toJSON()
+            // push each collection of values from spot to returnable array
+            Spots.push(values)
+        })
+        // get all spots
+        const reviews = await Review.findAll()
+        // create object for storage
+        let avg = {}
+        // iterate over reviews
+        reviews.forEach((review)=>{
+            // deconstruc review
+            let value = review.toJSON()
+            // assign spotId to variable
+            let id = value.spotId
+            // if avg id doesnt exists create it
+            if(!avg[id]){
+                avg[id] = {
+                    // add total from review and count to it
+                    spotId:value.spotId,
+                    total:value.stars,
+                    count:1
+                }
+            //else
+            }else{
+                // add review to total to review and increase count by one
+                avg[id].total = avg[id].total + value.stars;
+                avg[id].count++
+            }
+        })
+
+        let avgRatings = {}
+        // iterate over avg
+        for(let spot in avg){
+            // add spot id and average of ratings to avgRating
+            avgRatings[avg[spot].spotId] = avg[spot].total/avg[spot].count
+        }
+        //get images
+        const imagesObject = await SpotImage.findAll({
+            // where preview is true
+            where:{
+                preview:true
+            }
+        })
+        // create images object
+        let images = {}
+        // iterate through imagesObject
+        imagesObject.forEach(image=>{
+            // create img from image using .toJSON
+            let img = image.toJSON()
+            // add img to images based on spot id
+            images[img.spotId] = img.url
+        })
+        // iterate over Spots
+        Spots.forEach(spot=>{
+            // add avgRating and spot image
+            spot.avgRating = avgRatings[spot.id]
+            spot.previewImage = images[spot.id]
+        })
+        // return Spots
+        res.json({
+            Spots,
+            page:+page,
+            size:size
+        })
     }catch(error){
         next(error)
     }
