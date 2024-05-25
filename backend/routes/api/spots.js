@@ -115,7 +115,7 @@ router
             where:{
                 id:req.params.spotId
             },
-            group:['Spot.id'],
+            group:[['Spot.id'],['SpotImages.id']],
             include:[{
                 model:Review,
                 attributes:[]
