@@ -5,15 +5,15 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const {environment} = require('./config');
+const { environment } = require('./config');
 const isProduction = environment === 'production';
 const app = express();
-const routes = require('./routes');
-const {ValidationError} = require('sequelize');
-
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
+const routes = require('./routes');
+const {ValidationError} = require('sequelize');
+
 
 // set default-src to self (used for Edge browser)---------------------------
 // app.use(
@@ -23,23 +23,34 @@ app.use(express.json());
 //     })
 // );
 //---------------------------------------------------------------------------
+// test route http://localhost:8000
+app.get('/',(req,res,next)=>{
+  res.json('hello world')
+})
+//------------------------------------------------------------------------------
 
-if(!isProduction)app.use(cors())
+// Security Middleware
+if (!isProduction) {
+  // enable cors only in development
+  app.use(cors());
+}
 
+// helmet helps set a variety of headers to better secure your app
 app.use(
-    helmet.crossOriginResourcePolicy({
-        policy:"cross-origin"
-    })
+  helmet.crossOriginResourcePolicy({
+    policy: "cross-origin"
+  })
 );
 
+// Set the _csrf token and create req.csrfToken method
 app.use(
-    csurf({
-        cookie:{
-            secure:isProduction,
-            sameSite:isProduction && "Lax",
-            httpOnly:true
-        }
-    })
+  csurf({
+    cookie: {
+      secure: isProduction,
+      sameSite: isProduction && "Lax",
+      httpOnly: true
+    }
+  })
 );
 app.use(routes)
 
@@ -51,22 +62,40 @@ app.use((_req, _res, next) => {
     next(err);
   });
 
-  app.use((err, _req, _res, next) => {
-    // check if error is a Sequelize error:
-    if (err instanceof ValidationError) {
-      let errors = {};
-      for (let error of err.errors) {
-        errors[error.path] = error.message;
-      }
-      err.title = 'Validation error';
-      err.errors = errors;
-    }
-    next(err);
-  });
    
 app.use((err, _req, res, _next) => {
+    // console.log(err)
     res.status(err.status || 500);
-    console.error(err);
+    if(err instanceof ValidationError){
+      
+    }
+    if(err.title==='ValidationError'){
+      return res.json({
+          "message":err.message,
+          "errors":err.errors
+        })
+    }
+    if(err.title==='Login failed'){
+      return res.json({
+        "message":err.message
+      })
+    }
+    if(err.title === 'Authentication required'){
+      return res.json({
+        "message":err.message
+      })
+    }
+    if(err.title === 'Resource not found'){
+      return res.json({
+        "message":err.message
+      })
+    }
+    if(err.title === 'Unauthorized User'){
+      return res.json({
+        "message":err.message
+      })
+    }
+    console.log(err)
     res.json({
         title: err.title || 'Server Error',
         message: err.message,
