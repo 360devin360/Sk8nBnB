@@ -1,6 +1,5 @@
 'use strict';
 
-const { defaultValueSchemable } = require('sequelize/lib/utils');
 
 /** @type {import('sequelize-cli').Migration} */
 let options  = {};
