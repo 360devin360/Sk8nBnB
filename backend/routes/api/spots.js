@@ -89,16 +89,17 @@ router
                     // [Sequelize.fn('',Sequelize.col('SpotImages.url')),'previewImage']
                 ],
             },
-            where:{ownerId:req.user.id},
+            // where:{ownerId:req.user.id},
             group:['Spot.id'],
             include:[{
                 model:Review,
                 attributes:[]
-            },{
-                model:SpotImage,
-                where:{},
-                attributes:[],
             }]
+            // {
+            //     model:SpotImage,
+            //     where:{},
+            //     attributes:[],
+            // }]
         })
 
         // spots.forEach(value=>{
