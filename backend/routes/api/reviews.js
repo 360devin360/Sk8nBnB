@@ -28,6 +28,10 @@ router.get('/current',requireAuth,async (req,res,next)=>{
             // include Spot next
             model:Spot,
             // pick attributes
+            include:{
+                model:SpotImage,
+                attributes:[]
+            },
             attributes:{
                 // exclude fields createdAt and updatedAt
                 exclude:[
