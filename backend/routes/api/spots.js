@@ -96,12 +96,13 @@ router
             include:[{
                 model:Review,
                 attributes:[]
+            },
+            {
+                model:SpotImage,
+                attributes:[
+                    'url'
+                ],
             }]
-            // {
-            //     model:SpotImage,
-            //     where:{},
-            //     attributes:[],
-            // }]
         })
 
         // spots.forEach(value=>{
