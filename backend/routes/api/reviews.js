@@ -42,7 +42,7 @@ router.get('/current',requireAuth,async (req,res,next)=>{
                         from SpotImages
                         join Spots
                         on SpotImages.spotId = Spots.id
-                        where
+                        and
                         preview = true)`),'previewImage']
                 ]
             },
