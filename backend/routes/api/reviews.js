@@ -44,9 +44,9 @@ router.get('/current',requireAuth,async (req,res,next)=>{
                         on SpotImages.spotId = Spots.id
                         and
                         preview = true)`),'previewImage']
-                ]
+                ],
+                raw:true
             },
-            raw:true
         },{
             // include review images
             model:ReviewImage,
