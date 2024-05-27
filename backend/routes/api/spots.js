@@ -99,9 +99,9 @@ router
             },
             {
                 model:SpotImage,
-                attributes:[
-                    'url'
-                ],
+                // attributes:[
+                //     'url'
+                // ],
             }]
         })
 
