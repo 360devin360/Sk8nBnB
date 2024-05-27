@@ -5,6 +5,11 @@ const {Spot} = require('../../db/models');
 const {Sequelize} = require('sequelize');
 // requires authentication
 // requires authorization
+// test
+router.get('/', async(req,res,next)=>{
+    const spotImages = await SpotImate.findAll()
+    res.json(spotImages)
+})
 router.delete('/:imageId', requireAuth, async (req,res,next)=>{
     try{
         // get image
