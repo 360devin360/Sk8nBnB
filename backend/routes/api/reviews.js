@@ -9,7 +9,7 @@ const {Sequelize, and} = require('sequelize')
 
 router.get('/current',requireAuth,async (req,res,next)=>{
     // get reviews'
-    const reviews = await Review.findAll({
+    const Reviews = await Review.findAll({
         // where userId = current user id
         where:{
             userId:req.user.id
@@ -60,7 +60,7 @@ router.get('/current',requireAuth,async (req,res,next)=>{
     })
 
 
-    res.json({reviews})
+    res.json({Reviews})
 
 })
 
