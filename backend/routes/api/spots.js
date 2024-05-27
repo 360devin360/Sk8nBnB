@@ -100,11 +100,12 @@ router
             }]
         })
 
-        spots.forEach(value=>{
-            let spot = value.toJSON();
-            console.log(spot)
-            if(spot.avgRating)spot.avgRating = +spot.avgRating.toFixed(2)
-        })
+        // spots.forEach(value=>{
+        //     let spot = value.toJSON();
+        //     console.log(spot)
+        //     if(spot.avgRating)spot.avgRating = +spot.avgRating.toFixed(2)
+        // })
+
         res.json({spots})
 
     }catch(error){
