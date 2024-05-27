@@ -1,4 +1,5 @@
 // backend/config/database.js
+// backend/config/database.js
 const config = require('./index');
 
 module.exports = {
@@ -23,8 +24,4 @@ module.exports = {
       schema: process.env.SCHEMA
     }
   }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> c2b6a77e7797d18d40915966640ba1dbd8528582

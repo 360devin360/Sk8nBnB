@@ -1,39 +1,32 @@
 'use strict';
-
+/** @type {import('sequelize-cli').Migration} */
 let options = {};
-if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;
+if(process.env.NODE_ENV==='production'){
+  options.schema  = process.env.SCHEMA
 }
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return await queryInterface.createTable('Users', {
+    await queryInterface.createTable('SpotImages', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      username: {
-        type: Sequelize.STRING(30),
+      spotId: {
+        type: Sequelize.INTEGER,
         allowNull:false,
-        unique:true
+        references:{
+          model:'Spots',
+        },
+        onDelete:"cascade"
       },
-      email: {
-        type: Sequelize.STRING(256),
-        allowNull:false,
-        unique:true
-      },
-      firstName:{
-        type: Sequelize.STRING(30),
+      url: {
+        type: Sequelize.STRING,
         allowNull:false
       },
-      lastName:{
-        type:Sequelize.STRING(30),
-        allowNull:false
-      },
-      hashedPassword: {
-        type: Sequelize.STRING.BINARY,
+      preview: {
+        type: Sequelize.BOOLEAN,
         allowNull:false
       },
       createdAt: {
@@ -48,9 +41,8 @@ module.exports = {
       }
     },options);
   },
-
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Users';
+    options.tableName = 'SpotImages'
     await queryInterface.dropTable(options);
   }
 };

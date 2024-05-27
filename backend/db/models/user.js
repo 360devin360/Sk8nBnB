@@ -15,9 +15,22 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      User.hasMany(models.Spot,{
+        foreignKey:'ownerId',
+        onDelete:'set null'
+      })
       // define association here
+      User.hasMany(models.Review,{
+        foreignKey:'userId',
+        onDelete:'cascade'
+      })
+      User.hasMany(models.Booking,{
+        foreignKey:'userId',
+        onDelete:'cascade'
+      })
     }
-  }
+  };
+  
   User.init({
 <<<<<<< HEAD
     username: DataTypes.STRING,
@@ -47,6 +60,28 @@ module.exports = (sequelize, DataTypes) => {
       validate:{
         len:[3,256],
         isEmail:true
+      }
+    },
+    firstName:{
+      type:DataTypes.STRING,
+      validate:{
+        len:[4,30],
+        isNotEmail(value){
+          if(Validator.isEmail(value)){
+            throw new Error("Cannot be an email.")
+          }
+        }
+      }
+    },
+    lastName:{
+      type:DataTypes.STRING,
+      validate:{
+        len:[4,30],
+        isNotEmail(value){
+          if(Validator.isEmail(value)){
+            throw new Error("Cannot be an email.")
+          }
+        }
       }
     },
     hashedPassword: {

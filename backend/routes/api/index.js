@@ -5,14 +5,18 @@ const {restoreUser} = require('../../utils/auth.js');
 const {requireAuth} = require('../../utils/auth.js');
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
-
+const spotsRouter = require('./spots.js');
+const spotImagesRouter = require('./spot-images.js');
+const reviewsRouter = require('./reviews.js')
 // use restoreUser before all routes
 router.use(restoreUser);
 
 // use imported routers
 router.use('/users', usersRouter);
 router.use('/session',sessionRouter);
-
+router.use('/spots',spotsRouter);
+router.use('/spot-images',spotImagesRouter);
+router.use('/reviews',reviewsRouter)
 // export of router at bottom of file
 
 
