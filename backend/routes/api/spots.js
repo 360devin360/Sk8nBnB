@@ -91,7 +91,7 @@ router
             },
 
             // where:{ownerId:req.user.id},
-            group:['Spot.id'],
+            group:['Spot.id','SpotImage.url'],
 
             include:[{
                 model:Review,
