@@ -7,7 +7,7 @@ const {Sequelize} = require('sequelize');
 // requires authorization
 // test
 router.get('/', async(req,res,next)=>{
-    const spotImages = await SpotImate.findAll()
+    const spotImages = await SpotImage.findAll()
     res.json(spotImages)
 })
 router.delete('/:imageId', requireAuth, async (req,res,next)=>{
