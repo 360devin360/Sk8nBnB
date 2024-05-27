@@ -1,12 +1,9 @@
 'use strict';
-<<<<<<< HEAD
 const {
   Model
 } = require('sequelize');
-=======
 const {Model,Validator} = require('sequelize');
 
->>>>>>> c2b6a77e7797d18d40915966640ba1dbd8528582
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -32,14 +29,6 @@ module.exports = (sequelize, DataTypes) => {
   };
   
   User.init({
-<<<<<<< HEAD
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    hashedPassword: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'User',
-=======
     username: {
       type:DataTypes.STRING,
       allowNull:false,
@@ -99,7 +88,6 @@ module.exports = (sequelize, DataTypes) => {
         exclude:['email','hashedPassword','createdAt','updatedAt']
       }
     }
->>>>>>> c2b6a77e7797d18d40915966640ba1dbd8528582
   });
   return User;
 };
