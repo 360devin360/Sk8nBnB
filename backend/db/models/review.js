@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         onDelete:'cascade'
       })
       Review.belongsTo(models.User,{
+        foreignKey:"userId",
+        onDelete:'cascade'
+      })
+      Review.belongsTo(models.User,{
         foreignKey:'userId',
         onDelete:'cascade'
       })
