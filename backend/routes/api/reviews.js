@@ -40,8 +40,9 @@ router.get('/current',requireAuth,async (req,res,next)=>{
                     [Sequelize.literal(`(
                         select url
                         from SpotImages
-                        where SpotImages.spotId = Spot.id
-                        and
+                        join Spot
+                        on SpotImages.spotId = Spot.id
+                        where
                         preview = true)`),'previewImage']
                 ]
             },

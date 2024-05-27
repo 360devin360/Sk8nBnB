@@ -5,8 +5,13 @@ const { Sequelize } = require('.');
 module.exports = (sequelize, Datatype) => {
     class Booking extends Model{
         static associate(models){
+
             Booking.belongsTo(models.Spot,{
                 foreignKey:"spotId",
+                onDelete:'cascade'
+            })
+            Booking.belongsTo(models.User,{
+                foreignKey:'userId',
                 onDelete:'cascade'
             })
         };

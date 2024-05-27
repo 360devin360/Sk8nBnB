@@ -15,14 +15,6 @@ const routes = require('./routes');
 const {ValidationError} = require('sequelize');
 
 
-// set default-src to self (used for Edge browser)---------------------------
-// app.use(
-//     helmet.contentSecurityPolicy({
-//             defaultSrc:["'self'"],
-//             "connect-src":["'self'"]  
-//     })
-// );
-//---------------------------------------------------------------------------
 // test route http://localhost:8000
 app.get('/',(req,res,next)=>{
   res.json('hello world')
