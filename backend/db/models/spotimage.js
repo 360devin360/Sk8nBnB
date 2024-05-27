@@ -30,9 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull:false,
       unique:true,
-      validate:{
-        isUrl:true
-      }
+      // validate:{
+      //   isUrl:true
+      // }
     },
     preview: {
       type:DataTypes.BOOLEAN,

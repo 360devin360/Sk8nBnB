@@ -32,6 +32,7 @@ const validateSpotInfo = [
         .withMessage('Longitude is not valid'),
     check('name')
         .exists({values:'falsy'})
+        .withMessage('Name must be less than 50 characters')
         .isLength({max:50})
         .withMessage('Name must be less than 50 characters'),
     check('description')
@@ -44,12 +45,12 @@ const validateSpotInfo = [
 ]
 
 const decimalCheck = [
-    check('page')
-        .isInt({min:1})
-        .withMessage('page must be greater than or equal to 1'),
-    check('size')
-        .isInt({min:1})
-        .withMessage('size must be greater than or equal to 1'),
+    // check('page')
+    //     .isInt({min:1})
+    //     .withMessage('page must be greater than or equal to 1'),
+    // check('size')
+    //     .isInt({min:1})
+    //     .withMessage('size must be greater than or equal to 1'),
     check('minLat')
         .optional({nullable:true})
         .isDecimal()
@@ -323,8 +324,7 @@ router
         })
         res.json(image)
     }catch(error){
-        console.log(error)
-        next(error)
+        return next(error)
     }
 })
 // create a spot---------------------------------------------------------------------------------------------
