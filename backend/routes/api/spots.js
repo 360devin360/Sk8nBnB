@@ -96,6 +96,7 @@ router
                 attributes:[]
             },{
                 model:SpotImage,
+                where:{},
                 attributes:[],
             }]
         })
@@ -104,7 +105,7 @@ router
         //     let spot = value.toJSON();
         //     console.log(spot)
         //     if(spot.avgRating)spot.avgRating = +spot.avgRating.toFixed(2)
-            
+
         // })
 
         res.json({spots})
