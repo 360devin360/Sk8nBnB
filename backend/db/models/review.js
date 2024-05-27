@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:'spotId',
         onDelete:'cascade'
       })
+      Review.belongsTo(models.User,{
+        foreignKey:'userId',
+        onDelete:'cascade'
+      })
     }
   }
   // spotId userId combo needs to be unique
