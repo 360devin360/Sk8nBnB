@@ -46,6 +46,7 @@ router.get('/current',requireAuth,async (req,res,next)=>{
                         preview = true)`),'previewImage']
                 ]
             },
+            raw:true
         },{
             // include review images
             model:ReviewImage,
