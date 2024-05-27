@@ -85,7 +85,7 @@ router
         const spots = await Spot.findAll({
             attributes: {
                 include:[
-                    [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'].toFixed(2),
+                    [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
                     // [Sequelize.fn('',Sequelize.col('SpotImages.url')),'previewImage']
                 ],
             },
@@ -99,7 +99,14 @@ router
                 attributes:[],
             }]
         })
+
+        spots.forEach(value=>{
+            let spot = value.toJSON();
+            console.log(spot)
+            if(spot.avgRating)spot.avgRating = spot.avgRating.toFixed(2)
+        })
         res.json({spots})
+
     }catch(error){
         next(error)
     }
