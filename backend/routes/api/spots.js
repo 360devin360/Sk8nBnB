@@ -85,7 +85,7 @@ router
         const spots = await Spot.findAll({
             attributes: {
                 include:[
-                    [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
+                    [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'].toFixed(2),
                     // [Sequelize.fn('',Sequelize.col('SpotImages.url')),'previewImage']
                 ],
             },
