@@ -6,7 +6,7 @@ const {setTokenCookie, restoreUser} = require('../../utils/auth');
 const {User} = require('../../db/models');
 const {check} = require('express-validator');
 const {handleValidationErrors} = require('../../utils/validation');
-
+const {requireAuth} = require('../../utils/auth')
 
 // initialize a router
 const router = express.Router();
@@ -94,7 +94,7 @@ router.delete('/',(_req,res,next)=>{
 });
 
 // get session user
-router.get('/', (req,res,next)=>{
+router.get('/',(req,res,next)=>{
     // try catch
     try{
         // deconstruct req for user info
@@ -117,7 +117,10 @@ router.get('/', (req,res,next)=>{
             return res.json({user: null})
         }
     }catch(error){
-        next(error)
+        res.json({
+            "user":"nully"
+        })
+        // next(error)
     }
 })
 

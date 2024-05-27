@@ -87,7 +87,17 @@ app.use((err, _req, res, _next) => {
         "message":err.message
       })
     }
-    console.log(err)
+    if(err.name==='SequelizeUniqueConstraintError'){
+      let errors = {}
+      err.errors.forEach(object=>{
+        errors[object.path] = object.message
+    })
+      return res.json({
+        "message":err.message,
+        "errors":errors
+
+      })
+    }
     res.json({
         title: err.title || 'Server Error',
         message: err.message,
