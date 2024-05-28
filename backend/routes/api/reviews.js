@@ -98,4 +98,5 @@ router.get('/current',requireAuth,async (req,res,next)=>{
 
 })
 
+router.get('')
 module.exports = router;
