@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {requireAuth} = require('../../utils/auth');
-const {Review} = require('../../db/models');
+const {Review, sequelize} = require('../../db/models');
 const {ReviewImage} = require('../../db/models');
 const {User} = require('../../db/models');
 const {Spot} = require('../../db/models');
@@ -9,62 +9,76 @@ const {Sequelize, and} = require('sequelize')
 
 router.get('/current',requireAuth,async (req,res,next)=>{
     // get reviews'
-    const Reviews = await Review.findAll({
-        // where userId = current user id
-        where:{
+    try{
+        // get all reviews by the current user (include user and spot info)
+        const reviews = await Review.findAll({
+           where:{
             userId:req.user.id
-        },
-        // include models User, Spot, SpotImage and ReviewImage
-        include:[{
-            // Start with User
-            model:User,
-            // only include id, firstName and lastName
-            attributes:[
-                'id',
-                'firstName',
-                'lastName'
-            ]
-        },{
-            // include Spot next
-            model:Spot,
-            // pick attributes
-            include:{
-                model:SpotImage,
-                attributes:[]
-            },
-            attributes:{
-                // exclude fields createdAt and updatedAt
-                exclude:[
-                    'createdAt',
-                    'updatedAt'
-                ],
-                // include SpotImages where preview = true then rename previewImages
-                include:[
-                    // use Sequelize literal
-                    [Sequelize.literal(`(SELECT url
-                                        FROM SpotImages 
-                                        where preview = true)`),
-                        'previewImage']
-                ],
-                raw:true
-            },
-            // group:["Spot.id"]
-        },{
-            // include review images
-            model:ReviewImage,
-            // exclude attributes reviewId, createdAt and updatedAt
-            attributes:{
-                exclude:[
-                    'reviewId',
-                    'createdAt',
-                    'updatedAt'
-                ],
-            },
-        }],
-    })
+           },
+           // include users table
+           include:[{
+                model:User,
+                // get only id, firstName, and lastName from Users
+                attributes:[
+                    'id',
+                    'firstName',
+                    'lastName'
+                ]
+           },{
+                // include spot
+                model:Spot,
+                // get all attributes except createdAt and updatedAt
+                attributes:{
+                    exclude:[
+                        'createdAt',
+                        'updatedAt'
+                    ],
+                    // include SpotImages url as previewImage
+                    include:[
+                        [Sequelize.literal(`(SELECT url
+                                            FROM SpotImages
+                                            WHERE preview = true)`),
+                                            'previewImage']
+                    ]
+                },
+           }]
+        })
+        // get all reviewImages
+        const images = await ReviewImage.findAll()
+        
+        let imageToReview = {}
+        images.forEach(value=>{
+            let image = value.toJSON();
+            let refinedImage = {}
+            refinedImage.id = image.id
+            refinedImage.url = image.url
+            if(!imageToReview[image.reviewId]){
+                imageToReview[image.reviewId] = [refinedImage]
+            }else{
+                imageToReview[image.reviewId].push(refinedImage)
+            }
+        })
+        // create new empty Reviews collection
+        let Reviews = []
+        // iterate over reviews
+        reviews.forEach(value=>{
+            // deconstruct review
+            let review = value.toJSON()
+            review.ReviewImages = []
+            // add review image based on id of imageToReview (it was the reviewId)
+            if(imageToReview[review.id]){
+                review.ReviewImages=imageToReview[review.id]
+            }
+            // push review to Reviews
+            Reviews.push(review)
 
-
-    res.json({Reviews})
+        })
+        // return reviews
+        return res.json({Reviews})
+        
+    }catch(error){
+        next(error)
+    }
 
 })
 
