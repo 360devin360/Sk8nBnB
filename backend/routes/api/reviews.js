@@ -43,13 +43,10 @@ router.get('/current',requireAuth,async (req,res,next)=>{
                     // use Sequelize literal
                     [Sequelize.literal(`(SELECT url
                                         FROM SpotImages 
-                                        WHERE SpotImages.spotId = Spots.id
-                                        AND preview = true
-                                        LIMIT 1)
-                                        AS "previewImage"`),
+                                        where preview = true)`),
                         'previewImage']
                 ],
-                // raw:true
+                raw:true
             },
             // group:["Spot.id"]
         },{
