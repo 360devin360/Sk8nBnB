@@ -41,7 +41,13 @@ router.get('/current',requireAuth,async (req,res,next)=>{
                 // include SpotImages where preview = true then rename previewImages
                 include:[
                     // use Sequelize literal
-                    [Sequelize.literal(`(SELECT url FROM SpotImages JOIN Spots on SpotImages.spotId = Spots.id and preview = true)`),'previewImage']
+                    [Sequelize.literal(`(SELECT url
+                                        FROM SpotImages 
+                                        WHERE SpotImages.spotId = Spots.id
+                                        AND preview = true
+                                        LIMIT 1)
+                                        AS "previewImage"`),
+                        'previewImage']
                 ],
                 // raw:true
             },
