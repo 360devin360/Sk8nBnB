@@ -33,27 +33,37 @@ router.get('/current',requireAuth,async (req,res,next)=>{
                         'createdAt',
                         'updatedAt'
                     ],
-                    // include SpotImages url as previewImage
-                    include:[
-                        [Sequelize.literal(`(SELECT url
-                                            FROM SpotImages
-                                            WHERE preview = true)`),
-                                            'previewImage']
-                    ]
                 },
            }]
         })
+        // get preview images for spot
+        const previewImage = await SpotImage.findAll()
+        // creat empty object for images
+        let previewImages = {}
+        // iterate over previewImages
+        previewImage.forEach(value=>{
+            // create variable and assign it value to json
+            let image = value.toJSON()
+            // add image url to object
+            previewImages[image.spotId] = image.url
+        })
         // get all reviewImages
         const images = await ReviewImage.findAll()
-        
+        // create empty object
         let imageToReview = {}
+        // iterate over images
         images.forEach(value=>{
+            // create json for value
             let image = value.toJSON();
+            // create another empty object
             let refinedImage = {}
+            // add image id and url to object
             refinedImage.id = image.id
             refinedImage.url = image.url
+            // if first object doesnt have key with reviewId add it with image as value in array
             if(!imageToReview[image.reviewId]){
                 imageToReview[image.reviewId] = [refinedImage]
+            // else push up image to array for reviewId
             }else{
                 imageToReview[image.reviewId].push(refinedImage)
             }
@@ -64,6 +74,12 @@ router.get('/current',requireAuth,async (req,res,next)=>{
         reviews.forEach(value=>{
             // deconstruct review
             let review = value.toJSON()
+            //  if previewImages has key with reviewId add it
+            if(previewImages[review.spotId]){
+                // create key value for final object previewImage
+                review.Spot.previewImage = previewImages[review.spotId]
+            }
+            // create array for reviewImages
             review.ReviewImages = []
             // add review image based on id of imageToReview (it was the reviewId)
             if(imageToReview[review.id]){
