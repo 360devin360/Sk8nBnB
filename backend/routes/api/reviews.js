@@ -236,5 +236,36 @@ router
         return next(error)
     }
 })
-router.get('')
+router.delete('/:reviewId', requireAuth, async(req,res,next)=>{
+    try{
+        // get review
+        const review = await Review.findByPk(req.params.reviewId)
+        // check for review (throw error if non)
+        if(!review){
+            let err = {
+                status: 404,
+                title: "Resource not found",
+                message:"Review couldn't be found"
+            }
+            throw err
+        }
+        if(review.userId!==req.user.id){
+            let err = {}
+            err.status = 403
+            err.title = 'Unauthorized User'
+            err.message = 'Forbidden'
+            err.errors = {
+                "message":"Unauthorized User requesting access",
+                "error": "User requested to edit a review they do not own"
+            }
+            throw err
+        }
+        review.destroy()
+        res.json({
+            "message":"Successfully deleted"
+        })
+    }catch(error){
+        next(error)
+    }
+})
 module.exports = router;
