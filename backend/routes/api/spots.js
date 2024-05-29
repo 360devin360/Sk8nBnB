@@ -1,3 +1,4 @@
+// imports ----------------------------------------------------------------------------------------------------------
 const router = require('express').Router();
 const {Spot} = require('../../db/models');
 const {Sequelize} = require('sequelize');
@@ -11,6 +12,7 @@ const {check} = require('express-validator')
 const {Op} = require('sequelize');
 const {Booking} = require('../../db/models');
 
+// validation checks ------------------------------------------------------------------------------------------------
 const validateSpotInfo = [
     check('address')
         .exists({checkFalsy:true})
@@ -45,7 +47,6 @@ const validateSpotInfo = [
         .withMessage('Price per day is required'),
     handleValidationErrors
 ]
-
 const decimalCheck = [
     // check('page')
     //     .isInt({min:1})
@@ -99,8 +100,9 @@ const startDateCheck = [
         .withMessage("endDate is required"),
     handleValidationErrors
 ]
+// route handlers ----------------------------------------------------------------------------------------------------
 router
-    // get spots for current user---------------------------------------------------------------------------------------------
+    // get spots for current user----------------------------------------------------------- get all spots for current user
     .get('/current', requireAuth, async(req,res,next)=>{
         try{
             const spots = await Spot.findAll({
@@ -132,7 +134,7 @@ router
             next(error)
         }
     })
-    // get all reviews on a spot based on spot id
+    // get all reviews on a spot based on spot id ------------------------------------------ get all reviews by spotId
     .get('/:spotId/reviews',async(req,res,next)=>{
         // find reviews
         try{
@@ -182,7 +184,74 @@ router
             next(error)
         }
     })
-    // get all spots related to spotId---------------------------------------------------------------------------------------
+    // get all bookings by spot id --------------------------------------------------------- get all bookings by spotId
+    .get('/:spotId/bookings',requireAuth,async(req,res,next)=>{
+        try{
+            // get all bookings
+            const bookings = await Booking.findAll({
+                // where spotId equals spot id from url
+                where:{
+                    spotId:req.params.spotId
+                },
+                // include user model
+                include:{
+                    model:User,
+                    // select only id, first name and last name
+                    attributes:[
+                        'id',
+                        'firstName',
+                        'lastName'
+                    ]
+                }
+            })
+            // if no bookings exist return error
+            if(!bookings.length){
+                // create error
+                let err = {
+                    // add title
+                    title:"Resource not found",
+                    // add message
+                    message:"Spot couldn't be found",
+                    // add status code
+                    status:404
+                }
+                // throw error
+                throw err
+            }
+            // create returnable object
+            let Bookings = []
+            // iterate over bookings
+            bookings.forEach(value=>{
+                // deconsruct value
+                let booking = value.toJSON()
+                // if user is owner of booking do...
+                if(booking.userId===req.user.id){ 
+                    // push specific infor to Bookings
+                    Bookings.push({
+                        // User info
+                        User:booking.User,
+                        // booking info
+                        ...booking
+                    })
+                // else
+                }else{
+                    // push other info
+                    Bookings.push({
+                        // only return spotId, start and end dates
+                        spotId:booking.spotId,
+                        startDate:booking.startDate,
+                        endDate:booking.endDate
+                    })
+                }
+            });
+            // response
+            res.json({Bookings})
+        // catch and forward errors
+        }catch(error){
+            next(error)
+        }
+    })
+    // get all spots related to spotId------------------------------------------------------ get all spots related to spotId
     .get('/:spotId',async (req,res,next)=>{
         try{
             const spots = await Spot.findAll({
@@ -229,7 +298,7 @@ router
             next(error)
         }
     })
-    // get all spots----------------------------------------------------------------------------------------------
+    // get all spots------------------------------------------------------------------------ get all spots
     .get('/', decimalCheck, async (req,res,next)=>{
         try{
             // deconstruct query
@@ -362,7 +431,7 @@ router
             next(error)
         }
     })
-    // add an image to spots-------------------------------------------------------------------------------------------------
+    // add an image to spots---------------------------------------------------------------- add image to spot
     .post('/:spotId/images', requireAuth, async (req,res,next)=>{
         try{
             // find spot based on spot id
@@ -406,7 +475,7 @@ router
             return next(error)
         }
     })
-    // create a review for a spot based on spots id
+    // create a review for a spot based on spots id ---------------------------------------- create a review for spot
     .post('/:spotId/reviews',requireAuth,validReviewInfo,async(req,res,next)=>{
         // res.json('hello')
         // check for spot
@@ -457,17 +526,11 @@ router
         return res.json(Reviews)
 
     })
-    // create a booking
+    // create a booking -------------------------------------------------------------------- create a booking
     .post('/:spotId/bookings',requireAuth,startDateCheck,async(req,res,next)=>{
         try{
             // deconstruct body
             let {startDate,endDate} = req.query;
-        //---------------------------------------------------
-            // use if creating validation doesnt work
-            // if(startDate>=endDate){
-            //     res.json('hello'
-            // }
-        // ----------------------------------------------------
             // find spot
             const spot = await Spot.findByPk(req.params.spotId)
             // if no spot send error
@@ -522,11 +585,6 @@ router
                 }
                 throw err
             })
-            // if(check.length>0){
-            //     let err = {
-            //         title:
-            //     }
-            // }
             // create booking (add userId, spotId, startDate, and endDate)
             let booking = await Booking.create({
                 userId:req.user.id,
@@ -554,7 +612,7 @@ router
             next(error)
         }
     })
-    // create a spot---------------------------------------------------------------------------------------------
+    // create a spot------------------------------------------------------------------------ create a spot
     .post('/', requireAuth, validateSpotInfo, async (req,res,next)=>{
         try{
             req.body.ownerId = req.user.id
@@ -577,7 +635,7 @@ router
             next(err)
         }
     })
-    // edit a spot---------------------------------------------------------------------------------------------
+    // edit a spot-------------------------------------------------------------------------- edit a spot
     .put('/:spotId', requireAuth, validateSpotInfo, async (req,res,next)=>{
         try{
             // get spot
@@ -614,7 +672,7 @@ router
             next(error)
         }
     })
-    // delete a spot --------------------------------------------------------------------------------------------------------------------------
+    // delete a spot ----------------------------------------------------------------------- delete a spot
     .delete('/:spotId', requireAuth, async (req,res,next)=>{
         try{
             //get spot by id
@@ -649,4 +707,5 @@ router
             next(error)
         }
     })
+
 module.exports = router

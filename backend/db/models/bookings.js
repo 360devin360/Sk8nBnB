@@ -17,19 +17,19 @@ module.exports = (sequelize, Datatype) => {
         };
     }
     Booking.init({
-        userId:{
-            type:Datatype.INTEGER,
-            allowNull:false,
-            references:{
-                model:'Users'
-            },
-            onDelete:'cascade'
-        },
         spotId:{
             type:Datatype.INTEGER,
             allowNull:false,
             references:{
                 model:'Spots'
+            },
+            onDelete:'cascade'
+        },
+        userId:{
+            type:Datatype.INTEGER,
+            allowNull:false,
+            references:{
+                model:'Users'
             },
             onDelete:'cascade'
         },
