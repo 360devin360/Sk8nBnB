@@ -182,6 +182,14 @@ router
             next(error)
         }
     })
+    // get all bookings by spot id
+    .get('/:spotId/bookings',requireAuth,async(req,res,next)=>{
+        try{
+            
+        }catch(error){
+            next(error)
+        }
+    })
     // get all spots related to spotId---------------------------------------------------------------------------------------
     .get('/:spotId',async (req,res,next)=>{
         try{
