@@ -194,15 +194,19 @@ router
                     spotId:req.params.spotId
                 },
                 // include user model
-                include:{
+                include:[{
                     model:User,
                     // select only id, first name and last name
                     attributes:[
                         'id',
                         'firstName',
-                        'lastName'
+                        'lastName',
                     ]
-                }
+                },{
+                    model:Spot,
+                    attributes:['ownerId']
+                }]
+
             })
             // if no bookings exist return error
             if(!bookings.length){
@@ -225,13 +229,19 @@ router
                 // deconsruct value
                 let booking = value.toJSON()
                 // if user is owner of booking do...
-                if(booking.userId===req.user.id){ 
+                if(booking.Spot.ownerId===req.user.id){ 
                     // push specific infor to Bookings
                     Bookings.push({
                         // User info
                         User:booking.User,
                         // booking info
-                        ...booking
+                        id:booking.id,
+                        spotId:booking.spotId,
+                        userId:booking.userId,
+                        startDate:booking.startDate,
+                        endDate:booking.endDate,
+                        createdAt:booking.createdAt,
+                        updatedAt:booking.updatedAt
                     })
                 // else
                 }else{
