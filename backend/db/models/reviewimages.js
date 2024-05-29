@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       unique:true,
       validate:{
-        isUrl:true
+        notNull:true
       }
     }
   }, {

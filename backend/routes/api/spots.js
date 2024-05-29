@@ -434,8 +434,11 @@ router
     })
     // create a review for the spot
     let Reviews = await Review.create({
+        // include userId
         userId:req.user.id,
+        // include spotId
         spotId:req.params.spotId,
+        // include review and stars from query
         ...req.query
     })
     // get the created review for response
