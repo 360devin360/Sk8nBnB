@@ -78,7 +78,17 @@ const decimalCheck = [
         .withMessage('Maximum price must be greater than or equal to 0'),
     handleValidationErrors
 ]
-
+const validReviewInfo = [
+    check('review')
+        .exists({checkFalsy:true})
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({checkFalsy:true})
+        .withMessage("Stars must be an integer from 1 to 5")
+        .isInt({min:1,max:5})
+        .withMessage("Stars must be an integer from 1 to 5"),
+    handleValidationErrors
+]
 router
 // get spots for current user---------------------------------------------------------------------------------------------
 .get('/current', requireAuth, async(req,res,next)=>{
@@ -113,7 +123,7 @@ router
     }
 })
 // get all reviews on a spot based on spot id
-router.get('/:spotId/reviews',async(req,res,next)=>{
+.get('/:spotId/reviews',async(req,res,next)=>{
     // find reviews
     try{
         // verify spot exists
@@ -384,6 +394,53 @@ router.get('/:spotId/reviews',async(req,res,next)=>{
     }catch(error){
         return next(error)
     }
+})
+// create a review for a spot based on spots id
+.post('/:spotId/reviews',requireAuth,validReviewInfo,async(req,res,next)=>{
+    // res.json('hello')
+    // check for spot
+    const spot = await Spot.findByPk(req.params.spotId)
+    // if no spot throw err
+    if(!spot){
+        // create a err object
+        let err = {
+            title:"Resource not found",
+            message:"Review couldn't be found",
+            status:404
+        }
+        throw err
+    }
+    // get reviews for the spot based on id
+    const review = await Review.findAll({
+        where:{
+            spotId:req.params.spotId
+        }
+    })
+    // iterate over review and look for user (if found return error)
+    review.forEach(value=>{
+        // deconstruct value
+        let review = value.toJSON()
+        // if userId is in review than this user already has a review
+        if(review.userId===req.user.id){
+            // create error object
+            let err = {
+                // set message
+                message:"User already has a review for this spot"
+            }
+            // throw error
+            throw err
+        }
+    })
+    // create a review for the spot
+    let Reviews = await Review.create({
+        userId:req.user.id,
+        spotId:req.params.spotId,
+        ...req.query
+    })
+    // get the created review for response
+    // const Review = await Review.findByPk()
+    return res.json(Reviews)
+
 })
 // create a spot---------------------------------------------------------------------------------------------
 .post('/', requireAuth, validateSpotInfo, async (req,res,next)=>{
