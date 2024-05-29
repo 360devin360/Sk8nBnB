@@ -425,6 +425,7 @@ router
             // create error object
             let err = {
                 // set message
+                title: "Duplicated Data",
                 message:"User already has a review for this spot"
             }
             // throw error
