@@ -92,11 +92,15 @@ app.use((err, _req, res, _next) => {
       let errors = {}
       err.errors.forEach(object=>{
         errors[object.path] = object.message
-    })
+      })
       return res.json({
         "message":err.message,
         "errors":errors
-
+      })
+    }
+    if(err.title==='Duplicated Data'){
+      return res.json({
+        message:err.message
       })
     }
     res.json({

@@ -7,6 +7,7 @@ const {Spot} = require('../../db/models');
 const {SpotImage} = require('../../db/models');
 const {Sequelize, and} = require('sequelize')
 
+// get reviews for current
 router.get('/current',requireAuth,async (req,res,next)=>{
     // get reviews'
     try{
@@ -87,7 +88,6 @@ router.get('/current',requireAuth,async (req,res,next)=>{
             }
             // push review to Reviews
             Reviews.push(review)
-
         })
         // return reviews
         return res.json({Reviews})
