@@ -10,10 +10,7 @@ const {check} = require('express-validator');
 const {handleValidationErrors} = require('../../utils/validation');
 
 const checkReviewImageInfo =[
-    check('review')
-        .exists({checkFalsy:true})
-        .withMessage('Review ID is required'),
-    check('stars')
+    check('url')
         .exists({checkFalsy:true})
         .withMessage("Url cannot be null"),
     handleValidationErrors
@@ -130,10 +127,11 @@ router
             }
             throw err
         }
-        // iterate over review (to count number of review images)
+        // iterate over review (to count number of review images
         review.forEach(value=>{
             // deconstruct value
             let review = value.toJSON();
+            console.log(review.ReviewImages.length)
             // if reviewImages length is greater than or equal to 10 send error
             if(review.ReviewImages.length>=10){
                 // create err
@@ -151,6 +149,7 @@ router
         })
         // if error was not thrown add image to review
         let reviewImage = await ReviewImage.create({
+            reviewId:req.params.reviewId,
             ...req.query
         })
         // send response
