@@ -26,8 +26,9 @@ const checkReviewInfo = [
         .withMessage("Stars must be an integer from 1 to 5"),
     handleValidationErrors
 ]
-// get reviews for current
 router
+// get reviews for current
+
 .get('/current',requireAuth,async (req,res,next)=>{
     // get reviews'
     try{
@@ -236,6 +237,7 @@ router
         return next(error)
     }
 })
+// delete a review
 router.delete('/:reviewId', requireAuth, async(req,res,next)=>{
     try{
         // get review
@@ -268,4 +270,11 @@ router.delete('/:reviewId', requireAuth, async(req,res,next)=>{
         next(error)
     }
 })
+
+// ---------------------------------------------------------------------
+//get all reviews (testing)
+// .get('/',async(req,res,next)=>{
+//     const reviews = await Review.findAll()
+//     res.json(reviews)
+// })
 module.exports = router;
