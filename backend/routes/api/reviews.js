@@ -151,7 +151,7 @@ router
 
         })
         // if no review throw error
-        if(!review){
+        if(!review.length){
             // create error
             let err = {
                 // add title
@@ -195,6 +195,7 @@ router
         })
     // catch any errors
     }catch(error){
+        console.log(error)
         next(error)
     }
 })
@@ -238,7 +239,7 @@ router
     }
 })
 // delete a review
-router.delete('/:reviewId', requireAuth, async(req,res,next)=>{
+.delete('/:reviewId', requireAuth, async(req,res,next)=>{
     try{
         // get review
         const review = await Review.findByPk(req.params.reviewId)
