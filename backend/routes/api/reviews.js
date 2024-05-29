@@ -132,6 +132,23 @@ router
                 model:ReviewImage
             }
         })
+        // iterate over review to get user id
+        review.forEach(value=>{
+            // create review variable
+            let review = value.toJSON()
+            if(req.user.id!==review.userId){
+                let err = {}
+            err.status = 403
+            err.title = 'Unauthorized User'
+            err.message = 'Forbidden'
+            err.errors = {
+                "message":"Unauthorized User requesting access",
+                "error": "User requested to add an image to a review they do not own"
+            }
+            throw err
+            }
+
+        })
         // if no review throw error
         if(!review){
             // create error
