@@ -5,7 +5,19 @@ const {ReviewImage} = require('../../db/models');
 const {User} = require('../../db/models');
 const {Spot} = require('../../db/models');
 const {SpotImage} = require('../../db/models');
-const {Sequelize, and} = require('sequelize')
+const {Sequelize, and} = require('sequelize');
+const {check} = require('express-validator');
+const {handleValidationErrors} = require('../../utils/validation');
+
+const checkReviewImageInfo =[
+    check('review')
+        .exists({checkFalsy:true})
+        .withMessage('Review ID is required'),
+    check('stars')
+        .exists({checkFalsy:true})
+        .withMessage("Url cannot be null"),
+    handleValidationErrors
+]
 
 // get reviews for current
 router
@@ -98,7 +110,7 @@ router
     }
 
 })
-.post('/:reviewId/images', requireAuth,async(req,res,next)=>{
+.post('/:reviewId/images', requireAuth,checkReviewImageInfo,async(req,res,next)=>{
     // try catch
     try{
         // get review by id
