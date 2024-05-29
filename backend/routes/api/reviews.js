@@ -131,7 +131,6 @@ router
         review.forEach(value=>{
             // deconstruct value
             let review = value.toJSON();
-            console.log(review.ReviewImages.length)
             // if reviewImages length is greater than or equal to 10 send error
             if(review.ReviewImages.length>=10){
                 // create err
