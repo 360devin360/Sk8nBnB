@@ -107,24 +107,33 @@ router
     }
 
 })
+// add image to review
 .post('/:reviewId/images', requireAuth,checkReviewImageInfo,async(req,res,next)=>{
     // try catch
     try{
         // get review by id
         const review = await Review.findAll({
+            // where id is equal to id in url
             where:{
                 id:req.params.reviewId
             },
+            // include ReviewImages
             include:{
                 model:ReviewImage
             }
         })
+        // if no review throw error
         if(!review){
+            // create error
             let err = {
+                // add title
                 title:'Resource not found',
+                // add message
                 message:"Review couldn't be found",
+                // add status code
                 status:404
             }
+            // throw error
             throw err
         }
         // iterate over review (to count number of review images
