@@ -216,6 +216,17 @@ router
             // throw error
             throw err
         }
+        if(review.userId!==req.user.id){
+            let err = {}
+            err.status = 403
+            err.title = 'Unauthorized User'
+            err.message = 'Forbidden'
+            err.errors = {
+                "message":"Unauthorized User requesting access",
+                "error": "User requested to edit a review they do not own"
+            }
+            throw err
+        }
         // change edit review
         review.review = req.query.review
         review.stars = req.query.stars
