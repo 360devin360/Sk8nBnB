@@ -2,6 +2,7 @@ const router = require('express').Router();
 const {Spot} = require('../../db/models');
 const {Sequelize} = require('sequelize');
 const {Review} = require('../../db/models');
+const {ReviewImage} = require('../../db/models');
 const {SpotImage} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth')
 const {User} = require('../../db/models')
@@ -105,15 +106,58 @@ router
             }]
         })
 
-        // spots.forEach(value=>{
-        //     let spot = value.toJSON();
-        //     console.log(spot)
-        //     if(spot.avgRating)spot.avgRating = +spot.avgRating.toFixed(2)
-
-        // })
-
         res.json({spots})
 
+    }catch(error){
+        next(error)
+    }
+})
+// get all reviews on a spot based on spot id
+router.get('/:spotId/reviews',async(req,res,next)=>{
+    // find reviews
+    try{
+        // verify spot exists
+        const spot = await Spot.findByPk(req.params.spotId)
+        // if no spot
+        if(!spot){
+            // create error
+            let err = {}
+            // add title
+            err.title = 'Resource not found'
+            // create message
+            err.message = "Spot couldn't be found"
+            // set error status
+            err.status = 404
+            // send error
+            throw err
+        }
+        // get reviews
+        const Reviews = await Review.findAll({
+            // where spot ids match
+            where:{
+                spotId:+req.params.spotId
+            },
+            //include User and review images
+            include:[{
+                model:User,
+                // only include id, firstname and lastname
+                attributes:[
+                    'id',
+                    'firstName',
+                    'lastName'
+                ]
+            },{
+                // include reviewImages records
+                model:ReviewImage,
+                // return only id and url 
+                attributes:[
+                    'id',
+                    'url'
+                ]
+            }]
+        })
+        // send response
+        return res.json({Reviews})
     }catch(error){
         next(error)
     }

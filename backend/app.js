@@ -79,6 +79,7 @@ app.use((err, _req, res, _next) => {
     }
     if(err.title === 'Resource not found'){
       return res.json({
+        
         "message":err.message
       })
     }
