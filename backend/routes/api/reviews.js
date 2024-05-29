@@ -8,7 +8,8 @@ const {SpotImage} = require('../../db/models');
 const {Sequelize, and} = require('sequelize')
 
 // get reviews for current
-router.get('/current',requireAuth,async (req,res,next)=>{
+router
+.get('/current',requireAuth,async (req,res,next)=>{
     // get reviews'
     try{
         // get all reviews by the current user (include user and spot info)
@@ -97,6 +98,58 @@ router.get('/current',requireAuth,async (req,res,next)=>{
     }
 
 })
-
+.post('/:reviewId/images', requireAuth,async(req,res,next)=>{
+    // try catch
+    try{
+        // get review by id
+        const review = await Review.findAll({
+            where:{
+                id:req.params.reviewId
+            },
+            include:{
+                model:ReviewImage
+            }
+        })
+        if(!review){
+            let err = {
+                title:'Resource not found',
+                message:"Review couldn't be found",
+                status:404
+            }
+            throw err
+        }
+        // iterate over review (to count number of review images)
+        review.forEach(value=>{
+            // deconstruct value
+            let review = value.toJSON();
+            // if reviewImages length is greater than or equal to 10 send error
+            if(review.ReviewImages.length>=10){
+                // create err
+                let err = {
+                    // give title
+                    title:"Database Limit",
+                    // create message
+                    message:"Maximum number of images for this resource was reached",
+                    // set status
+                    status:403
+                }
+                // throw error
+                throw err
+            }
+        })
+        // if error was not thrown add image to review
+        let reviewImage = await ReviewImage.create({
+            ...req.query
+        })
+        // send response
+        res.json({
+            id:reviewImage.id,
+            url:reviewImage.url
+        })
+    // catch any errors
+    }catch(error){
+        next(error)
+    }
+})
 router.get('')
 module.exports = router;
