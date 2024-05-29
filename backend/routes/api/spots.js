@@ -371,6 +371,7 @@ router
         //check if current users id matches the spot id
         if(spot.id !== req.user.id){
             let err = {}
+            err.status = 403
             err.title = 'Unauthorized User'
             err.message = 'Forbidden'
             err.errors = {
