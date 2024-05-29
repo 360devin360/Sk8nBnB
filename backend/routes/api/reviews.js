@@ -15,7 +15,17 @@ const checkReviewImageInfo =[
         .withMessage("Url cannot be null"),
     handleValidationErrors
 ]
-
+const checkReviewInfo = [
+    check('review')
+        .exists({checkFalsy:true})
+        .withMessage("Review text is required"),
+    check('stars')
+        .exists({checkFalsy:true})
+        .withMessage("Stars must be an integer from 1 to 5")
+        .isInt({min:1,max:5})
+        .withMessage("Stars must be an integer from 1 to 5"),
+    handleValidationErrors
+]
 // get reviews for current
 router
 .get('/current',requireAuth,async (req,res,next)=>{
@@ -108,7 +118,7 @@ router
 
 })
 // add image to review
-.post('/:reviewId/images', requireAuth,checkReviewImageInfo,async(req,res,next)=>{
+.post('/:reviewId/images', requireAuth, checkReviewImageInfo,async(req,res,next)=>{
     // try catch
     try{
         // get review by id
@@ -168,6 +178,34 @@ router
     // catch any errors
     }catch(error){
         next(error)
+    }
+})
+//edit review
+.put('/:reviewId', requireAuth, checkReviewInfo, async (req,res,next)=>{
+    try{
+        // find review by id
+        const review = await Review.findByPk(req.params.reviewId);
+        // if no review then throw error
+        if(!review){
+            // create error object
+            let err = {
+                // add title
+                title:"Resource not found",
+                // add message
+                message:"Review couldn't be found",
+                // add status
+                status:404
+            }
+            // throw error
+            throw err
+        }
+        // change edit review
+        review.review = req.query.review
+        review.stars = req.query.stars
+        await review.save()
+        res.json(review)
+    }catch(error){
+        return next(error)
     }
 })
 router.get('')
