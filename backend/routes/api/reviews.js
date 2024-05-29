@@ -137,16 +137,23 @@ router
         review.forEach(value=>{
             // create review variable
             let review = value.toJSON()
+            // if user id matches req.user id then throw error
             if(req.user.id!==review.userId){
+                // creating error
                 let err = {}
-            err.status = 403
-            err.title = 'Unauthorized User'
-            err.message = 'Forbidden'
-            err.errors = {
-                "message":"Unauthorized User requesting access",
-                "error": "User requested to add an image to a review they do not own"
-            }
-            throw err
+                // add status 
+                err.status = 403
+                // add title
+                err.title = 'Unauthorized User'
+                // add message
+                err.message = 'Forbidden'
+                // add errors
+                err.errors = {
+                    "message":"Unauthorized User requesting access",
+                    "error": "User requested to add an image to a review they do not own"
+                }
+                // throw error
+                throw err
             }
 
         })
@@ -218,22 +225,32 @@ router
             // throw error
             throw err
         }
+        // if review user id equals request user id throw error
         if(review.userId!==req.user.id){
+            // create error
             let err = {}
+            // add status
             err.status = 403
+            // add title
             err.title = 'Unauthorized User'
+            // add message
             err.message = 'Forbidden'
+            // add errors
             err.errors = {
                 "message":"Unauthorized User requesting access",
                 "error": "User requested to edit a review they do not own"
             }
+            // throw error
             throw err
         }
         // change edit review
         review.review = req.query.review
         review.stars = req.query.stars
+        // save review
         await review.save()
+        // send respons
         res.json(review)
+    // catch errors
     }catch(error){
         return next(error)
     }
@@ -245,28 +262,43 @@ router
         const review = await Review.findByPk(req.params.reviewId)
         // check for review (throw error if non)
         if(!review){
+            // create error object
             let err = {
+                // add status
                 status: 404,
+                // add title
                 title: "Resource not found",
+                // add message
                 message:"Review couldn't be found"
             }
+            // throw error
             throw err
         }
+        // if user id is equal to review user id then throw error
         if(review.userId!==req.user.id){
+            // create error object
             let err = {}
+            // add status
             err.status = 403
+            // add title
             err.title = 'Unauthorized User'
+            // add message
             err.message = 'Forbidden'
+            // add errors
             err.errors = {
                 "message":"Unauthorized User requesting access",
                 "error": "User requested to edit a review they do not own"
             }
+            // throw error
             throw err
         }
+        // delete review
         review.destroy()
+        //send response message
         res.json({
             "message":"Successfully deleted"
         })
+    // catch and forward errors
     }catch(error){
         next(error)
     }
