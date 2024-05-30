@@ -428,7 +428,7 @@ router
             // iterate over avg
             for(let spot in avg){
                 // add spot id and average of ratings to avgRating
-                avgRatings[avg[spot].spotId] = avg[spot].total/avg[spot].count
+                avgRatings[avg[spot].spotId] = (avg[spot].total)/(avg[spot].count)
             }
             //get images
             const imagesObject = await SpotImage.findAll({
@@ -453,11 +453,12 @@ router
                 spot.previewImage = images[spot.id]
             })
             // return Spots
-            res.json({
-                Spots,
-                page:+page,
-                size:+size
-            })
+            // res.json({
+            //     Spots,
+            //     page:+page,
+            //     size:+size
+            // })
+            res.json(avg)
         }catch(error){
             next(error)
         }
