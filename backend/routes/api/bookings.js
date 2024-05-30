@@ -60,13 +60,6 @@ router
             // get booking based on booking id
             const booking = await Booking.findByPk(req.params.bookingId,{
             })
-            if(booking.userId !== req.user.id){
-                let err = {
-                    "title":"Unauthorized User",
-                    "message":"Forbidden"
-                }
-                throw err
-            }
             // check if booking exists
             if(!booking){
                 // create err
@@ -79,6 +72,13 @@ router
                     message:"Booking could'nt be found",
                 }
                 // send error to error handler
+                throw err
+            }
+            if(booking.userId !== req.user.id){
+                let err = {
+                    "title":"Unauthorized User",
+                    "message":"Forbidden"
+                }
                 throw err
             }
             // deconstruc booking for start and end date
