@@ -145,7 +145,7 @@ router
                     // add status
                     "status":403,
                     // add message
-                    "message":"Sory, this spot is already booked for the specified dates",
+                    "message":"Sorry, this spot is already booked for the specified dates",
                     // add errors
                     "errors":{}
                 }
