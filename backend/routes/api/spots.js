@@ -458,7 +458,7 @@ router
             //     page:+page,
             //     size:+size
             // })
-            res.json(avg)
+            res.json(reviews)
         }catch(error){
             next(error)
         }
