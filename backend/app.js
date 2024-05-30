@@ -107,6 +107,11 @@ app.use((err, _req, res, _next) => {
         message:err.message
       })
     }
+    if(err.title === 'Invalid Data'){
+      return res.json({
+        message:err.message
+      })
+    }
     res.json({
         title: err.title || 'Server Error',
         message: err.message,

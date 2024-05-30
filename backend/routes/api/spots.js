@@ -569,6 +569,7 @@ router
             // verify bookings dont overlap
             const bookings = await Booking.findAll({
                 where:{
+                    spotId:req.params.spotId,
                     [Op.and]:{
                         startDate:{
                             [Op.lt]:req.query.endDate
