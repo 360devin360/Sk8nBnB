@@ -71,12 +71,12 @@ router
                     // add status
                     status:404,
                     // add title
-                    title:"Resouce not found",
+                    title:"Resource not found",
                     // add message
                     message:"Booking could'nt be found",
                 }
                 // send error to error handler
-                return next(err)
+                throw err
             }
             // deconstruc booking for start and end date
             let {startDate,endDate} = booking
