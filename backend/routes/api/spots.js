@@ -453,12 +453,12 @@ router
                 spot.previewImage = images[spot.id]
             })
             // return Spots
-            // res.json({
-            //     Spots,
-            //     page:+page,
-            //     size:+size
-            // })
-            res.json(reviews)
+            res.json({
+                Spots,
+                page:+page,
+                size:+size
+            })
+            
         }catch(error){
             next(error)
         }
