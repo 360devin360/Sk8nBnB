@@ -293,7 +293,7 @@ router
             throw err
         }
         // delete review
-        review.destroy()
+        await review.destroy()
         //send response message
         res.json({
             "message":"Successfully deleted"
