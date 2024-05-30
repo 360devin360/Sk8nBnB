@@ -127,7 +127,10 @@ router
                     ],
                 }]
             })
-
+            spots.forEach(value=>{
+                let spot = value.toJSON()
+                spot.avgRating = +spot.avgRating.toFixed(2)
+            })
             res.json({spots})
 
         }catch(error){
