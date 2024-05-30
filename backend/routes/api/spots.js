@@ -127,11 +127,29 @@ router
                     ],
                 }]
             })
+            let Spots = []
             spots.forEach(value=>{
                 let spot = value.toJSON()
-                spot.avgRating = (+spot.avgRating).toFixed(2)
+                let avgRating = (+spot.avgRating).toFixed(2)
+                Spots.push({
+                    id:spot.id,
+                    ownerId:spot.ownerId,
+                    address:spot.address,
+                    city:spot.city,
+                    state:spot.state,
+                    country:spot.country,
+                    lat:spot.lat,
+                    lng:spot.lng,
+                    name:spot.name,
+                    description:spot.description,
+                    price:spot.price,
+                    createdAt:spot.createdAt,
+                    updatedAt:spot.updateAt,
+                    avgRating:+avgRating,
+                    previewImage:spot.previewImage
+                })
             })
-            res.json({spots})
+            res.json({Spots})
 
         }catch(error){
             next(error)
