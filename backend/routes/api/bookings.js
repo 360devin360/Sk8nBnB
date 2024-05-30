@@ -83,7 +83,7 @@ router
             // if requested start date comes after requested end date throw error
             if(req.query.startDate > req.query.endDate){
                 // create error
-                let err ={
+                let err = {
                     // add status code
                     status:400,
                     // add title
@@ -96,7 +96,7 @@ router
                     }
                 }
                 // send response
-                return next(err)
+                throw err
             }
             // if endDate is before today send error
             if(endDate < new Date()){
