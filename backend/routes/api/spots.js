@@ -413,7 +413,7 @@ router
                     avg[id] = {
                         // add total from review and count to it
                         spotId:value.spotId,
-                        total:value.stars,
+                        total:+value.stars,
                         count:1
                     }
                 //else
