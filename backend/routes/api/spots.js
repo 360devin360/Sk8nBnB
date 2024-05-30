@@ -106,6 +106,9 @@ router
     .get('/current', requireAuth, async(req,res,next)=>{
         try{
             const spots = await Spot.findAll({
+                where:{
+                    ownerId:req.user.id
+                },
                 attributes: {
                     include:[
                         [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
