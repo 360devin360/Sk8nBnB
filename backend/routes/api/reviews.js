@@ -194,7 +194,7 @@ router
         // if error was not thrown add image to review
         let reviewImage = await ReviewImage.create({
             reviewId:req.params.reviewId,
-            ...req.query
+            ...req.body
         })
         // send response
         res.json({
@@ -245,8 +245,8 @@ router
             throw err
         }
         // change edit review
-        review.review = req.query.review
-        review.stars = req.query.stars
+        review.review = req.body.review
+        review.stars = req.body.stars
         // save review
         await review.save()
         // send respons
