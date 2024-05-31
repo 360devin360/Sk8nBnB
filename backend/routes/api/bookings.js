@@ -84,7 +84,7 @@ router
             // deconstruc booking for start and end date
             let {startDate,endDate} = booking
             // if requested start date comes after requested end date throw error
-            if(req.query.startDate > req.query.endDate){
+            if(req.body.startDate > req.body.endDate){
                 // create error
                 let err = {
                     // add status code
@@ -125,11 +125,11 @@ router
                     [Op.and]:{
                         // start date must be less than query end date
                         startDate:{
-                            [Op.lt]:req.query.endDate
+                            [Op.lt]:req.body.endDate
                         },
                         // end date must be after query startdate
                         endDate:{
-                            [Op.gt]:req.query.startDate
+                            [Op.gt]:req.body.startDate
                         }
                     } 
                 }
@@ -150,19 +150,19 @@ router
                     "errors":{}
                 }
                 // if start date is less than request end date send message for start date
-                if(booking.startDate<new Date(req.query.endDate)){
+                if(booking.startDate<new Date(req.body.endDate)){
                     err.errors.startDate = "Start date conflicts with an existing booking"
                 }
                 // if end date is less than request start date send message for end date
-                if(booking.endDate>new Date(req.query.startDate)){
+                if(booking.endDate>new Date(req.body.startDate)){
                     err.errors.endDate = "End date conflicts with an existing booking"
                 }
                 // forward err
                 throw err
             })
             // update booking
-            booking.startDate = req.query.startDate;
-            booking.endDate = req.query.endDate
+            booking.startDate = req.body.startDate;
+            booking.endDate = req.body.endDate
             // save booking
             booking.save()
             // respond with info
