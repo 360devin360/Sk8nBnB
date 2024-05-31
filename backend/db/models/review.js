@@ -29,14 +29,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   // spotId userId combo needs to be unique
   Review.init({
-    spotId: {
-      type:DataTypes.INTEGER,
-      allowNull:false,
-      references:{
-        model:'Spots',
-      },
-      onDelete:'cascade'
-    },
     userId: {
       type:DataTypes.INTEGER,
       allowNull:false,
@@ -45,15 +37,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete:'cascade'
     },
-    stars: {
+    spotId: {
       type:DataTypes.INTEGER,
       allowNull:false,
-      validate:{
-        notNull:true,
-        isInt:true,
-        min:1,
-        max:5,
-      }
+      references:{
+        model:'Spots',
+      },
+      onDelete:'cascade'
     },
     review: {
       type:DataTypes.STRING,
@@ -63,6 +53,16 @@ module.exports = (sequelize, DataTypes) => {
         len:[1,100],
         is:/^[A-Za-z0-9 .,!?]+$/,
         notEmpty:true
+      }
+    },
+    stars: {
+      type:DataTypes.INTEGER,
+      allowNull:false,
+      validate:{
+        notNull:true,
+        isInt:true,
+        min:1,
+        max:5,
       }
     }
   }, {

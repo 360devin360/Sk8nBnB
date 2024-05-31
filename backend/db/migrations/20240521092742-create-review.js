@@ -15,15 +15,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      spotId: {
-        type: Sequelize.INTEGER,
-        allowNull:false,
-        unique:'unique_tag',
-        references:{
-          model:'Spots'
-        },
-        onDelete:"cascade"
-      },
       userId: {
         type: Sequelize.INTEGER,
         allowNull:false,
@@ -33,13 +24,22 @@ module.exports = {
         },
         onDelete:'cascade'
       },
-      stars: {
-        type:Sequelize.NUMERIC(1),
+      spotId: {
+        type: Sequelize.INTEGER,
         allowNull:false,
+        unique:'unique_tag',
+        references:{
+          model:'Spots'
+        },
+        onDelete:"cascade"
       },
       review: {
           type: Sequelize.STRING,
           allowNull:false,
+      },
+      stars: {
+        type:Sequelize.INTEGER,
+        allowNull:false,
       },
       createdAt: {
         allowNull: false,

@@ -106,6 +106,9 @@ router
     .get('/current', requireAuth, async(req,res,next)=>{
         try{
             const spots = await Spot.findAll({
+                where:{
+                    ownerId:req.user.id
+                },
                 attributes: {
                     include:[
                         [Sequelize.fn('AVG',Sequelize.col('Reviews.stars')),'avgRating'],
@@ -315,6 +318,7 @@ router
                     ]
                 }]
             })
+            // if no spots send error
             if(!spots.length){
                 let err = new Error("Spot couldn't be found")
                 err.status = 404
@@ -324,7 +328,32 @@ router
                 }
                 throw err
             }
-            res.json({spots})
+            // create returnable object
+            let Spots = []
+            // iterate through spots
+            spots.forEach(value=>{
+                // create readable JSON from value
+                let spot = value.toJSON()
+                Spots.push({
+                    id:spot.id,
+                    ownerId:spot.ownerId,
+                    address:spot.address,
+                    city:spot.city,
+                    state:spot.state,
+                    country:spot.country,
+                    lat:spot.lat,
+                    lng:spot.lng,
+                    name:spot.name,
+                    description:spot.description,
+                    price:spot.price,
+                    createdAt:spot.createdAt,
+                    updatedAt:spot.updatedAt,
+                    avgRating:+(+spot.avgRating).toFixed(2),
+                    SpotImages:spot.SpotImages,
+                    Owner:spot.Owner
+                })
+            })
+            res.json({Spots})
         }catch(error){
             next(error)
         }
@@ -413,7 +442,7 @@ router
                     avg[id] = {
                         // add total from review and count to it
                         spotId:value.spotId,
-                        total:value.stars,
+                        total:+value.stars,
                         count:1
                     }
                 //else
@@ -428,7 +457,7 @@ router
             // iterate over avg
             for(let spot in avg){
                 // add spot id and average of ratings to avgRating
-                avgRatings[avg[spot].spotId] = avg[spot].total/avg[spot].count
+                avgRatings[avg[spot].spotId] = (avg[spot].total)/(avg[spot].count)
             }
             //get images
             const imagesObject = await SpotImage.findAll({
@@ -458,6 +487,7 @@ router
                 page:+page,
                 size:+size
             })
+            
         }catch(error){
             next(error)
         }
@@ -516,19 +546,19 @@ router
             // create a err object
             let err = {
                 title:"Resource not found",
-                message:"Review couldn't be found",
+                message:"Spot couldn't be found",
                 status:404
             }
             throw err
         }
         // get reviews for the spot based on id
-        const review = await Review.findAll({
+        const reviews = await Review.findAll({
             where:{
                 spotId:req.params.spotId
             }
         })
         // iterate over review and look for user (if found return error)
-        review.forEach(value=>{
+        reviews.forEach(value=>{
             // deconstruct value
             let review = value.toJSON()
             // if userId is in review than this user already has a review
@@ -544,16 +574,16 @@ router
             }
         })
         // create a review for the spot
-        let Reviews = await Review.create({
+        let review = await Review.create({
             // include userId
             userId:req.user.id,
             // include spotId
             spotId:req.params.spotId,
             // include review and stars from query
-            ...req.query
+            ...req.body
         })
         // get the created review for response
-        // const Review = await Review.findByPk()
+        const Reviews = await Review.findByPk(review.id)
         return res.json(Reviews)
 
     })
@@ -561,7 +591,7 @@ router
     .post('/:spotId/bookings',requireAuth,startDateCheck,async(req,res,next)=>{
         try{
             // deconstruct body
-            let {startDate,endDate} = req.query;
+            let {startDate,endDate} = req.body;
             // find spot
             const spot = await Spot.findByPk(req.params.spotId)
             // if no spot send error
@@ -593,10 +623,10 @@ router
                     spotId:req.params.spotId,
                     [Op.and]:{
                         startDate:{
-                            [Op.lt]:req.query.endDate
+                            [Op.lt]:req.body.endDate
                         },
                         endDate:{
-                            [Op.gt]:req.query.startDate,
+                            [Op.gt]:req.body.startDate,
                         }
                     }
                 }
@@ -609,10 +639,10 @@ router
                     "message":"Sorry, this spot is already booked for the specified dates",
                     "errors":{}
                 }
-                if(booking.startDate<=new Date(req.query.endDate)){
+                if(booking.startDate<=new Date(req.body.endDate)){
                     err.errors.startDate="Start date conflicts with an existing booking"
                 }
-                if(booking.endDate>=new Date(req.query.startDate)){
+                if(booking.endDate>=new Date(req.body.startDate)){
                     err.errors.endDate="End date conflicts with an existing booking"
                 }
                 throw err
@@ -621,13 +651,12 @@ router
             let booking = await Booking.create({
                 userId:req.user.id,
                 spotId:req.params.spotId,
-                ...req.query
+                ...req.body
             })
             res.json(booking)
         // catch error
         }catch(error){
             if(error.status==403){
-                console.log('hello')
                 return next(error)
             }
             // add title
