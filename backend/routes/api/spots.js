@@ -318,6 +318,7 @@ router
                     ]
                 }]
             })
+            // if no spots send error
             if(!spots.length){
                 let err = new Error("Spot couldn't be found")
                 err.status = 404
@@ -327,7 +328,32 @@ router
                 }
                 throw err
             }
-            res.json({spots})
+            // create returnable object
+            let Spots = []
+            // iterate through spots
+            spots.forEach(value=>{
+                // create readable JSON from value
+                let spot = value.toJSON()
+                Spots.push({
+                    id:spot.id,
+                    ownerId:spot.ownerId,
+                    address:spot.address,
+                    city:spot.city,
+                    state:spot.state,
+                    country:spot.country,
+                    lat:spot.lat,
+                    lng:spot.lng,
+                    name:spot.name,
+                    description:spot.description,
+                    price:spot.price,
+                    createdAt:spot.createdAt,
+                    updatedAt:spot.updatedAt,
+                    avgRating:+(+spot.avgRating).toFixed(2),
+                    SpotImages:spot.SpotImages,
+                    Owner:spot.Owner
+                })
+            })
+            res.json({Spots})
         }catch(error){
             next(error)
         }
