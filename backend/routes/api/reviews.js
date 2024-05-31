@@ -52,6 +52,7 @@ router
                 // get all attributes except createdAt and updatedAt
                 attributes:{
                     exclude:[
+                        'description',
                         'createdAt',
                         'updatedAt'
                     ],
