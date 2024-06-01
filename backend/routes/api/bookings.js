@@ -43,10 +43,10 @@ router
                     spotId,
                     Spot,
                     userId,
-                    startDate,
-                    endDate,
-                    createdAt,
-                    updatedAt
+                    startDate:startDate.toISOString().split('T').join(' ').slice(0,-5),
+                    endDate:endDate.toISOString().split('T').join(' ').slice(0,-5),
+                    createdAt:createdAt.toISOString().split('T').join(' ').slice(0,-5),
+                    updatedAt:updatedAt.toISOString().split('T').join(' ').slice(0,-5),
                 })
             })
             res.json({Bookings})
@@ -165,8 +165,16 @@ router
             booking.endDate = req.body.endDate
             // save booking
             booking.save()
+            let bookingValues = {}
+            bookingValues.id = booking.id
+            bookingValues.spotId=booking.spotId
+            bookingValues.userId = booking.userId
+            bookingValues.startDate = booking.startDate.toISOString().split('T').join(' ').slice(0,-5)
+            bookingValues.endDate = booking.endDate.toISOString().split('T').join(' ').slice(0,-5)
+            bookingValues.createdAt = booking.createdAt.toISOString().split('T').join(' ').slice(0,-5)
+            bookingValues.updatedAt = booking.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
             // respond with info
-            res.json({booking})
+            res.json(bookingValues)
         // catch and forward errors
         }catch(error){
             next(error)

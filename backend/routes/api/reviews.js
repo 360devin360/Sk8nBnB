@@ -109,6 +109,8 @@ router
                 review.ReviewImages=imageToReview[review.id]
             }
             // push review to Reviews
+            review.createdAt = review.createdAt.toISOString().split('T').join(' ').slice(0,-5)
+            review.updatedAt = review.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
             Reviews.push(review)
         })
         // return reviews
@@ -249,8 +251,16 @@ router
         review.stars = req.body.stars
         // save review
         await review.save()
+        let reviewValues = {}
+        reviewValues.id = review.id
+        reviewValues.userId = review.userId
+        reviewValues.spotId = review.spotId
+        reviewValues.review = review.review
+        reviewValues.starts = review.stars
+        reviewValues.createdAt = review.createdAt.toISOString().split('T').join(' ').slice(0,-5)
+        reviewValues.updatedAt = review.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
         // send respons
-        res.json(review)
+        res.json(reviewValues)
     // catch errors
     }catch(error){
         return next(error)
