@@ -27,11 +27,13 @@ const validateSpotInfo = [
         .exists({checkFalsy:true})
         .withMessage('Country is required'),
     check('lat')
-        .optional({nullable:true})
+        .exists({checkFalsy:true})
+        .withMessage('Latitude is not valid')
         .isFloat()
         .withMessage('Latitude is not valid'),
     check('lng')
-        .optional({nullable:true})
+        .exists({checkFalsy:true})
+        .withMessage('Longitude is not valid')
         .isFloat()
         .withMessage('Longitude is not valid'),
     check('name')
@@ -48,12 +50,12 @@ const validateSpotInfo = [
     handleValidationErrors
 ]
 const decimalCheck = [
-    // check('page')
-    //     .isInt({min:1})
-    //     .withMessage('page must be greater than or equal to 1'),
-    // check('size')
-    //     .isInt({min:1})
-    //     .withMessage('size must be greater than or equal to 1'),
+    check('page')
+        .isInt({min:1})
+        .withMessage('page must be greater than or equal to 1'),
+    check('size')
+        .isInt({min:1})
+        .withMessage('size must be greater than or equal to 1'),
     check('minLat')
         .optional({nullable:true})
         .isDecimal()
@@ -340,30 +342,39 @@ router
                 }
                 throw err
             }
+            // get reviews for the spot based on id
+            const reviews = await Review.findAll({
+                where:{
+                    spotId:req.params.spotId
+                }
+            })
+            let numReviews = reviews.length
             // create returnable object
+
             let Spots = []
             // iterate through spots
-            spots.forEach(value=>{
+            spots.forEach((value,index)=>{
                 // create readable JSON from value
                 let spot = value.toJSON()
-                Spots.push({
-                    id:spot.id,
-                    ownerId:spot.ownerId,
-                    address:spot.address,
-                    city:spot.city,
-                    state:spot.state,
-                    country:spot.country,
-                    lat:spot.lat,
-                    lng:spot.lng,
-                    name:spot.name,
-                    description:spot.description,
-                    price:spot.price,
-                    createdAt:spot.createdAt.toISOString().split('T').join(' ').slice(0,-5),
-                    updatedAt:spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5),
-                    avgRating:+(+spot.avgRating).toFixed(2),
-                    SpotImages:spot.SpotImages,
-                    Owner:spot.Owner
-                })
+                    Spots.push({
+                        id:spot.id,
+                        ownerId:spot.ownerId,
+                        address:spot.address,
+                        city:spot.city,
+                        state:spot.state,
+                        country:spot.country,
+                        lat:spot.lat,
+                        lng:spot.lng,
+                        name:spot.name,
+                        description:spot.description,
+                        price:spot.price,
+                        createdAt:spot.createdAt.toISOString().split('T').join(' ').slice(0,-5),
+                        updatedAt:spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5),
+                        numReviews:numReviews,
+                        avgRating:+(+spot.avgRating).toFixed(2),
+                        SpotImages:spot.SpotImages,
+                        Owner:spot.Owner
+                    })
             })
             res.json({Spots})
         }catch(error){
@@ -608,7 +619,7 @@ router
         Reviews.stars = reviewValues.stars
         Reviews.createdAt = reviewValues.createdAt.toISOString().split('T').join(' ').slice(0,-5)
         Reviews.updatedAt = reviewValues.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
-        return res.json(Reviews)
+        return res.status(201).json(Reviews)
 
     })
     // create a booking -------------------------------------------------------------------- create a booking
@@ -682,7 +693,7 @@ router
             bookingValue.endDate = booking.endDate.toISOString().split('T').join(' ').slice(0,-5)
             bookingValue.createdAt = booking.createdAt.toISOString().split("T").join(' ').slice(0,-5)
             bookingValue.updatedAt = booking.updatedAt.toISOString().split("T").join(' ').slice(0,-5)
-            res.json(bookingValue)
+            res.status(201).json(bookingValue)
         // catch error
         }catch(error){
             if(error.status==403){
@@ -712,10 +723,8 @@ router
             })
             const spot = await Spot.findByPk(created.id)
             let spotValues = spot.toJSON()
-            console.log(spotValues)
             spotValues.createdAt = spot.createdAt.toISOString().split('T').join(' ').slice(0,-5)
             spotValues.updatedAt = spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
-            console.log(spotValues)
             res.status(201).json(spotValues)
         }catch(error){
             console.log(error)

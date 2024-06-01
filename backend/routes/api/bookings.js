@@ -4,7 +4,18 @@ const {Booking} = require('../../db/models');
 const {Spot} = require('../../db/models');
 const {SpotImage} = require('../../db/models');
 const {Op} = require('sequelize');
-const {Sequelize} = require('sequelize')
+const {Sequelize} = require('sequelize');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+const checkDates = [
+    check('startDate')
+    .exists({checkFalsy:true})
+    .withMessage("endDate cannot come before startdate"),
+    check('endDate')
+    .exists({checkFalsy:true})
+    .withMessage("endDate cannot come before startdate"),
+    handleValidationErrors
+]
 router
     // get bookings for current user --------------------------------------------------------------- get bookings for current user
     .get('/current',requireAuth,async(req,res,next)=>{
@@ -55,7 +66,7 @@ router
         }
     })
     // edit a booking ------------------------------------------------------------------------------- edit a booking
-    .put('/:bookingId',requireAuth,async(req,res,next)=>{
+    .put('/:bookingId',requireAuth,checkDates,async(req,res,next)=>{
         try{
             // get booking based on booking id
             const booking = await Booking.findByPk(req.params.bookingId,{

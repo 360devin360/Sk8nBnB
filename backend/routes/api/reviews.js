@@ -256,7 +256,7 @@ router
         reviewValues.userId = review.userId
         reviewValues.spotId = review.spotId
         reviewValues.review = review.review
-        reviewValues.starts = review.stars
+        reviewValues.stars = review.stars
         reviewValues.createdAt = review.createdAt.toISOString().split('T').join(' ').slice(0,-5)
         reviewValues.updatedAt = review.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
         // send respons
