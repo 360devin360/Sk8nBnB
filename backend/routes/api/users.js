@@ -43,7 +43,7 @@ router.post('/', validateSignup, async (req,res,next)=>{
     try{
         // deconstruct req.body
         const defaultPassword = 'password'
-        const {email, password, username,firstName,lastName} = req.body;
+        const {email, password, username, firstName, lastName} = req.body;
         // // create a hashed password for user
         let hashedPassword;
         if(password) hashedPassword = bcrypt.hashSync(password);
@@ -73,6 +73,13 @@ router.post('/', validateSignup, async (req,res,next)=>{
         });
     // forward any errors not already sent
     }catch(error){
+        // let errors = error.toJSON()
+        if(error.name==="SequelizeValidationError"){
+            let err = {}
+            err.title = "ValidationError",
+            err.message = error.message
+            next(err)
+        }
         let err = {}
         err.title = "ValidationError";
         err.message = "User already exists";
