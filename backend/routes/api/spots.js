@@ -146,8 +146,8 @@ router
                     name:spot.name,
                     description:spot.description,
                     price:spot.price,
-                    createdAt:spot.createdAt,
-                    updatedAt:spot.updateAt,
+                    createdAt:spot.createdAt.toISOString().split('T').join(' ').slice(0,-5),
+                    updatedAt:spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5),
                     avgRating:+avgRating,
                     previewImage:spot.previewImage
                 })
@@ -178,7 +178,7 @@ router
                 throw err
             }
             // get reviews
-            const Reviews = await Review.findAll({
+            const reviews = await Review.findAll({
                 // where spot ids match
                 where:{
                     spotId:+req.params.spotId
@@ -203,6 +203,13 @@ router
                 }]
             })
             // send response
+            let Reviews = []
+            reviews.forEach(value=>{
+                let review = value.toJSON()
+                review.createdAt = review.createdAt.toISOString().split('T').join(' ').slice(0,-5)
+                review.updatedAt = review.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
+                Reviews.push(review)
+            })
             return res.json({Reviews})
         }catch(error){
             next(error)
@@ -253,8 +260,13 @@ router
                 // deconsruct value
                 let booking = value.toJSON()
                 // if user is owner of booking do...
+                let bookingStartDate = booking.startDate.toISOString().split('T').join(' ').slice(0,-5);
+                let bookingEndDate = booking.endDate.toISOString().split('T').join(' ').slice(0,-5);
+                let bookingCreatedAt = booking.createdAt.toISOString().split('T').join(' ').slice(0,-5);
+                let bookingUpdatedAt = booking.updatedAt.toISOString().split('T').join(' ').slice(0,-5);
                 if(booking.Spot.ownerId===req.user.id){ 
                     // push specific infor to Bookings
+
                     Bookings.push({
                         // User info
                         User:booking.User,
@@ -262,10 +274,10 @@ router
                         id:booking.id,
                         spotId:booking.spotId,
                         userId:booking.userId,
-                        startDate:booking.startDate,
-                        endDate:booking.endDate,
-                        createdAt:booking.createdAt,
-                        updatedAt:booking.updatedAt
+                        startDate:bookingStartDate,
+                        endDate:bookingEndDate,
+                        createdAt:bookingCreatedAt,
+                        updatedAt:bookingUpdatedAt
                     })
                 // else
                 }else{
@@ -273,8 +285,8 @@ router
                     Bookings.push({
                         // only return spotId, start and end dates
                         spotId:booking.spotId,
-                        startDate:booking.startDate,
-                        endDate:booking.endDate
+                        startDate:bookingStartDate,
+                        endDate:bookingEndDate
                     })
                 }
             });
@@ -346,8 +358,8 @@ router
                     name:spot.name,
                     description:spot.description,
                     price:spot.price,
-                    createdAt:spot.createdAt,
-                    updatedAt:spot.updatedAt,
+                    createdAt:spot.createdAt.toISOString().split('T').join(' ').slice(0,-5),
+                    updatedAt:spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5),
                     avgRating:+(+spot.avgRating).toFixed(2),
                     SpotImages:spot.SpotImages,
                     Owner:spot.Owner
@@ -424,10 +436,13 @@ router
             spots.forEach(spot => {
                 // deconstruct each spot
                 let values = spot.toJSON()
+                // reformat dates
+                values.createdAt = values.createdAt.toISOString().split('T').join(' ').slice(0,-5)
+                values.updatedAt = values.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
                 // push each collection of values from spot to returnable array
                 Spots.push(values)
             })
-            // get all spots
+            // get all reviews
             const reviews = await Review.findAll()
             // create object for storage
             let avg = {}
@@ -480,6 +495,7 @@ router
                 // add avgRating and spot image
                 spot.avgRating = avgRatings[spot.id]
                 spot.previewImage = images[spot.id]
+                
             })
             // return Spots
             res.json({
@@ -583,7 +599,15 @@ router
             ...req.body
         })
         // get the created review for response
-        const Reviews = await Review.findByPk(review.id)
+        let Reviews = {}
+        const reviewValues = await Review.findByPk(review.id)
+        Reviews.id=reviewValues.id
+        Reviews.userId=reviewValues.userId
+        Reviews.spotId=reviewValues.spotId
+        Reviews.review = reviewValues.review
+        Reviews.stars = reviewValues.stars
+        Reviews.createdAt = reviewValues.createdAt.toISOString().split('T').join(' ').slice(0,-5)
+        Reviews.updatedAt = reviewValues.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
         return res.json(Reviews)
 
     })
@@ -653,7 +677,12 @@ router
                 spotId:req.params.spotId,
                 ...req.body
             })
-            res.json(booking)
+            let bookingValue = booking.toJSON()
+            bookingValue.startDate = booking.startDate.toISOString().split('T').join(' ').slice(0,-5)
+            bookingValue.endDate = booking.endDate.toISOString().split('T').join(' ').slice(0,-5)
+            bookingValue.createdAt = booking.createdAt.toISOString().split("T").join(' ').slice(0,-5)
+            bookingValue.updatedAt = booking.updatedAt.toISOString().split("T").join(' ').slice(0,-5)
+            res.json(bookingValue)
         // catch error
         }catch(error){
             if(error.status==403){
@@ -676,14 +705,20 @@ router
     // create a spot------------------------------------------------------------------------ create a spot
     .post('/', requireAuth, validateSpotInfo, async (req,res,next)=>{
         try{
-            req.body.ownerId = req.user.id
+            // req.body.ownerId = req.user.id
             let created = await Spot.create({
                 ownerId:req.user.id,
                 ...req.body
             })
             const spot = await Spot.findByPk(created.id)
-            res.status(201).json(spot)
+            let spotValues = spot.toJSON()
+            console.log(spotValues)
+            spotValues.createdAt = spot.createdAt.toISOString().split('T').join(' ').slice(0,-5)
+            spotValues.updatedAt = spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
+            console.log(spotValues)
+            res.status(201).json(spotValues)
         }catch(error){
+            console.log(error)
             console.log(error)
             let err = {}
             err.title = 'ValidationError';
@@ -728,7 +763,10 @@ router
                 }
             })
             const spot = await Spot.findByPk(req.params.spotId)
-            res.json(spot)
+            spotValues = spot.toJSON()
+            spotValues.createdAt = spot.createdAt.toISOString().split('T').join(' ').slice(0,-5)
+            spotValues.updatedAt = spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
+            res.json(spotValues)
         }catch(error){
             next(error)
         }
