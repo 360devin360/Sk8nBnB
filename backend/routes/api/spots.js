@@ -50,12 +50,12 @@ const validateSpotInfo = [
     handleValidationErrors
 ]
 const decimalCheck = [
-    // check('page')
-    //     .isInt({min:1})
-    //     .withMessage('page must be greater than or equal to 1'),
-    // check('size')
-    //     .isInt({min:1})
-    //     .withMessage('size must be greater than or equal to 1'),
+    check('page')
+        .isInt({min:1})
+        .withMessage('page must be greater than or equal to 1'),
+    check('size')
+        .isInt({min:1})
+        .withMessage('size must be greater than or equal to 1'),
     check('minLat')
         .optional({nullable:true})
         .isDecimal()
@@ -619,7 +619,7 @@ router
         Reviews.stars = reviewValues.stars
         Reviews.createdAt = reviewValues.createdAt.toISOString().split('T').join(' ').slice(0,-5)
         Reviews.updatedAt = reviewValues.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
-        return res.json(Reviews)
+        return res.status(201).json(Reviews)
 
     })
     // create a booking -------------------------------------------------------------------- create a booking
@@ -693,7 +693,7 @@ router
             bookingValue.endDate = booking.endDate.toISOString().split('T').join(' ').slice(0,-5)
             bookingValue.createdAt = booking.createdAt.toISOString().split("T").join(' ').slice(0,-5)
             bookingValue.updatedAt = booking.updatedAt.toISOString().split("T").join(' ').slice(0,-5)
-            res.json(bookingValue)
+            res.status(201).json(bookingValue)
         // catch error
         }catch(error){
             if(error.status==403){
