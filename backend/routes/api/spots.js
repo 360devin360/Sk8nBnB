@@ -27,11 +27,13 @@ const validateSpotInfo = [
         .exists({checkFalsy:true})
         .withMessage('Country is required'),
     check('lat')
-        .optional({nullable:true})
+        .exists({checkFalsy:true})
+        .withMessage('Latitude is not valid')
         .isFloat()
         .withMessage('Latitude is not valid'),
     check('lng')
-        .optional({nullable:true})
+        .exists({checkFalsy:true})
+        .withMessage('Longitude is not valid')
         .isFloat()
         .withMessage('Longitude is not valid'),
     check('name')
@@ -721,10 +723,8 @@ router
             })
             const spot = await Spot.findByPk(created.id)
             let spotValues = spot.toJSON()
-            console.log(spotValues)
             spotValues.createdAt = spot.createdAt.toISOString().split('T').join(' ').slice(0,-5)
             spotValues.updatedAt = spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5)
-            console.log(spotValues)
             res.status(201).json(spotValues)
         }catch(error){
             console.log(error)
