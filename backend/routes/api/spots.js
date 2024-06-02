@@ -340,30 +340,39 @@ router
                 }
                 throw err
             }
+            // get reviews for the spot based on id
+            const reviews = await Review.findAll({
+                where:{
+                    spotId:req.params.spotId
+                }
+            })
+            let numReviews = reviews.length
             // create returnable object
+
             let Spots = []
             // iterate through spots
-            spots.forEach(value=>{
+            spots.forEach((value,index)=>{
                 // create readable JSON from value
                 let spot = value.toJSON()
-                Spots.push({
-                    id:spot.id,
-                    ownerId:spot.ownerId,
-                    address:spot.address,
-                    city:spot.city,
-                    state:spot.state,
-                    country:spot.country,
-                    lat:spot.lat,
-                    lng:spot.lng,
-                    name:spot.name,
-                    description:spot.description,
-                    price:spot.price,
-                    createdAt:spot.createdAt.toISOString().split('T').join(' ').slice(0,-5),
-                    updatedAt:spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5),
-                    avgRating:+(+spot.avgRating).toFixed(2),
-                    SpotImages:spot.SpotImages,
-                    Owner:spot.Owner
-                })
+                    Spots.push({
+                        id:spot.id,
+                        ownerId:spot.ownerId,
+                        address:spot.address,
+                        city:spot.city,
+                        state:spot.state,
+                        country:spot.country,
+                        lat:spot.lat,
+                        lng:spot.lng,
+                        name:spot.name,
+                        description:spot.description,
+                        price:spot.price,
+                        createdAt:spot.createdAt.toISOString().split('T').join(' ').slice(0,-5),
+                        updatedAt:spot.updatedAt.toISOString().split('T').join(' ').slice(0,-5),
+                        numReviews:numReviews,
+                        avgRating:+(+spot.avgRating).toFixed(2),
+                        SpotImages:spot.SpotImages,
+                        Owner:spot.Owner
+                    })
             })
             res.json({Spots})
         }catch(error){
