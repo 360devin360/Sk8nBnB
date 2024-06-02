@@ -66,7 +66,7 @@ router
         }
     })
     // edit a booking ------------------------------------------------------------------------------- edit a booking
-    .put('/:bookingId',requireAuth,checkDates,async(req,res,next)=>{
+    .put('/:bookingId',requireAuth, async(req,res,next)=>{
         try{
             // get booking based on booking id
             const booking = await Booking.findByPk(req.params.bookingId,{

@@ -51,9 +51,11 @@ const validateSpotInfo = [
 ]
 const decimalCheck = [
     check('page')
+        .optional({nullable:true})
         .isInt({min:1})
         .withMessage('page must be greater than or equal to 1'),
     check('size')
+        .optional({nullable:true})
         .isInt({min:1})
         .withMessage('size must be greater than or equal to 1'),
     check('minLat')
@@ -558,7 +560,7 @@ router
                     'preview'
                 ]
             })
-            res.json(image)
+            res.status(201).json(image)
         }catch(error){
             return next(error)
         }
