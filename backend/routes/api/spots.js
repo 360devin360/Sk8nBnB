@@ -549,18 +549,18 @@ router
                 }
                 throw err
             }
-            const CreatedImage = await SpotImage.create({
-                spotId: spot.id,
-                ...req.body
-            })
-            const image = await SpotImage.findByPk(CreatedImage.id,{
-                attributes:[
-                    'id',
-                    'url',
-                    'preview'
-                ]
-            })
-            res.status(201).json(image)
+                const CreatedImage = await SpotImage.create({
+                    spotId: spot.id,
+                    ...req.body
+                })
+                const image = await SpotImage.findByPk(CreatedImage.id,{
+                    attributes:[
+                        'id',
+                        'url',
+                        'preview'
+                    ]
+                })
+                res.status(201).json(image)
         }catch(error){
             return next(error)
         }
