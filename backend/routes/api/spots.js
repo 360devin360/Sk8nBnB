@@ -756,7 +756,7 @@ router
                 throw err
             }
             // check authorization
-            if(spotToEdit.id!==req.user.id){
+            if(spotToEdit.ownerId!==req.user.id){
                 let err = {}
                 err.title = 'Unauthorized User'
                 err.message = 'Forbidden'
