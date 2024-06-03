@@ -77,7 +77,7 @@ const decimalCheck = [
     check('minPrice')
         .optional({nullable:true})
         .isFloat({min:0.01})
-        .withMessage('Min price must be greater than 0'),
+        .withMessage('Minimum price must be greater than 0'),
     check('maxPrice')
         .optional({nullable:true})
         .isFloat({min:0.01})
@@ -538,7 +538,7 @@ router
                 throw err
             }
             //check if current users id matches the spot id
-            if(spot.id !== req.user.id){
+            if(spot.ownerId !== req.user.id){
                 let err = {}
                 err.status = 403
                 err.title = 'Unauthorized User'
@@ -796,7 +796,7 @@ router
                 throw err
             }
             // check user authorization
-            if(spotToDelete.id!==req.user.id){
+            if(spotToDelete.ownerId!==req.user.id){
                 let err = {}
                 err.title = "Unauthorized User"
                 err.message = "Forbidden"
