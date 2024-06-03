@@ -226,6 +226,14 @@ router
                 }
                 throw err
             }
+            if(booking.endDate <= new Date()){
+                let err = {
+                    status:403,
+                    title:"Invalid Data",
+                    message:"Bookings that have been started can't be deleted"
+                }
+                throw err
+            }
             booking.destroy()
             res.json({
                 "message":"Successfully deleted"
