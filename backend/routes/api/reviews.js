@@ -199,7 +199,7 @@ router
             ...req.body
         })
         // send response
-        res.json({
+        res.status(201).json({
             id:reviewImage.id,
             url:reviewImage.url
         })
