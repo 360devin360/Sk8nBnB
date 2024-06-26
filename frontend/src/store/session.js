@@ -6,7 +6,7 @@ const GET_USER_INFO = '/session/GET_USER_INFO';
 const CLEAR_USER_INFO = '/session/CLEAR_USER_INFO';
 
 // action to update current user slice of state
-function getUserInfo(userInfo){
+export function getUserInfo(userInfo){
     return {
         type: GET_USER_INFO,
         payload:userInfo
@@ -70,8 +70,8 @@ export const logoutUser = () => async (dispatch) => {
         }
     case CLEAR_USER_INFO:
         return {
-            state,
-            ...initialState
+            ...state,
+            user:{...initialState}
         }
     default:
         return state
