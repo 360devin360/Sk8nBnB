@@ -6,7 +6,6 @@ const rootReducer = combineReducers({
 });
 
 let enhancer;
-
 if (import.meta.env.MODE === "production") {
   enhancer = applyMiddleware(thunk);
 } else {
