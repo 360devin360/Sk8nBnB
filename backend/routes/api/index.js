@@ -31,62 +31,62 @@ router.use('/bookings',bookingsRouter);
 
 // test routes
 // XSRF-TOKEN validation
-router.post('/test',function(req,res){
-    res.json({requestBody:req.body});
-});
+// router.post('/test',function(req,res){
+//     res.json({requestBody:req.body});
+// });
 
 // setCookieToken function
-router.get('/set-token-cookie', async (_req,res)=>{
-    //try catch block
-    try{
-        // find and store user where username = 'Demo-lition'
-        const user = await User.findOne({
-            where:{
-                username: "Demo-lition"
-            }
-        });
-        // use setTokenCookie function
-        setTokenCookie(res,user);
-        // return user
-        return res.json({user:user});
-    // catch error
-    }catch(error){
-        // forward custom message about the error
-        next({
-            'message':'error with /set-token-cookie in routes/api/index.js'
-        })
-    }
-})
+// router.get('/set-token-cookie', async (_req,res)=>{
+//     //try catch block
+//     try{
+//         // find and store user where username = 'Demo-lition'
+//         const user = await User.findOne({
+//             where:{
+//                 username: "Demo-lition"
+//             }
+//         });
+//         // use setTokenCookie function
+//         setTokenCookie(res,user);
+//         // return user
+//         return res.json({user:user});
+//     // catch error
+//     }catch(error){
+//         // forward custom message about the error
+//         next({
+//             'message':'error with /set-token-cookie in routes/api/index.js'
+//         })
+//     }
+// })
 
 // restoreUser functionality
-router.get('/restore-user',(req,res)=>{
-    //try catch
-    try{
-        // return user
-        return res.json(req.user)
-    // catch errors
-    }catch(error){
-        // forward custom message
-        next({
-            'message':'error with /restore-user in routes/api/index.js'
-        })
-    }
-});
+// router.get('/restore-user',(req,res)=>{
+//     //try catch
+//     try{
+//         // return user
+//         return res.json(req.user)
+//     // catch errors
+//     }catch(error){
+//         // forward custom message
+//         next({
+//             'message':'error with /restore-user in routes/api/index.js'
+//         })
+//     }
+// });
 
 // requireAuth middleware
-router.get('/require-auth',requireAuth,(req,res)=>{
-    // try catch
-    try{
-        //return user
-        return res.json(req.user);
-    // catch errors
-    }catch(error){
-        // forward custom message
-        next({
-            'message':"error with /require-auth in routes/api/index.js"
-        })
-    }
-});
+// router.get('/require-auth',requireAuth,(req,res)=>{
+//     // try catch
+//     try{
+//         //return user
+//         return res.json(req.user);
+//     // catch errors
+//     }catch(error){
+//         // forward custom message
+//         next({
+//             'message':"error with /require-auth in routes/api/index.js"
+//         })
+//     }
+// });
 
 
 // export router
