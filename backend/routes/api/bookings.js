@@ -126,6 +126,9 @@ router
                 // throw error
                 throw err
             }
+//------------------------------------------------------------------------------------
+            // if body start date is before today then through an error. (cannot make a booking for past date)
+//--------------------------------------------------------------------------------------------            
             // check bookings for interfering dates
             const bookings = await Booking.findAll({
                 // where
