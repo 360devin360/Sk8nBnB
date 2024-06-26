@@ -62,9 +62,17 @@ export const logoutUser = () => async (dispatch) => {
   const sessionReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_USER_INFO:
-        return payload
+        return {
+            ...state,
+            user:{
+                ...payload.user
+            }
+        }
     case CLEAR_USER_INFO:
-        return initialState
+        return {
+            state,
+            ...initialState
+        }
     default:
         return state
     }
