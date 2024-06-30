@@ -1,14 +1,15 @@
 import { useState } from "react"
-import {useDispatch, useSelector} from 'react-redux'
-import {Navigate} from 'react-router-dom'
-import './LoginFormPage.css';
+import {useDispatch} from 'react-redux'
+import './LoginFormModal.css';
 import { logInUserThunk } from "../../store/session";
+import {useModal} from '../../context/Modal'
 
-export default function LoginFormPage(){
+export default function LoginFormModal(){
     const dispatch = useDispatch()
     const [credential,setCredential] = useState('')
     const [password,setPassword] = useState('')
     const [errors,setErrors] = useState({})
+    const {closeModal} = useModal()
 
     function handleSubmit(e){
         e.preventDefault();
@@ -16,27 +17,27 @@ export default function LoginFormPage(){
             credential:credential,
             password:password
         }
-        
+        setErrors({})
         dispatch(logInUserThunk(userInfo))
-            .then(()=>setErrors({}))
+            .then(closeModal)
             .catch(err=>{
                 setErrors(err)
                 setCredential('')
                 setPassword('')
+                console.log({errors})
             })
     }
     
-    const user = useSelector(state=>state.session.user)
-    if(user){
-        return <Navigate to='/' replace={true}/>
-    }
-    console.log({...errors})
+// console.logs -----------------------------------console.logs
+    // console.log({...errors})
     // console.log(user)
+// console.logs -----------------------------------console.logs
+
     return (
         <>
             <h1>Log In</h1>
             <form
-                id='inputForm'
+                className='inputForm'
                 onSubmit={handleSubmit}
             >
                 <input
@@ -60,7 +61,7 @@ export default function LoginFormPage(){
                 </input>
                 {errors?.response?.message && errors?.response?.message !== "Bad Request" && <p>{errors?.response?.message}</p>}
                 {errors?.response?.errors?.password ? <p>{errors?.response?.errors?.password}</p> : <br/>}
-                <button>Submit</button>
+                <button>Log In</button>
             </form>   
         </>
     )
