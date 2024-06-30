@@ -19,6 +19,9 @@ const validateSignup = [
     check('username')
         .exists({checkFalsy:true})
         .withMessage('Username is required')
+        .not()
+        .isEmail()
+        .withMessage('Username Cannot Be An Email')
         .isLength({min:3})
         .withMessage('Username Must Be Longer Than 3 Characters'),
     check('firstName')

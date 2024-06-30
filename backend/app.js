@@ -61,6 +61,12 @@ app.use((err, _req, res, _next) => {
     // if(err instanceof ValidationError){
 
     // }
+    if(err.status === 500){
+      return res.json({
+        'message':err.message,
+        "errors":err.errors
+      })
+    }
     if(err.title === 'ValidationError'){
       return res.json({
           "message":err.message,

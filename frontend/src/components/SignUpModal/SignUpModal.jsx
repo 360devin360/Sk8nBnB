@@ -1,9 +1,12 @@
 import { useEffect, useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { singUpUserThunk } from '../../store/session'
-import { Navigate} from 'react-router-dom'
+// import { Navigate} from 'react-router-dom'
+import {useModal} from '../../context/Modal';
 
-export function SignUpFormPage(){
+export default function SignUpFormModal(){
+
+    const dispatch = useDispatch()
     const [email,setEmail]=useState('')
     const [username,setUsername]=useState('')
     const [firstName,setFirstName] = useState('')
@@ -12,8 +15,8 @@ export function SignUpFormPage(){
     const [password2,setPassword2] = useState('')
     const [errors,setErrors] = useState({})
     const [disableButton, setDisableButton] = useState(false)
-    const dispatch = useDispatch()
-    
+    const {closeModal} = useModal()
+
     function handleSubmit(e){
         e.preventDefault()
         const userInfo = {
@@ -27,20 +30,19 @@ export function SignUpFormPage(){
         if(password!==password2){
             setErrors({passwords:'Passwords Do Not Match'})
             setPassword2('')
-            console.log(errors)
+            // console.log(errors)
         }else{
+            setErrors({})
             dispatch(singUpUserThunk(userInfo))
-            .then(()=>setErrors({}))
+            .then(closeModal)
             .catch(error=>{
                 setErrors(error)
-                setEmail('')
-                setUsername('')
-                setFirstName('')
-                setLastName('')
-                setPassword('')
-                setPassword2('')
-                console.log({errors})
-            })
+                if(error?.response?.errors?.username) setUsername('')
+                if(error?.response?.errors?.username) setUsername('')
+                if(error?.response?.errors?.firstName) setFirstName('')
+                if(error?.response?.errors?.lastName) setLastName('')
+                
+                })
         }
     }
     useEffect(()=>{
@@ -49,24 +51,29 @@ export function SignUpFormPage(){
             disable = true
         }
         setDisableButton(disable)
+
     },[email,firstName,lastName,username,password,password2,disableButton])
-    const user = useSelector(state=>state.session.user)
-    if(user){
-        return <Navigate to="/" replace={true}/>
-    }
-        // console.log({...errors})
+    // const user = useSelector(state=>state.session.user)
+    // if(user){
+    //     return <Navigate to="/" replace={true}/>
+    // }
+
+// console.logs------------------------------------console.logs
+    // console.log({...errors})
+// console.logs------------------------------------console.logs
     
     return (
         <>
             <h1>Sign Up</h1>
             <form
-                id='signUpForm'
+                className='inputForm'
                 onSubmit={handleSubmit}
             >
                 <input
                     type='text'
                     value={email}
                     placeholder="Email"
+                    name='email'
                     onChange={(e)=>setEmail(e.target.value)}
                 >
                 </input>
@@ -76,6 +83,7 @@ export function SignUpFormPage(){
                     value={username}
                     placeholder="username"
                     onChange={(e)=>setUsername(e.target.value)}
+                    name='username'
                 >
                 </input>
                 {errors?.response?.errors?.username ? <p>{errors?.response?.errors?.username}</p> : <br/>}
@@ -96,7 +104,7 @@ export function SignUpFormPage(){
                 </input>
                 {errors?.response?.errors?.lastName ? <p>{errors?.response?.errors?.lastName}</p> : <br/>}
                 <input
-                    type='text'
+                    type='password'
                     value={password}
                     placeholder="Password"
                     onChange={(e)=>setPassword(e.target.value)}
@@ -104,7 +112,7 @@ export function SignUpFormPage(){
                 </input>
                 <br/>
                 <input
-                    type='text'
+                    type='password'
                     value={password2}
                     placeholder="Password2"
                     onChange={(e)=>setPassword2(e.target.value)}
