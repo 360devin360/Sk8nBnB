@@ -5,6 +5,7 @@ import * as sessionActions from './store/session'
 import {useEffect, useState} from 'react'
 import {useDispatch} from 'react-redux'
 import { SignUpFormPage } from "./components/SignUpForm/SignUpForm";
+import { Navigation } from "./components/Navigation/Navigation";
 
 const router = createBrowserRouter([  
   {
@@ -48,7 +49,7 @@ function Layout(){
 
   return (
     <>
-      <h6 style={{margin:0}}>header area for nav and such</h6>
+      <Navigation isLoaded={isLoaded}/>
       <main>
         {isLoaded && <Outlet/>}
       </main>
