@@ -16,9 +16,9 @@ const {ValidationError} = require('sequelize');
 
 
 // test route http://localhost:8000
-// app.get('/',(req,res,next)=>{
-//   res.json('hello world')
-// })
+app.get('/',(req,res,next)=>{
+  res.json('hello world')
+})
 //------------------------------------------------------------------------------
 
 // Security Middleware
