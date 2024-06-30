@@ -1,3 +1,29 @@
-#login_signup_div, #profile_button_div{
-    background-color: rgba(255,0,0,0.3);
+main{
+    background-color: rgba(98, 255, 0, 0.2);
+}
+ul{
+    list-style-type:none;
+    padding:0;
+    margin:0
+}
+.navigation_list_div{
+    /* background-color: rgba(255,0,0,0.3); */
+    display:flex;
+    justify-content:right;
+}
+
+#home_button{
+    margin-right:1rem
+}
+
+#profile_button{
+    margin-right:1rem
+}
+
+#userInfo_div{
+    position: absolute;
+    outline:solid black;
+    background-color: grey;
+    right:.1rem;
+    
 }

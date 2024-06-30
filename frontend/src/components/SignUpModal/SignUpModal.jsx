@@ -1,7 +1,6 @@
 import { useEffect, useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { singUpUserThunk } from '../../store/session'
-// import { Navigate} from 'react-router-dom'
 import {useModal} from '../../context/Modal';
 
 export default function SignUpFormModal(){

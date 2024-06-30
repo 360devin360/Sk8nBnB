@@ -1,10 +1,8 @@
 // import LoginFormPage from "./components/LoginFormModal/LoginFormModal";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import '../src/testing.css';
 import * as sessionActions from './store/session'
 import {useEffect, useState} from 'react'
 import {useDispatch} from 'react-redux'
-// import { SignUpFormPage } from "./components/SignUpForm/SignUpForm";
 import { Navigation } from "./components/Navigation/Navigation";
 
 const router = createBrowserRouter([  
@@ -13,20 +11,8 @@ const router = createBrowserRouter([
     children:[
       {
         path:'/',
-        element:(
-          <>
-            <h1>Welcome from App Academy</h1>
-          </>
-        )
+        element: <h1>Welcome from App Academy</h1>
       },
-      // {
-      //   path:'/login',
-      //   element:<LoginFormPage/>
-      // },
-      // {
-      //   path:'/signup',
-      //   element:<SignUpFormPage/>
-      // }
     ]
   }
 ])
