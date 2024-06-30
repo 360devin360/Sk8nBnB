@@ -27,12 +27,12 @@ if (process.env.NODE_ENV === 'production') {
         path.resolve(__dirname, '../frontend', 'dist', 'index.html')
       );
     });
-    router.use(express.static(path.resolve("../frontend/dist")));
+    router.use(express.static(path.resolve("../../frontend/dist")));
 
     router.get(/^(?!\/?api).*/,(req,res)=>{
         res.cookie('XSRF-TOKEN',req.csrfToken());
         res.sendFile(
-            path.resolve(__dirname,'../frontend','dist','index.html')
+            path.resolve(__dirname,'../../frontend','dist','index.html')
         );
     });
 }
