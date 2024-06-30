@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     open: true,
     proxy:{
-      '/api':'https://sk8nbnb.onrender.com:10000'
+      '/api':'postgresql://aa_projects_i77m_user:2CJcesp2jhoEUHMSXKOm4eD2JfObesjW@dpg-cptkjvo8fa8c738m7fk0-a/aa_projects_i77m'
     }
   }
 }));
