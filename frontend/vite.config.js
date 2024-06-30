@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     open: true,
     proxy:{
-      '/api':'http://localhost:8000'
+      '/api':'https://sk8nbnb.onrender.com:10000'
     }
   }
 }));
