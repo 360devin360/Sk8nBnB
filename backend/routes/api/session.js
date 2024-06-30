@@ -49,7 +49,7 @@ router.post('/', validateLogin , async (req,res,next)=>{
             err.status = 401;
             err.title = 'Login failed';
             err.errors = {credential: 'The provided credentials were invalid'}
-            return next(err);
+            next(err);
         };
         // create safeUser object
         const safeUser = {

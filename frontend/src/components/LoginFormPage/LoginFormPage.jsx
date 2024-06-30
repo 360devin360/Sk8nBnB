@@ -1,37 +1,40 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {useDispatch, useSelector} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
+import {Navigate} from 'react-router-dom'
 import './LoginFormPage.css';
-import { loginUser } from "../../store/session";
+import { logInUserThunk } from "../../store/session";
 
 export default function LoginFormPage(){
     const dispatch = useDispatch()
     const [credential,setCredential] = useState('')
     const [password,setPassword] = useState('')
-    const navigate = useNavigate()
-    
-    
-    
+    const [errors,setErrors] = useState({})
+
     function handleSubmit(e){
         e.preventDefault();
         const userInfo = {
             credential:credential,
             password:password
         }
-        dispatch(loginUser(userInfo))
-        setCredential('')
-        setPassword('')
-        navigate('/')
+        
+        dispatch(logInUserThunk(userInfo))
+            .then(()=>setErrors({}))
+            .catch(err=>{
+                setErrors(err)
+                setCredential('')
+                setPassword('')
+            })
     }
-    const user = useSelector(state=>state.session.user)
     
-    useEffect(()=>{
-        if(user!==null){
-            navigate('/')
-        }
-    })
+    const user = useSelector(state=>state.session.user)
+    if(user){
+        return <Navigate to='/' replace={true}/>
+    }
+    console.log({...errors})
+    // console.log(user)
     return (
         <>
+            <h1>Log In</h1>
             <form
                 id='inputForm'
                 onSubmit={handleSubmit}
@@ -45,7 +48,7 @@ export default function LoginFormPage(){
                     onChange={(e)=>setCredential(e.target.value)}
                 >
                 </input>
-                <br/>
+                {errors?.response?.errors?.credential ? <p>{errors?.response?.errors?.credential}</p> : <br/>}
                 <input
                     id='password'
                     type='text'
@@ -55,9 +58,10 @@ export default function LoginFormPage(){
                     onChange={(e)=>setPassword(e.target.value)}
                 >
                 </input>
+                {errors?.response?.message && errors?.response?.message !== "Bad Request" && <p>{errors?.response?.message}</p>}
+                {errors?.response?.errors?.password ? <p>{errors?.response?.errors?.password}</p> : <br/>}
                 <button>Submit</button>
             </form>   
         </>
     )
-    
 }

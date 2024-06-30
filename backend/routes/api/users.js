@@ -19,19 +19,21 @@ const validateSignup = [
     check('username')
         .exists({checkFalsy:true})
         .withMessage('Username is required')
-        .isLength({min:1})
-        .withMessage('Username is required'),
+        .isLength({min:3})
+        .withMessage('Username Must Be Longer Than 3 Characters'),
     check('firstName')
         .exists({checkFalsy:true})
         .withMessage('First Name is required')
+        .isLength({min:3})
+        .withMessage('First Name Must Be Longer Than 3 Characters')
         .not()
         .isEmail()
         .withMessage('First Name is required'),
     check('lastName')
         .exists({checkFalsy:true})
         .withMessage('Last Name is required')
-        .isLength({min:1})
-        .withMessage('Last Name is required'),
+        .isLength({min:3})
+        .withMessage('Last Name Must Be Longer Than 3 Characters'),
     handleValidationErrors
 ];
 
@@ -65,7 +67,7 @@ router.post('/', validateSignup, async (req,res,next)=>{
             username:user.username
         };
         // set token cookie
-        await setTokenCookie(res,safeUser);
+        setTokenCookie(res,safeUser);
         //add firstName and lastName to safeUser
         // return json of user
         return res.json({
