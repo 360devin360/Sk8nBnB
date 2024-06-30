@@ -16,30 +16,35 @@ router.get('/api/csrf/restore',(req,res)=>{
         'XSRF-Token':csrfToken
     });
 });
+
 router.use('/api',apiRouter);
 
-if(process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV === 'production') {
     const path = require('path');
-    router.get('/',(req,res)=>{
-        res.cookie('XSRF-TOKEN',req.csrfToken());
-        return res.sendFile(
-            path.resolve(__dirname,'../../frontend','dist','index.html')
-        );
+    router.get('/', (req, res) => {
+      res.cookie('XSRF-TOKEN', req.csrfToken());
+      res.sendFile(
+        path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
+      );
     });
-    router.use(express.static(path.resolve("../frontend/build")));
+    router.use(express.static(path.resolve("../frontend/dist")));
+
     router.get(/^(?!\/?api).*/,(req,res)=>{
         res.cookie('XSRF-TOKEN',req.csrfToken());
         return res.sendFile(
-            path.resolve(__dirname,'../../frontend','build','index.html')
+            path.resolve(__dirname,'../../frontend','dist','index.html')
         );
     });
 }
 
 if(process.env.NODE_ENV!=='production'){
     router.get('/api/csrf/restore',(req,res)=>{
-        res.cookie('XSRF-TOKEN',req.csrfToken());
-        return res.json({})
-    })
+        const csrfToken = req.csrfToken();
+        res.cookie('XSRF-TOKEN', csrfToken);
+        res.status(200).res.json({
+            'XSRF-Token':csrfToken
+        });
+    });
 }
 
 module.exports = router;
