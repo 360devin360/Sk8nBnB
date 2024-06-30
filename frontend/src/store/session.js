@@ -77,8 +77,6 @@ export const logOutUserThunk = () => async (dispatch) => {
     }
 }
 
-
-
 // reducer to update current users session information
   const sessionReducer = (state = initialState, { type, payload }) => {
   switch (type) {
