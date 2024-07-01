@@ -8,6 +8,8 @@ const apiRouter = require('./api');
 //   res.send('Hello World!');
 // });
 
+
+router.use('/api',apiRouter);
 router.get('/api/csrf/restore',(req,res)=>{
     const csrfToken = req.csrfToken();
     
@@ -16,8 +18,6 @@ router.get('/api/csrf/restore',(req,res)=>{
         'XSRF-Token':csrfToken
     });
 });
-
-router.use('/api',apiRouter);
 
 if (process.env.NODE_ENV === 'production') {
     const path = require('path');
