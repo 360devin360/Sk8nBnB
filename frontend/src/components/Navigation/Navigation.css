@@ -32,14 +32,14 @@ ul{
 #logo_div{
     display:flex;
     justify-content: left;
-    margin:1rem
+    
 }
 
 #button_div{
     display:flex;
     justify-content: right;
     align-items: center;
-    margin:1rem
+    
 }
 .userInfo{
     position: absolute;

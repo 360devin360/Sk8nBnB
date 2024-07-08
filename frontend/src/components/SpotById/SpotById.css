@@ -21,6 +21,7 @@
     display:flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 #name_location{
@@ -34,4 +35,28 @@
 }
 #location{
     font-weight: normal;
+}
+#spot_images{
+    max-width:1000px;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:1rem
+}
+#preview_image{
+    max-width:500px
+}
+#preview_image > img{
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 10px;
+}
+#other_images{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:1rem
+}
+#other_images > img{
+    width:100%;
+    aspect-ratio: 1;
+    border-radius: 10px;
 }
