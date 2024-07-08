@@ -1,0 +1,37 @@
+#nav{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    column-gap: 4rem;
+    max-width:1000px;
+    width:100%
+}
+
+#header{
+    border-bottom:solid 1px rgb(65, 213, 39);
+    margin-bottom:2rem;
+    position:sticky;
+    top:0;
+    z-index: 1000;
+    background-color: rgb(224, 254, 205);
+    display: flex;
+    justify-content: center;
+}
+
+#main{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#name_location{
+    display:flex;
+    flex-direction: column;
+    max-width:1000px;
+    width:100%
+}
+#name{
+    margin:0
+}
+#location{
+    font-weight: normal;
+}

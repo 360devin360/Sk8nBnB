@@ -1,29 +1,101 @@
-main{
+body{
+    margin:0;
     background-color: rgba(98, 255, 0, 0.2);
+    font-family:Airbnb Cereal VF, Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
 }
+header{
+    border-bottom:solid 1px rgb(65, 213, 39);
+    margin-bottom:2rem;
+    position:sticky;
+    top:0;
+    z-index: 1000;
+    background-color: rgb(224, 254, 205);
+}
+
+main{
+    display: flex;
+    justify-content: center;
+}
+
 ul{
     list-style-type:none;
     padding:0;
     margin:0
 }
-.navigation_list_div{
-    /* background-color: rgba(255,0,0,0.3); */
+
+#navigation{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    column-gap: 4rem;
+    margin:0 3rem;
+}
+#logo_div{
     display:flex;
-    justify-content:right;
+    justify-content: left;
+    margin:1rem
 }
 
-#home_button{
-    margin-right:1rem
+#button_div{
+    display:flex;
+    justify-content: right;
+    align-items: center;
+    margin:1rem
 }
-
-#profile_button{
-    margin-right:1rem
-}
-
-#userInfo_div{
+.userInfo{
     position: absolute;
-    outline:solid black;
-    background-color: grey;
-    right:.1rem;
-    
+    background-color: rgb(202, 253, 180);
+    border-radius: 2px;
+    outline: solid black;
+    right:3.2rem;
+    top:6.1rem;
+    padding:5px;
+    width:150px
+}
+#profile_button{
+    cursor: pointer;
+    aspect-ratio: 1;
+    border: solid 1px #5eaf5e;
+    border-radius: 30px;
+    background-color: rgba(128, 229, 143, 0.629);
+    height: 3.5rem;
+    width:8rem
+}
+.hidden{
+    display:none; 
+}
+#menu{
+    margin-right:1rem
+}
+
+
+#logo{
+    width: 13rem;
+}
+
+main{
+    margin:0 5rem
+}
+
+
+@media (max-width:520px){
+    .userInfo{
+        position: absolute;
+        background-color: grey;
+        border-radius: 2px;
+        outline: solid black;
+        right:1%;
+        top:6.8rem
+    }
+}
+@media (max-width:510px){
+    #logo{
+        width:5rem
+    }
+    #profile_button{
+        width:5rem;
+        height:3rem
+    }
+    svg{
+        width:1rem
+    }
 }
