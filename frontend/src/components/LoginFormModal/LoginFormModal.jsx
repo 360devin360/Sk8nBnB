@@ -27,7 +27,7 @@ export default function LoginFormModal(){
                 console.log({errors})
             })
     }
-    
+
 // console.logs -----------------------------------console.logs
     // console.log({...errors})
     // console.log(user)

@@ -44,12 +44,6 @@ module.exports = {
       review:'This is ok.'
     },
     {
-      spotId:5,
-      userId:3,
-      stars:4,
-      review:'This is great!'
-    },
-    {
       spotId:3,
       userId:1,
       stars:5,

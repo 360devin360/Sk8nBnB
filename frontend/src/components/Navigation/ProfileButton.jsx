@@ -1,4 +1,4 @@
-import { SlUser } from "react-icons/sl";
+import { SlUser, SlMenu } from "react-icons/sl";
 import { useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import './ProfileButton.css'
@@ -13,11 +13,12 @@ export function ProfileButton({user}){
     const dispatch = useDispatch()
 
     const [hidden,setHidden] = useState(true)
-    const userInfo = 'userInfo' + (hidden ? ' hidden' : "")
+    const userInfo = 'userInfo' + (hidden ? ' hidden' : " visable")
     const menuRef = useRef()
 
     const logout = (e) => {
         e.preventDefault();
+        toggleMenu(e)
         dispatch(logOutUserThunk())
     }
     
@@ -49,8 +50,10 @@ export function ProfileButton({user}){
                     type="button"
                     onClick={toggleMenu}
                     title="profile"
+                    id='profile_button'
                 >
-                    <SlUser/>
+                    <SlMenu size={40} color='#5eaf5e'id='menu'/>
+                    <SlUser size={40} color="#5eaf5e"/>
                 </button>
             </div>
             <div id='userInfo_div'>
@@ -70,24 +73,24 @@ export function ProfileButton({user}){
                         </>
                     ) : (
                         <>
-                            <li>
+                            <li id='signup_button_li'>
+                                <OpenModalButton
+                                    buttonText="Sign Up"
+                                    modalComponent={<SignUpFormModal/>}
+                                    onButtonClick={closeMenu}
+                                    id='signup_button'
+                                />
+                            </li>
+                            <li id='login_button'>
                                 <OpenModalButton
                                     buttonText="Log in"
                                     modalComponent={<LoginFormModal/>}
                                     onButtonClick={closeMenu}
                                 />
                             </li>
-                            <li>
-                                <OpenModalButton
-                                    buttonText="Sign Up"
-                                    modalComponent={<SignUpFormModal/>}
-                                    onButtonClick={closeMenu}
-                                />
-                            </li>
                         </>
                     )}
                 </ul>
-
             </div>
         </>
     );
