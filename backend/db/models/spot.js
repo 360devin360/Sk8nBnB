@@ -109,7 +109,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       validate:{
         notNull:true,
-        len:[1,150],
+        len:[1,250],
         notEmpty:true
       }
     },
