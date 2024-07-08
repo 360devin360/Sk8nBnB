@@ -126,22 +126,22 @@ module.exports = {
     {
       spotId:5,
       url:'https://thumbs.dreamstime.com/z/sheer-white-curtains-window-living-room-interior-striped-linen-pillow-modern-wicker-chair-130193495.jpg?ct=jpeg',
-      preview:true
+      preview:false
     },
     {
       spotId:5,
       url:'https://thumbs.dreamstime.com/z/sitting-room-600230.jpg?ct=jpeg',
-      preview:true
+      preview:false
     },
     {
       spotId:5,
       url:'https://thumbs.dreamstime.com/z/living-room-luxury-condo-kuala-lumpur-malaysia-51101161.jpg?ct=jpeg',
-      preview:true
+      preview:false
     },
     {
       spotId:5,
       url:'https://thumbs.dreamstime.com/z/massage-room-10671204.jpg?ct=jpeg',
-      preview:true
+      preview:false
     },
 
    ],{validate:true})

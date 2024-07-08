@@ -18,6 +18,15 @@ export default function SpotById(){
 
     const user = useSelector(state=>state.session.user)
     const spot = useSelector(state=>state.spots)
+    console.log(spot?.object[id]?.SpotImages)
+    const previewImage = spot.object[id]?.SpotImages?.filter(spot=>{
+      return spot.preview === true
+    })
+    console.log(previewImage)
+    const otherImages = spot.object[id]?.SpotImages?.filter(spot=>{
+      return spot.preview === false
+    })
+    console.log(otherImages)
     return (
         <>
           <header id='header'>
@@ -35,10 +44,22 @@ export default function SpotById(){
           <main id='main'>
             <div id='name_location'>
               <h1 id='name'>{spot?.object[id]?.name}</h1>
-              <h2 id='location'>{spot?.object[id]?.city}, {spot.object[id]?.state}, {spot.object[id]?.country}</h2>
+              <h2 id='location'>{spot?.object[id]?.city}, {spot?.object[id]?.state}, {spot.object[id]?.country}</h2>
             </div>
             <div id='spot_images'>
               <div id='preview_image'>
+                {
+                  previewImage?.map(info=>{
+                    return <img key={info.id} src={info.url}/>
+                  })
+                }
+              </div>
+              <div id='other_images'>
+                {
+                  otherImages?.map(info=>{
+                    return <img key={info.id} src={info.url}/>
+                  })
+                }
               </div>
             </div>
           </main>
