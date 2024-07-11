@@ -1,7 +1,6 @@
 #nav{
     display:grid;
     grid-template-columns: repeat(2,1fr);
-    column-gap: 4rem;
     max-width:1000px;
     width:100%
 }
@@ -12,7 +11,7 @@
     position:sticky;
     top:0;
     z-index: 1000;
-    background-color: rgb(224, 254, 205);
+    /* background-color: rgb(224, 254, 205); */
     display: flex;
     justify-content: center;
 }
@@ -40,23 +39,21 @@
     max-width:1000px;
     display: grid;
     grid-template-columns: repeat(2,1fr);
-    gap:1rem
+    gap:.2rem
 }
 #preview_image{
     max-width:500px
 }
 #preview_image > img{
     width: 100%;
-    aspect-ratio: 1;
-    border-radius: 10px;
+    aspect-ratio: 1.4;
 }
 #other_images{
     display:grid;
     grid-template-columns: repeat(2,1fr);
-    gap:1rem
+    gap:.2rem
 }
 #other_images > img{
     width:100%;
-    aspect-ratio: 1;
-    border-radius: 10px;
+    aspect-ratio: 1.4;
 }

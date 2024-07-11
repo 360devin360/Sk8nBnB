@@ -1,12 +1,8 @@
 #spots{
     display:grid;
     grid-template-columns: repeat(4,1fr);
-    column-gap: 7rem;
+    column-gap: 1.3rem;
     /* max-width: 3920px; */
-}
-
-.image_div{
-    width:100%
 }
 
 .spot{
@@ -19,12 +15,26 @@
 .image_div{
     display: flex;
     justify-content: center;
+    width:100%;
+    position: relative;
+    display: inline-block;
+}
+
+.image_div .image_tooltip{
+    visibility: hidden;
+    z-index:1;
+    opacity:0;
+    position: absolute;
+}
+
+.image_div:hover .image_tooltip{
+    visibility: visible;
+    opacity: 1;
 }
 
 .image{
     max-height: 400px;
     width:100%;
-    border-radius: 5px;
     aspect-ratio: 1;
 }
 
@@ -56,3 +66,4 @@ a{
         grid-template-columns: repeat(1,1fr);
     }
 }
+
