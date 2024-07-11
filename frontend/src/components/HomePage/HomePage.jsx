@@ -26,8 +26,8 @@ export default function Homepage(){
                     return (
                         <div key={spot.id} className='spot' >
                             <NavLink to={`/spots/${spot.id}`}>
-                            <div className='imgage_div'>
-                                <img className='image'src={spot.previewImage}/>
+                            <div className='image_div'>
+                                <img className='image'src={spot.previewImage} title={spot.name}/>
                             </div>
                             <div className='spot_info'>
                                 <div className='name_price'>

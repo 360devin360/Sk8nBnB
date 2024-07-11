@@ -52,8 +52,8 @@ export function ProfileButton({user}){
                     title="profile"
                     id='profile_button'
                 >
-                    <SlMenu size={40} color='#5eaf5e'id='menu'/>
-                    <SlUser size={40} color="#5eaf5e"/>
+                    <SlMenu size={20} color='#5eaf5e'id='menu'/>
+                    <SlUser size={20} color="#5eaf5e"/>
                 </button>
             </div>
             <div id='userInfo_div'>
