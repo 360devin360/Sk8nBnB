@@ -10,6 +10,8 @@
     display: flex;
     flex-direction: column;
     /* align-items: center; */
+    margin-bottom:1.3rem;
+    background-color: rgb(255, 255, 255);
 }
 
 .image_div{
