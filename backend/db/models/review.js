@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         onDelete:'cascade'
       })
       Review.belongsTo(models.User,{
-        foreignKey:"userId",
-        onDelete:'cascade'
-      })
-      Review.belongsTo(models.User,{
         foreignKey:'userId',
         onDelete:'cascade'
       })
@@ -51,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       validate:{
         notNull:true,
         len:[1,100],
-        is:/^[A-Za-z0-9 .,!?]+$/,
+        is:/^[A-Za-z0-9 -.,!?]+$/,
         notEmpty:true
       }
     },
