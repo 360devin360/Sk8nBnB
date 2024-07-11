@@ -30,7 +30,7 @@ export function getAllSpotsThunk(){
             throw err
         }
         const spots = await response.json()
-        console.log(spots)
+        // console.log(spots)
         dispatch(getAllSpots(spots))
     }
 }
@@ -61,7 +61,7 @@ export default function spotReducer(state=initialState,{type,payload}){
             array.forEach(spot=>{
                 object[spot.id]=spot
             })
-            console.log('object',object)
+            // console.log('object',object)
             newState.object = object
             return newState
         }

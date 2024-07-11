@@ -44,9 +44,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     address: {
-      type:DataTypes.TEXT,
+      type:DataTypes.STRING,
       allowNull:false,
       validate:{
+        len:[1,100],
         is:/^[A-Za-z0-9 .]+$/,
         notEmpty:true
       }
@@ -55,6 +56,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull:false,
       validate:{
+        len:[1,100],
         is:/^[A-Za-z0-9 ]+$/,
         notNull:true,
         notEmpty:true
@@ -64,6 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull:false,
       validate:{
+        len:[1,100],
         is:/^[A-Za-z0-9 ]+$/,
         notEmpty:true,
         notNull:true
@@ -73,6 +76,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull:false,
       validate:{
+        len:[1,100],
         notNull:true,
         notEmpty:true,
         is:/^[A-Za-z0-9 ]+$/
@@ -108,6 +112,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.TEXT,
       allowNull:false,
       validate:{
+        len:[1,2000],
         notNull:true,
         notEmpty:true
       }

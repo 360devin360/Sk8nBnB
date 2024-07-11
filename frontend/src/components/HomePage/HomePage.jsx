@@ -16,7 +16,7 @@ export default function Homepage(){
 
     const spots = useSelector(state=>state.spots.array)
 
-    console.log(spots)
+    // console.log(spots)
     // return the JSX needed for rendering the spots on the page
     // create divs for each spot and include the image, name, price, rating, ect
     return (

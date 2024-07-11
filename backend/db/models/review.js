@@ -42,12 +42,12 @@ module.exports = (sequelize, DataTypes) => {
       onDelete:'cascade'
     },
     review: {
-      type:DataTypes.STRING,
+      type:DataTypes.TEXT,
       allowNull:false,
       validate:{
         notNull:true,
-        len:[1,100],
-        is:/^[A-Za-z0-9 -.,!?]+$/,
+        len:[1,2000],
+        is:/^[A-Za-z0-9 "'-.,!?]+$/,
         notEmpty:true
       }
     },
