@@ -27,9 +27,7 @@ export default function SpotById(){
   const otherImages = spot.object[id]?.SpotImages?.filter(spot=>{
     return spot.preview === false
   })
-  // const reviews = useSelector(state=>state.reviews)
-
-  // function 
+  const reviews = useSelector(state=>state.reviews)
 
   return (
     <>
@@ -69,7 +67,7 @@ export default function SpotById(){
         <div id='spot_info_and_review_div'>
             <div id='spot_info'>
               <h2 id='owner'>Hosted by {spot?.object[id]?.Owner?.firstName} {spot?.object[id]?.Owner?.lastName}</h2>
-              <p id='description'>{spot?.object[id].description}</p>
+              <p id='description'>{spot?.object[id]?.description}</p>
             </div>
             <div id='price_rating_reserve_div'>
               <div id='price_rating_reserve_card'>
@@ -82,9 +80,16 @@ export default function SpotById(){
                       <div id='star_div'>
                         <IoIosStar size={23}/> 
                       </div>
-                      <div id='rating_div'>
-                        &nbsp;{spot?.object[id]?.avgRating}&nbsp;<span id='dot'>•</span>&nbsp;{spot?.object[id]?.numReviews}&nbsp;reviews
-                      </div>
+                      {
+                        spot?.object[id]?.avgRating ?
+                            <div id='rating_div'>
+                              &nbsp;{spot?.object[id]?.avgRating}&nbsp;<span id='dot'>•</span>&nbsp;{spot?.object[id]?.numReviews}&nbsp;reviews
+                            </div>
+                          :
+                            <div id='rating_div'>
+                              &nbsp;New
+                            </div>
+                      }
                     {/* <p id='rating'><span id='star'>&#9733;</span> {spot.object[id].avgRating} <span id='dot'>•</span> {spot.object[id].numReviews} review</p> */}
                     </div>
                   </div>
@@ -99,7 +104,30 @@ export default function SpotById(){
           </div>
           <div id='reviews_div'>
             <div id='average_rating_num_reviews_div'>
-              <p id='average_rating_num_reveiws'><IoIosStar size={25}/>&nbsp;{spot?.object[id]?.avgRating}&nbsp;<span id='dot'>•</span>&nbsp;{spot?.object[id]?.numReviews}&nbsp;reviews</p>
+              {
+                spot?.object[id]?.avgRating ?
+                    <p id='average_rating_num_reveiws'><IoIosStar size={35}/>&nbsp;{spot?.object[id]?.avgRating}&nbsp;<span id='dot'>•</span>&nbsp;{spot?.object[id]?.numReviews}&nbsp;reviews</p>
+                  :
+                    <p id='average_rating_num_reveiws'><IoIosStar size={35}/>&nbsp;New</p>
+              }
+            </div>
+            <div id='reviews'>
+              {
+                reviews.array?.map(review=>{
+                  const months = {"01":"January","02":"February","03":"March","04":"April","05":"May","06":"June","07":"July","08":"August","09":"September","10":"October","11":"November","12":"December"}
+                  const reviewDate = review?.updatedAt.split(' ')[0]
+                  const reviewDateMonth = reviewDate.split('-')[1]
+                  const reviewDateYear = reviewDate.split('-')[0]
+                  const month = months[reviewDateMonth]
+                  return (
+                    <div key={review?.id}>
+                      <h3 id='review_owner_firstName'>{review?.User?.firstName}</h3>
+                      <p id='date_of_review'>{month}&nbsp;{reviewDateYear}</p>
+                      <p id='review'>{review?.review}</p>
+                    </div>
+                  )
+                })
+              }
             </div>
           </div>
       </main>

@@ -159,7 +159,22 @@
 }
 #average_rating_num_reveiws{
     display:flex;
-    align-items: center;
-    margin-top:12px
-
+    align-items: flex-end;
+    margin-top:13px;
+    font-size:1.5rem;
+    font-weight: bold;
+}
+#reviews{
+    
+}
+#review_owner_firstName{
+    margin-bottom:.7rem
+}
+#date_of_review{
+    margin-top:0;
+    color:grey;
+}
+#review{
+    font-size:.8rem;
+    margin-bottom:2.2rem
 }
