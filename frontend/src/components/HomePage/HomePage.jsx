@@ -27,16 +27,16 @@ export default function Homepage(){
                         <div key={spot.id} className='spot' >
                             <NavLink to={`/spots/${spot.id}`}>
                             <div className='image_div'>
-                                <img className='image'src={spot.previewImage} title={spot.name}/>
+                                <img className='image'src={spot?.previewImage} title={spot?.name}/>
                             </div>
                             <div className='spot_info'>
                                 <div className='name_price'>
-                                    <p className='location'>{spot.city}, {spot.state}</p>
+                                    <p className='location'>{spot?.city}, {spot?.state}</p>
                                     <p className='price'><b>${spot.price}</b> night</p>
                                 </div>
                                 <div className='rating'>
                                     <p className='star_icon'><IoStar/>&nbsp;</p>
-                                    {spot.avgRating ? <p className='score'>{spot.avgRating}</p>:<p className='score'>New</p>}    
+                                    {spot?.avgRating ? <p className='score'>{spot?.avgRating}</p>:<p className='score'>New</p>}    
                                 </div>
                             </div>
                             </NavLink>
