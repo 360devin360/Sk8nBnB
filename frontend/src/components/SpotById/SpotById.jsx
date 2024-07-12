@@ -27,7 +27,7 @@ export default function SpotById(){
   const otherImages = spot.object[id]?.SpotImages?.filter(spot=>{
     return spot.preview === false
   })
-  const reviews = useSelector(state=>state.reviews)
+  // const reviews = useSelector(state=>state.reviews)
 
   // function 
 
