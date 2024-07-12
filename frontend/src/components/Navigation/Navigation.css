@@ -5,7 +5,6 @@ body{
 }
 header{
     border-bottom:solid 1px rgb(65, 213, 39);
-    margin-bottom:2rem;
     position:sticky;
     top:0;
     z-index: 1000;
@@ -15,6 +14,7 @@ header{
 main{
     display: flex;
     justify-content: center;
+    padding-top:2rem
 }
 
 ul{
@@ -56,7 +56,7 @@ ul{
     aspect-ratio: 1;
     border: solid 1px #5eaf5e;
     border-radius: 30px;
-    background-color: rgba(128, 229, 143, 0.629);
+    background-color: rgba(126, 224, 141, 0.629);
     height: 3.0rem;
     width:5.5rem
 }
