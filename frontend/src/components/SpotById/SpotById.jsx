@@ -72,8 +72,20 @@ export default function SpotById(){
                 <div id='price_rating_reserve_div'>
                   <div id='price_rating_reserve_card'>
                     <div id='price_rating_div'>
-                      <p id='price'><b id='cost'>$12343</b> night</p>
-                      <p id='rating'><IoIosStar/> 4.5 . 1 review</p>
+                      <div id='price_div'>
+                        <p id='price'><b id='cost'>$12343</b>&nbsp;night</p>
+                      </div>
+                      <div id='star_rating_div'>
+                        <p id='star_rating'>
+                          <div id='star_div'>
+                            <IoIosStar size={23}/> 
+                          </div>
+                          <div id='rating_div'>
+                            &nbsp;{spot.object[id].avgRating}&nbsp;<span id='dot'>•</span>&nbsp;{spot.object[id].numReviews}&nbsp;review
+                          </div>
+                        {/* <p id='rating'><span id='star'>&#9733;</span> {spot.object[id].avgRating} <span id='dot'>•</span> {spot.object[id].numReviews} review</p> */}
+                        </p>
+                      </div>
                     </div>
                     <div id='reserve_button_div'>
                       <button id='reserve_button'>Reserve</button>
